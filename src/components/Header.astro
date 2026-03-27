@@ -1,0 +1,153 @@
+---
+const { backLink = false } = Astro.props;
+---
+<header id="site-header">
+  <div class="header-inner">
+
+    <a href="/" class="nav-home-logo">
+      <img src="/logo-nav.svg" alt="CrewTEC Home" width="56" height="32" />
+    </a>
+    <nav class="nav-links">
+      {backLink
+        ? <a href="/" class="nav-back">← All Solutions</a>
+        : <>
+            <a href="/#solutions">Solutions</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+          </>
+      }
+      <a href="/contact" class="nav-cta">Get a Quote</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    {backLink
+      ? <a href="/" onclick="document.getElementById('mobile-nav').classList.remove('open')">← All Solutions</a>
+      : <>
+          <a href="/#solutions" onclick="document.getElementById('mobile-nav').classList.remove('open')">Solutions</a>
+          <a href="/about" onclick="document.getElementById('mobile-nav').classList.remove('open')">About</a>
+          <a href="/contact" onclick="document.getElementById('mobile-nav').classList.remove('open')">Contact</a>
+        </>
+    }
+    <a href="/contact" class="mobile-cta" onclick="document.getElementById('mobile-nav').classList.remove('open')">Get a Quote →</a>
+  </div>
+</header>
+
+<style>
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s;
+}
+header.scrolled { box-shadow: var(--shadow); }
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-link img { height: 36px; width: auto; object-fit: contain; }
+.nav-home-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+.nav-home-logo:hover { opacity: 0.8; }
+.nav-home-logo img { height: 44px; width: auto; object-fit: contain; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--blue); }
+.nav-back { color: var(--blue) !important; }
+
+.nav-cta {
+  padding: 9px 20px;
+  background: var(--blue);
+  color: #fff !important;
+  border-radius: var(--radius);
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  transition: background 0.2s, transform 0.2s !important;
+  box-shadow: 0 3px 12px rgba(0,153,238,0.3);
+}
+.nav-cta:hover { background: var(--blue-dark) !important; transform: translateY(-1px); }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+  padding: 12px 24px 16px;
+  gap: 2px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-nav a:last-child { border-bottom: none; }
+.mobile-cta {
+  margin-top: 8px;
+  padding: 12px 20px !important;
+  background: var(--blue);
+  color: #fff !important;
+  border-radius: var(--radius);
+  text-align: center;
+  font-weight: 600 !important;
+  border-bottom: none !important;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+}
+</style>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('site-header')?.classList.toggle('scrolled', scrollY > 10);
+});
+document.getElementById('hamburger')?.addEventListener('click', () => {
+  document.getElementById('mobile-nav')?.classList.toggle('open');
+});
+</script>

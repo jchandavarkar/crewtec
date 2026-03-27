@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<BaseLayout
+  title="About CrewTEC | Authorised iValue Partner Bangalore"
+  description="CrewTEC is a Bangalore-based system integrator and authorised iValue partner. We deliver enterprise cybersecurity, cloud, and IT infrastructure solutions across India."
+  canonical="/about"
+>
+  <Header />
+  <main>
+    <section class="about-hero">
+      <div class="about-hero-inner">
+        <h1>Your Trusted Technology Integration Partner</h1>
+        <p>Bangalore-based. iValue-authorised. Enterprise-ready.</p>
+      </div>
+    </section>
+    <section class="about-body">
+      <div class="about-inner">
+        <div class="about-text">
+          <span class="about-label">Who We Are</span>
+          <h2>CrewTEC — System Integrator & iValue Partner</h2>
+          <p>CrewTEC is a premier technology system integrator headquartered in Bangalore, Karnataka. We specialise in deploying and supporting enterprise-grade IT solutions across cybersecurity, cloud infrastructure, and data management.</p>
+          <p>As an authorised partner of iValue Group — one of India's leading value-added technology distributors — we bring 50+ world-class global technology brands directly to your organisation, backed by local expertise, professional services, and dedicated support.</p>
+          <div class="about-features">
+            <div class="af-item"><div class="af-icon">🎯</div><div><h4>Expert Consultation</h4><p>We assess your environment and recommend the right solutions tailored to your business needs and budget.</p></div></div>
+            <div class="af-item"><div class="af-icon">⚙️</div><div><h4>End-to-End Integration</h4><p>From procurement to deployment, configuration, training, and ongoing support — we handle it all.</p></div></div>
+            <div class="af-item"><div class="af-icon">🤝</div><div><h4>iValue Partnership</h4><p>Authorised access to 50+ global technology brands across 15 solution categories through iValue Group.</p></div></div>
+            <div class="af-item"><div class="af-icon">📍</div><div><h4>Local Presence</h4><p>Headquartered in Bangalore with the ability to serve enterprises across India with on-site support.</p></div></div>
+          </div>
+        </div>
+        <div class="about-stats">
+          <div class="stat-card"><span class="stat-num">15+</span><span class="stat-lbl">Solution Categories</span></div>
+          <div class="stat-card"><span class="stat-num">50+</span><span class="stat-lbl">Global Brands</span></div>
+          <div class="stat-card"><span class="stat-num">PAN</span><span class="stat-lbl">India Coverage</span></div>
+          <div class="stat-card"><span class="stat-num">24/7</span><span class="stat-lbl">Support</span></div>
+          <div class="ivalue-badge">
+            <p>Powered by <strong>iValue Group</strong> — India's leading value-added technology distributor.</p>
+          </div>
+          <a href="/contact" class="cta-btn">Get a Free Consultation →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.about-hero { background: var(--navy); padding: 56px 0; text-align: center; }
+.about-hero-inner { max-width: 640px; margin: 0 auto; padding: 0 24px; }
+.about-hero h1 { color: #fff; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 12px; }
+.about-hero p { color: rgba(255,255,255,0.5); margin: 0; }
+
+.about-body { background: var(--offwhite); padding: 64px 0 80px; }
+.about-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 360px; gap: 64px; align-items: start; }
+
+.about-label { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); background: var(--blue-pale); padding: 5px 14px; border-radius: 999px; margin-bottom: 14px; border: 1px solid rgba(0,153,238,0.2); }
+.about-text h2 { color: var(--navy); margin-bottom: 16px; font-size: clamp(1.4rem, 3vw, 1.9rem); }
+.about-text > p { margin-bottom: 14px; }
+.about-features { margin-top: 32px; display: flex; flex-direction: column; gap: 20px; }
+.af-item { display: flex; gap: 14px; align-items: flex-start; }
+.af-icon { width: 40px; height: 40px; min-width: 40px; background: var(--blue-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; border: 1px solid rgba(0,153,238,0.15); }
+.af-item h4 { font-size: 0.95rem; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.af-item p { font-size: 0.875rem; margin: 0; }
+
+.about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.stat-card { background: var(--navy); border-radius: var(--radius); padding: 20px; text-align: center; }
+.stat-num { display: block; font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--blue-light); }
+.stat-lbl { display: block; font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+.ivalue-badge { grid-column: span 2; background: rgba(0,153,238,0.1); border: 1px solid rgba(0,153,238,0.2); border-radius: var(--radius); padding: 14px 16px; }
+.ivalue-badge p { font-size: 0.875rem; color: var(--text); margin: 0; }
+.ivalue-badge strong { color: var(--blue); }
+.cta-btn { grid-column: span 2; display: block; text-align: center; padding: 14px; background: var(--blue); color: #fff; border-radius: var(--radius); font-weight: 600; font-size: 0.95rem; transition: background 0.2s, transform 0.2s; box-shadow: 0 4px 16px rgba(0,153,238,0.3); }
+.cta-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+@media (max-width: 900px) {
+  .about-inner { grid-template-columns: 1fr; gap: 40px; }
+  .about-stats { grid-template-columns: 1fr 1fr; }
+}
+</style>

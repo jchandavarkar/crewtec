@@ -1,0 +1,115 @@
+---
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og-default.png',
+} = Astro.props;
+
+const siteUrl = 'https://crewtec.in';
+const fullTitle = title ? `${title} | CrewTEC` : 'CrewTEC | Empowering Enterprises with Next-Gen IT Solutions';
+const fullCanonical = canonical ? `${siteUrl}${canonical}` : siteUrl;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Primary SEO -->
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={fullCanonical} />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={fullCanonical} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+  <meta property="og:site_name" content="CrewTEC" />
+  <meta property="og:locale" content="en_IN" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+
+  <!-- Schema.org LocalBusiness -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "CrewTEC",
+      "description": "CrewTEC is an authorised iValue partner and system integrator delivering enterprise cybersecurity, cloud, and IT infrastructure solutions across India.",
+      "url": "https://crewtec.in",
+      "telephone": "+919986437648",
+      "email": "sales@crewtec.in",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "No. 10/11, Maragondanahalli Tavarekere",
+        "addressLocality": "Bangalore",
+        "addressRegion": "Karnataka",
+        "postalCode": "562130",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 12.9716,
+        "longitude": 77.5946
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      },
+      "sameAs": []
+    }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style is:global>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --blue: #0099EE;
+      --blue-dark: #0066BB;
+      --blue-light: #33BBFF;
+      --blue-pale: #E8F4FF;
+      --navy: #0A1628;
+      --white: #FFFFFF;
+      --offwhite: #F5F9FF;
+      --text: #1A2B45;
+      --muted: #5A738A;
+      --border: #D6E8F7;
+      --radius: 12px;
+      --radius-lg: 18px;
+      --shadow: 0 4px 24px rgba(0,100,200,0.09);
+      --shadow-lg: 0 12px 40px rgba(0,100,200,0.16);
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+    p { line-height: 1.7; color: var(--muted); }
+    a { text-decoration: none; }
+    img { max-width: 100%; display: block; }
+  </style>
+</head>
+<body>
+  <slot />
+</body>
+</html>

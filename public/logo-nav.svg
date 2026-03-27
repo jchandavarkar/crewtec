@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 280" width="520" height="280">
+  <defs>
+    <linearGradient id="tecGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1EB4E7"/>
+      <stop offset="55%" stop-color="#0DA0D8"/>
+      <stop offset="100%" stop-color="#0066BB"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1EB4E7" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0066BB" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- CREW — dark navy for white nav background -->
+  <text
+    x="18" y="94"
+    font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+    font-weight="900"
+    font-style="italic"
+    font-size="52"
+    fill="#0A1628"
+    letter-spacing="6"
+  >CREW</text>
+
+  <!-- Accent line under CREW -->
+  <line x1="18" y1="104" x2="238" y2="104" stroke="#1EB4E7" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- TEC — large cyan-to-blue gradient -->
+  <text
+    x="10" y="248"
+    font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+    font-weight="900"
+    font-style="italic"
+    font-size="192"
+    fill="url(#tecGrad)"
+    letter-spacing="-6"
+  >TEC</text>
+
+  <!-- Fade underline -->
+  <line x1="10" y1="262" x2="510" y2="262" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round"/>
+</svg>
