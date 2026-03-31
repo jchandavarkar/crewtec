@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CrewTEC Quote Builder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, sans-serif;
+  background: #e9edf2;
+}
+
+header {
+  background: #0A1628;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+}
+
+.header-title {
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+.header-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-pdf {
+  padding: 8px 16px;
+  cursor: pointer;
+  border: none;
+  background: #0099EE;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.btn-pdf:hover { background: #0077CC; }
+
+.container {
+  display: flex;
+  min-height: calc(100vh - 52px);
+}
+
+.left {
+  width: 38%;
+  background: #f9fafb;
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid #e5e7eb;
+}
+
+.right {
+  width: 62%;
+  background: #e9edf2;
+  padding: 30px 20px;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.document {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  padding: 12mm 14mm;
+  box-shadow: 0 0 12px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  opacity: 0.04;
+  width: 65%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#preview {
+  position: relative;
+  z-index: 1;
+}
+
+/* Form elements */
+.section-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #0A1628;
+  margin: 14px 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #0099EE;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 7px 10px;
+  margin-bottom: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  font-size: 13px;
+  font-family: Arial, sans-serif;
+  background: white;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #0099EE;
+  box-shadow: 0 0 0 2px rgba(0,153,238,0.1);
+}
+
+textarea { resize: vertical; min-height: 80px; }
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+label {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field { margin-bottom: 8px; }
+
+/* Items table in form */
+.items-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 12px; }
+.items-table th { background: #f3f4f6; padding: 5px 6px; text-align: left; font-size: 11px; border: 1px solid #e5e7eb; }
+.items-table td { padding: 4px; border: 1px solid #e5e7eb; }
+.items-table td input { margin: 0; padding: 4px 6px; font-size: 12px; }
+.items-table td input[type=number] { text-align: right; }
+.items-table td input.item-desc { text-transform: uppercase; }
+.btn-add-row { background: #0099EE; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+.btn-del-row { background: #fee2e2; color: #dc2626; border: none; width: 22px; height: 22px; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; }
+.required-star { color: #dc2626; margin-left: 2px; }
+input.field-error, textarea.field-error { border-color: #dc2626 !important; background: #fff5f5 !important; }
+.field-error-msg { font-size: 10px; color: #dc2626; margin-top: -6px; margin-bottom: 6px; display: none; }
+.field-error-msg.visible { display: block; }
+
+/* ── DOCUMENT STYLES ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid #d1d5db;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+th {
+  background: #0A1628;
+  color: white;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.amount { text-align: right; }
+.doc-logo { height: 70px; }
+
+.proposal-heading {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  color: #0A1628;
+  line-height: 1.4;
+}
+
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.section-box {
+  border: 1px solid #d1d5db;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.6;
+  border-radius: 4px;
+}
+
+.section-box b {
+  display: block;
+  margin-bottom: 4px;
+  color: #0A1628;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 3px;
+}
+
+.total-row td {
+  background: #f0f7ff;
+  font-weight: bold;
+  color: #0A1628;
+}
+
+.grand-total-row td {
+  background: #0A1628;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* Mobile */
+@media (max-width: 1000px) {
+  .container { flex-direction: column; }
+  .left, .right { width: 100%; }
+  .document { width: 100%; padding: 16px; }
+  .grid-2x2 { grid-template-columns: 1fr; }
+}
+
+/* Print */
+@page { size: A4; margin: 8mm; }
+
+@media print {
+  header, .left { display: none !important; }
+  body { background: white; }
+  .right { padding: 0; background: white; }
+  .document { box-shadow: none; width: 100%; min-height: auto; padding: 4mm 6mm; }
+  .grid-2x2 { gap: 6px; }
+  th, td { padding: 5px 7px; }
+  .watermark { opacity: 0.03; }
+  .page-break { page-break-before: always; }
+  .no-print-break { page-break-inside: avoid; }
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:6px">
+    <svg viewBox="0 0 520 280" style="height:36px;width:auto;display:block" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1EB4E7"/>
+          <stop offset="55%" stop-color="#0DA0D8"/>
+          <stop offset="100%" stop-color="#0066BB"/>
+        </linearGradient>
+        <linearGradient id="hl" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1EB4E7" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#0066BB" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <text x="18" y="94" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-style="italic" font-size="52" fill="#FFFFFF" letter-spacing="6">CREW</text>
+      <line x1="18" y1="104" x2="238" y2="104" stroke="#1EB4E7" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+      <text x="10" y="248" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-style="italic" font-size="192" fill="url(#hg)" letter-spacing="-6">TEC</text>
+      <line x1="10" y1="262" x2="510" y2="262" stroke="url(#hl)" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <span class="header-title">Quote Builder Tool</span>
+  </div>
+  <div class="header-btns">
+    <button class="btn-pdf" onclick="downloadPDF()">⬇ Save as PDF</button>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ── LEFT PANEL ── -->
+<div class="left">
+
+  <div class="section-title">Quote Details</div>
+  <div class="grid2">
+    <div class="field"><label>Quote No.</label><input id="qtNo"></div>
+    <div class="field"><label>Date</label><input id="date" type="date"></div>
+  </div>
+
+  <div class="section-title">Client Details</div>
+  <div class="field"><label>Company Name <span class="required-star">*</span></label><input id="clientName" placeholder="ACME TECHNOLOGIES PVT LTD" style="text-transform:uppercase"><div class="field-error-msg" id="err-clientName">Company name is required</div></div>
+  <div class="field"><label>Contact Person <span class="required-star">*</span></label><input id="contactPerson" placeholder="RAJESH KUMAR" style="text-transform:uppercase"><div class="field-error-msg" id="err-contactPerson">Contact person is required</div></div>
+  <div class="grid2">
+    <div class="field"><label>Phone <span class="required-star">*</span></label><input id="contactPhone" placeholder="+91 98765 43210"><div class="field-error-msg" id="err-contactPhone">Phone is required</div></div>
+    <div class="field"><label>Email <span class="required-star">*</span></label><input id="contactEmail" placeholder="rajesh@acme.com"><div class="field-error-msg" id="err-contactEmail">Email is required</div></div>
+  </div>
+  <div class="field"><label>GSTIN <span class="required-star">*</span></label><input id="clientGST" placeholder="29XXXXX1234X1ZX" style="text-transform:uppercase"><div class="field-error-msg" id="err-clientGST">GSTIN is required</div></div>
+  <div class="field"><label>Address <span class="required-star">*</span></label><textarea id="clientAddress" placeholder="STREET, CITY, STATE, PINCODE" style="min-height:60px;text-transform:uppercase"></textarea><div class="field-error-msg" id="err-clientAddress">Address is required</div></div>
+
+  <div class="section-title">Solution Details</div>
+  <div class="field"><label>Subject / Title</label><input id="subject" placeholder="ENTERPRISE ENDPOINT SECURITY SOLUTION" style="text-transform:uppercase"></div>
+
+  <div class="section-title">Line Items</div>
+  <table class="items-table">
+    <thead>
+      <tr>
+        <th style="width:20%">Type</th>
+        <th style="width:32%">Description</th>
+        <th style="width:12%">Qty</th>
+        <th style="width:18%">Unit Price (₹)</th>
+        <th style="width:10%">Disc%</th>
+        <th style="width:8%"></th>
+      </tr>
+    </thead>
+    <tbody id="itemsBody">
+      <tr>
+        <td>
+          <select class="item-type">
+            <option value="Product">Product</option>
+            <option value="Service">Service</option>
+            <option value="License">License</option>
+            <option value="Installation">Installation</option>
+            <option value="Delivery">Delivery</option>
+            <option value="Others">Others</option>
+          </select>
+        </td>
+        <td><input type="text" class="item-desc" placeholder="Product / Service"></td>
+        <td><input type="number" class="item-qty" value="1" min="0" step="0.01"></td>
+        <td><input type="number" class="item-price" value="0" min="0" step="0.01"></td>
+        <td><input type="number" class="item-disc" value="0" min="0" max="100" step="0.01"></td>
+        <td style="text-align:center"><button class="btn-del-row" onclick="delRow(this)">×</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn-add-row" onclick="addRow()">+ Add Item</button>
+
+  <div class="section-title" style="margin-top:14px">GST</div>
+  <div style="font-size:11px;margin-bottom:8px;padding:6px 10px;border-radius:5px;background:#f0f7ff;border:1px solid #bfdbfe;color:#1e40af" id="gstTypeIndicator">
+    🏠 <b>Intra-State (Karnataka)</b> — CGST + SGST will apply
+  </div>
+  <div class="field"><label>GST Rate</label>
+    <select id="gstMode">
+      <option value="18">18% — IT Products &amp; Services (Standard)</option>
+      <option value="12">12% — Specific Hardware</option>
+      <option value="5">5% — Specific Software / SaaS</option>
+      <option value="0">0% — Zero Rated / Exempt</option>
+      <option value="custom">Custom %</option>
+    </select>
+  </div>
+  <div class="field" id="customGSTField" style="display:none">
+    <label>Custom GST %</label>
+    <input id="customGST" type="number" placeholder="Enter GST %" min="0" max="100">
+  </div>
+
+  <div class="section-title">Scope & Terms</div>
+  <div class="field"><label>A. Scope of Supply</label>
+    <textarea id="inclusions">1. Supply of hardware / software as per line items above
+2. Installation and configuration charged extra as per client SOW, if not included in the quotation under Installation
+3. Warranty as per OEM terms and conditions
+4. Delivery subject to stock availability at time of order confirmation</textarea>
+  </div>
+  <div class="field"><label>B. Exclusions</label>
+    <textarea id="exclusions">1. Installation and configuration quoted separately as per client SOW, if not included in the quotation under Installation
+2. Any works beyond the scope of this quotation</textarea>
+  </div>
+  <div class="field"><label>C. Delivery & Implementation</label>
+    <textarea id="delivery">1. Delivery within 2–4 weeks from Purchase Order and advance payment receipt
+2. Subject to stock and import availability at time of order
+3. Risk of goods transfers to client upon delivery at specified address
+4. Delays due to client-side dependencies or site unreadiness not attributed to CrewTEC
+5. Delivery charges quoted separately as per client SOW, if not included in the quotation under Delivery</textarea>
+  </div>
+  <div class="field"><label>D. Payment Terms</label>
+    <textarea id="paymentTerms">1. 50% Advance on Purchase Order confirmation
+2. 40% Before delivery / dispatch of goods
+3. 10% After delivery and client acceptance
+4. All payments by NEFT / RTGS to CrewTec InfoSol Pvt. Ltd
+5. Goods remain property of CrewTEC until receipt of full payment
+6. Prices are exclusive of GST unless stated otherwise
+7. This quotation is valid for 30 days from date of issue</textarea>
+  </div>
+  <div class="section-title">General Conditions (E)</div>
+  <div class="field">
+    <textarea id="generalTerms">1. Prices are subject to change without notice if order is not confirmed within the validity period
+2. Force Majeure — CrewTec InfoSol Pvt. Ltd shall not be liable for delays due to circumstances beyond reasonable control including but not limited to acts of God, natural disasters, government restrictions, port/customs delays or supply chain disruptions
+3. Confidentiality — Both parties agree to keep the terms of this quotation confidential and not to disclose to any third party without prior written consent
+4. Intellectual Property — All intellectual property rights in products supplied remain with the respective OEM / licensor. CrewTec InfoSol Pvt. Ltd makes no claim over OEM IP
+5. Limitation of Liability — CrewTec InfoSol Pvt. Ltd's liability shall in no event exceed the value of the goods supplied under this quotation
+6. Governing Law — This quotation and any contract arising therefrom shall be governed by the laws of India
+7. Jurisdiction — All disputes subject to the exclusive jurisdiction of courts in Bengaluru, Karnataka
+8. Entire Agreement — This quotation supersedes all prior verbal or written communications, representations or understandings on this subject matter</textarea>
+  </div>
+  <div class="field"><label>Notes (optional)</label>
+    <textarea id="notes" style="min-height:50px">This quotation is prepared in accordance with the client's requirements. Please review all line items, specifications, and terms carefully before issuing a Purchase Order. Any amendments or clarifications must be requested in writing before the PO is confirmed. Once a Purchase Order is issued and accepted by CrewTec InfoSol Pvt. Ltd, the scope, product selection, and services shall be deemed finalised, and no modifications, substitutions, or cancellations will be entertained. Acceptance of this quotation constitutes agreement to the terms and conditions set forth herein.</textarea>
+  </div>
+
+</div>
+
+<!-- ── RIGHT PANEL ── -->
+<div class="right">
+  <div class="document">
+    <!-- Watermark — inline SVG logo from website -->
+    <svg class="watermark" viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tecGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1EB4E7"/>
+          <stop offset="55%" stop-color="#0DA0D8"/>
+          <stop offset="100%" stop-color="#0066BB"/>
+        </linearGradient>
+        <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1EB4E7" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#0066BB" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <text x="18" y="94" font-family="Arial Black, Helvetica Neue, Arial, sans-serif" font-weight="900" font-style="italic" font-size="52" fill="#0A1628" letter-spacing="6">CREW</text>
+      <line x1="18" y1="104" x2="238" y2="104" stroke="#1EB4E7" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+      <text x="10" y="248" font-family="Arial Black, Helvetica Neue, Arial, sans-serif" font-weight="900" font-style="italic" font-size="192" fill="url(#tecGrad)" letter-spacing="-6">TEC</text>
+      <line x1="10" y1="262" x2="510" y2="262" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <div id="preview"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+
+/* ── UTILS ── */
+function fmtINR(n) {
+  n = Math.round(n);
+  return '₹ ' + n.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+}
+
+function fmtDate(s) {
+  if (!s) return '';
+  const d = new Date(s);
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  return String(d.getDate()).padStart(2,'0') + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function addDays(s, n) {
+  if (!s) return '';
+  const d = new Date(s);
+  d.setDate(d.getDate() + n);
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  return String(d.getDate()).padStart(2,'0') + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function toWords(num) {
+  if (num === 0) return 'Zero Rupees Only';
+  const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  function conv(n) {
+    let s = '';
+    if (n > 99) { s += ones[Math.floor(n/100)] + ' Hundred '; n %= 100; }
+    if (n > 19) { s += tens[Math.floor(n/10)] + ' '; n %= 10; }
+    if (n > 0)  { s += ones[n] + ' '; }
+    return s;
+  }
+  let r = '';
+  let cr = Math.floor(num/10000000); num %= 10000000;
+  let lk = Math.floor(num/100000);   num %= 100000;
+  let th = Math.floor(num/1000);     num %= 1000;
+  if (cr) r += conv(cr) + 'Crore ';
+  if (lk) r += conv(lk) + 'Lakh ';
+  if (th) r += conv(th) + 'Thousand ';
+  if (num) r += conv(num);
+  return r.trim() + ' Rupees Only';
+}
+
+function getToday() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return { numeric: y+m+day, date: d };
+}
+
+/* ── ITEM ROWS ── */
+function addRow() {
+  const tbody = document.getElementById('itemsBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td><select class="item-type"><option value="Product">Product</option><option value="Service">Service</option><option value="License">License</option><option value="Installation">Installation</option><option value="Delivery">Delivery</option><option value="Others">Others</option></select></td>' +
+    '<td><input type="text" class="item-desc" placeholder="Product / Service"></td>' +
+    '<td><input type="number" class="item-qty" value="1" min="0" step="0.01"></td>' +
+    '<td><input type="number" class="item-price" value="0" min="0" step="0.01"></td>' +
+    '<td><input type="number" class="item-disc" value="0" min="0" max="100" step="0.01"></td>' +
+    '<td style="text-align:center"><button class="btn-del-row" onclick="delRow(this)">x</button></td>';
+  tbody.appendChild(tr);
+  tr.querySelectorAll('input, select').forEach(el => el.addEventListener('input', updatePreview));
+  tr.querySelectorAll('select').forEach(el => el.addEventListener('change', updatePreview));
+}
+
+function delRow(btn) {
+  const rows = document.querySelectorAll('#itemsBody tr');
+  if (rows.length <= 1) return;
+  btn.closest('tr').remove();
+  updatePreview();
+}
+
+/* ── GST CALC ── */
+function calcGST(subtotal) {
+  const mode = document.getElementById('gstMode').value;
+  let rate = mode === 'custom' ? Number(document.getElementById('customGST').value || 0) : Number(mode);
+  const clientGST = (document.getElementById('clientGST').value || '').trim();
+  // State code 29 = Karnataka (intra-state); blank defaults to intra-state
+  const isIntraState = clientGST === '' || clientGST.substring(0,2) === '29';
+  const half = subtotal * (rate / 2) / 100;
+  const gstAmt = subtotal * rate / 100;
+  if (rate === 0) {
+    return { rate, gstAmt: 0, isIntraState, rows: [{ label: 'GST (Exempt / Zero Rated)', amt: 0 }] };
+  }
+  if (isIntraState) {
+    return {
+      rate, gstAmt, isIntraState,
+      rows: [
+        { label: 'CGST @ ' + (rate/2) + '%', amt: half },
+        { label: 'SGST @ ' + (rate/2) + '%', amt: half }
+      ]
+    };
+  } else {
+    return {
+      rate, gstAmt, isIntraState,
+      rows: [{ label: 'IGST @ ' + rate + '%', amt: gstAmt }]
+    };
+  }
+}
+
+/* ── MAIN PREVIEW ── */
+function updatePreview() {
+  // Collect line items
+  const rows = document.querySelectorAll('#itemsBody tr');
+  let subtotal = 0;
+  let itemRows = '';
+  let sNo = 1;
+
+  // Collect all items with type
+  const typeOrder = ['Product', 'License', 'Service', 'Installation', 'Delivery', 'Others'];
+  const typeColors = { Product: '#0A1628', Service: '#0074BB', License: '#7c3aed', Installation: '#b45309', Delivery: '#065f46', Others: '#6b7280' };
+  const typeBg     = { Product: '#e8f0f7', Service: '#e0f2ff', License: '#ede9fe', Installation: '#fef3c7', Delivery: '#d1fae5', Others: '#f3f4f6' };
+  const grouped = { Product: [], Service: [], License: [], Installation: [], Delivery: [], Others: [] };
+
+  rows.forEach(row => {
+    const type  = row.querySelector('.item-type')?.value || 'Product';
+    const desc  = (row.querySelector('.item-desc')?.value.trim() || '').toUpperCase();
+    const qty   = Number(row.querySelector('.item-qty')?.value || 0);
+    const price = Number(row.querySelector('.item-price')?.value || 0);
+    const disc  = Number(row.querySelector('.item-disc')?.value || 0);
+    if (!desc && price === 0) return;
+    const lineTotal = qty * price * (1 - disc/100);
+    subtotal += lineTotal;
+    grouped[type].push({ desc, qty, price, disc, lineTotal });
+  });
+
+  typeOrder.forEach(type => {
+    if (grouped[type].length === 0) return;
+    // Group header row
+    itemRows +=
+      '<tr>' +
+        '<td colspan="6" style="background:' + typeBg[type] + ';padding:5px 8px;font-size:10px;font-weight:bold;' +
+        'text-transform:uppercase;letter-spacing:0.07em;color:' + typeColors[type] + ';border-bottom:1px solid #d1d5db">' +
+        type + 's' +
+        '</td>' +
+      '</tr>';
+    grouped[type].forEach(item => {
+      itemRows +=
+        '<tr>' +
+          '<td style="text-align:center;color:#6b7280">' + sNo++ + '</td>' +
+          '<td>' + (item.desc || '—') + '</td>' +
+          '<td style="text-align:center">' + item.qty + '</td>' +
+          '<td class="amount">' + fmtINR(item.price) + '</td>' +
+          '<td style="text-align:center">' + (item.disc > 0 ? item.disc + '%' : '—') + '</td>' +
+          '<td class="amount">' + fmtINR(item.lineTotal) + '</td>' +
+        '</tr>';
+    });
+  });
+
+  const gst = calcGST(subtotal);
+  const total = subtotal + gst.gstAmt;
+
+  // Values
+  const qtNo      = document.getElementById('qtNo').value;
+  const dateVal   = document.getElementById('date').value;
+  const client    = document.getElementById('clientName').value.toUpperCase();
+  const contact   = document.getElementById('contactPerson').value.toUpperCase();
+  const phone     = document.getElementById('contactPhone').value;
+  const email     = document.getElementById('contactEmail').value;
+  const clientGST = document.getElementById('clientGST').value.toUpperCase();
+  const address   = document.getElementById('clientAddress').value.toUpperCase().replace(/\n/g,'<br>');
+  const cat       = '';
+  const subject   = document.getElementById('subject').value;
+  function fmtLines(text) {
+    return text.split('\n').filter(function(l){ return l.trim(); }).map(function(line) {
+      const match = line.match(/^(\d+\.?\s*)(.+)/);
+      if (match) return '<div style="display:flex;gap:6px;margin-bottom:3px"><span style="font-weight:bold;color:#0A1628;min-width:16px;flex-shrink:0">' + match[1].trim() + '</span><span>' + match[2] + '</span></div>';
+      return '<div style="margin-bottom:3px">' + line + '</div>';
+    }).join('');
+  }
+
+  const inclFmt    = fmtLines(document.getElementById('inclusions').value);
+  const exclFmt    = fmtLines(document.getElementById('exclusions').value);
+  const delivFmt   = fmtLines(document.getElementById('delivery').value);
+  const paymentFmt = fmtLines(document.getElementById('paymentTerms').value);
+  const genFmt     = fmtLines(document.getElementById('generalTerms').value);
+  const notes      = document.getElementById('notes').value;
+
+  // Heading
+  let heading = '';
+  if (subject) {
+    heading += '<span style="font-size:10px;font-weight:normal;color:#0099EE;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:4px">Quotation for</span>';
+    heading += subject.toUpperCase();
+    if (client) heading += '<br><span style="font-size:12px;font-weight:normal;color:#5a738a">For ' + client + '</span>';
+  }
+
+  document.getElementById('preview').innerHTML = `
+
+    <!-- ══════════════════════════════ PAGE 1 OF 2 ══════════════════════════════ -->
+
+    <!-- DOC HEADER -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid #0099EE">
+      <div>
+        <svg viewBox="0 0 520 280" style="height:72px;width:auto;display:block;margin-bottom:2px" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="pdfGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#1EB4E7"/>
+              <stop offset="55%" stop-color="#0DA0D8"/>
+              <stop offset="100%" stop-color="#0066BB"/>
+            </linearGradient>
+            <linearGradient id="pdfLine" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#1EB4E7" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#0066BB" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <text x="18" y="94" font-family="Arial Black, Helvetica Neue, Arial, sans-serif" font-weight="900" font-style="italic" font-size="52" fill="#0A1628" letter-spacing="6">CREW</text>
+          <line x1="18" y1="104" x2="238" y2="104" stroke="#1EB4E7" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+          <text x="10" y="248" font-family="Arial Black, Helvetica Neue, Arial, sans-serif" font-weight="900" font-style="italic" font-size="192" fill="url(#pdfGrad)" letter-spacing="-6">TEC</text>
+          <line x1="10" y1="262" x2="510" y2="262" stroke="url(#pdfLine)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div style="font-size:11px;color:#5a738a;line-height:1.6">
+          No. 10/11, Maragondanahalli Tavarekere, Bengaluru – 562130, Karnataka<br>
+          ✉ sales@crewtec.in &nbsp;|&nbsp; 📞 +91 99864 37648 &nbsp;|&nbsp; 🌐 crewtec.in
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:20px;font-weight:bold;color:#0A1628;margin-bottom:6px">QUOTATION</div>
+        <div style="font-size:11px;color:#5a738a;line-height:2">
+          <b>No:</b> ${qtNo || '—'}<br>
+          <b>Date:</b> ${fmtDate(dateVal) || '—'}<br>
+          <b>Valid Until:</b> ${addDays(dateVal, 30) || '—'}
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBJECT -->
+    <div class="proposal-heading">${heading}</div>
+
+    <!-- BILL TO / FROM -->
+    <table style="margin-top:0">
+      <tr>
+        <td style="width:50%;vertical-align:top;background:#f8fafc">
+          <div style="font-size:10px;font-weight:bold;color:#0099EE;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">Bill To</div>
+          <b style="font-size:13px">${client || '—'}</b><br>
+          ${contact ? '<span style="font-size:11px">Attn: ' + contact + '</span><br>' : ''}
+          ${phone ? '<span style="font-size:11px">📞 ' + phone + '</span><br>' : ''}
+          ${email ? '<span style="font-size:11px">✉ ' + email + '</span><br>' : ''}
+          ${clientGST ? '<span style="font-size:11px">GSTIN: ' + clientGST + '</span><br>' : ''}
+          ${address ? '<span style="font-size:11px">' + address + '</span>' : ''}
+        </td>
+        <td style="width:50%;vertical-align:top;background:#f0f7ff">
+          <div style="font-size:10px;font-weight:bold;color:#0099EE;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">From</div>
+          <b style="font-size:13px">CrewTec InfoSol Pvt. Ltd</b><br>
+          <span style="font-size:11px">
+            No. 10/11, Maragondanahalli Tavarekere<br>
+            Bengaluru – 562130, Karnataka<br>
+            GSTIN: 29AAJCC3290L1Z6
+          </span>
+        </td>
+      </tr>
+    </table>
+
+    <!-- LINE ITEMS -->
+    <table style="margin-top:12px">
+      <thead>
+        <tr>
+          <th style="width:4%;text-align:center">#</th>
+          <th style="width:44%">Description</th>
+          <th style="width:10%;text-align:center">Qty</th>
+          <th style="width:18%;text-align:right">Unit Price</th>
+          <th style="width:9%;text-align:center">Disc</th>
+          <th style="width:15%;text-align:right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${itemRows || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;padding:16px">No items added yet</td></tr>'}
+      </tbody>
+    </table>
+
+    <!-- TOTALS -->
+    <table style="margin-top:0;border-top:none">
+      <tr>
+        <td colspan="5" class="amount" style="border-top:none">Subtotal</td>
+        <td class="amount" style="width:18%;border-top:none">${fmtINR(subtotal)}</td>
+      </tr>
+      ${gst.rows.map(function(r){ return '<tr><td colspan="5" class="amount">' + r.label + '</td><td class="amount">' + fmtINR(r.amt) + '</td></tr>'; }).join('')}
+      <tr class="grand-total-row">
+        <td colspan="5" class="amount" style="letter-spacing:0.05em">TOTAL AMOUNT</td>
+        <td class="amount" style="font-size:14px">${fmtINR(total)}</td>
+      </tr>
+    </table>
+
+    <div style="font-size:11px;margin:8px 0 4px;color:#374151">
+      <b>Amount in Words:</b> <i>${toWords(Math.round(total))}</i>
+    </div>
+
+    ${notes ? '<div style="margin-top:10px;padding:8px 10px;background:#fffbeb;border:1px solid #fde68a;border-radius:4px;font-size:11px"><b style="color:#92400e">Notes:</b> ' + notes + '</div>' : ''}
+
+    <!-- PAGE 1 FOOTER -->
+    <div style="margin-top:30px;text-align:right;font-size:10px;color:#9ca3af;border-top:1px solid #e5e7eb;padding-top:8px">
+      Page 1 of 2 &nbsp;·&nbsp; ${qtNo || 'Quotation'} &nbsp;·&nbsp; crewtec.in
+    </div>
+
+    <!-- ══════════════════════════════ PAGE 2 OF 2 ══════════════════════════════ -->
+    <div class="page-break"></div>
+
+    <!-- PAGE 2 HEADER — matching SVG logo from page 1 -->
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:3px solid #0099EE;margin-bottom:16px">
+      <div>
+        <svg viewBox="0 0 520 280" style="height:50px;width:auto;display:block" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="p2Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#1EB4E7"/>
+              <stop offset="55%" stop-color="#0DA0D8"/>
+              <stop offset="100%" stop-color="#0066BB"/>
+            </linearGradient>
+            <linearGradient id="p2Line" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#1EB4E7" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#0066BB" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <text x="18" y="94" font-family="Arial Black, Helvetica Neue, Arial, sans-serif" font-weight="900" font-style="italic" font-size="52" fill="#0A1628" letter-spacing="6">CREW</text>
+          <line x1="18" y1="104" x2="238" y2="104" stroke="#1EB4E7" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+          <text x="10" y="248" font-family="Arial Black, Helvetica Neue, Arial, sans-serif" font-weight="900" font-style="italic" font-size="192" fill="url(#p2Grad)" letter-spacing="-6">TEC</text>
+          <line x1="10" y1="262" x2="510" y2="262" stroke="url(#p2Line)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div style="font-size:9px;color:#5a738a;margin-top:2px">CrewTec InfoSol Pvt. Ltd &nbsp;·&nbsp; GSTIN: 29AAJCC3290L1Z6</div>
+      </div>
+      <div style="text-align:right;font-size:11px;color:#5a738a">
+        <b style="color:#0A1628;font-size:14px">Terms &amp; Conditions</b><br>
+        Ref: ${qtNo || '—'} &nbsp;·&nbsp; ${client || '—'}
+      </div>
+    </div>
+
+    <!-- T&C BOX -->
+    <div style="border:1.5px solid #0A1628;border-radius:6px;overflow:hidden;margin-bottom:10px">
+      <div style="background:#0A1628;padding:7px 14px">
+        <span style="color:white;font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:0.08em">Terms &amp; Conditions — CrewTec InfoSol Pvt. Ltd</span>
+      </div>
+      <div style="padding:8px 12px;font-size:10px;line-height:1.65;color:#374151;background:#f8fafc">
+
+        <!-- A. GENERAL TERMS & CONDITIONS -->
+        <div style="font-weight:bold;color:#0A1628;font-size:9.5px;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #e5e7eb;padding-bottom:2px;margin-bottom:6px">A. General Terms &amp; Conditions</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 18px">
+          <div>
+            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">General Conditions</div>
+            ` + genFmt + `
+          </div>
+          <div>
+            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">Scope of Supply</div>
+            ` + inclFmt + `
+            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;margin-bottom:3px">Exclusions</div>
+            ` + exclFmt + `
+            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;margin-bottom:3px">Delivery &amp; Implementation</div>
+            ` + delivFmt + `
+            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;margin-bottom:3px">Payment Terms</div>
+            ` + paymentFmt + `
+          </div>
+        </div>
+
+        <!-- B. BANK DETAILS -->
+        <div style="margin-top:8px;background:#0A1628;border-radius:4px;padding:7px 12px;color:white">
+          <div style="font-size:9.5px;font-weight:bold;text-transform:uppercase;letter-spacing:0.08em;color:#1EB4E7;margin-bottom:4px">B. Bank Details — Payment Instructions</div>
+          <div style="font-size:10px;line-height:1.8">
+            Please transfer all payments to:<br>
+            <b>Bank:</b> HDFC Bank Ltd &nbsp;|&nbsp;
+            <b>A/C No:</b> 50200057188985 &nbsp;|&nbsp;
+            <b>IFSC Code:</b> HDFC0001226<br>
+            <b>A/C Name:</b> CrewTec InfoSol Pvt. Ltd
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SIGNATURE -->
+    <div style="margin-top:10px">
+      <div style="font-size:11px;font-weight:bold;color:#0A1628">For CrewTec InfoSol Pvt. Ltd</div>
+      <div style="margin-top:28px">
+        <div style="font-size:11px;font-weight:bold">L. Narayan M.S.</div>
+        <div style="border-bottom:1px solid #374151;width:200px;margin:3px 0"></div>
+        <div style="font-size:11px;color:#374151">Authorised Signatory</div>
+      </div>
+    </div>
+
+    <!-- PAGE 2 FOOTER -->
+    <div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:6px;text-align:center;font-size:10px;color:#9ca3af">
+      Page 2 of 2 &nbsp;·&nbsp; ${qtNo || 'Quotation'} &nbsp;·&nbsp; crewtec.in &nbsp;·&nbsp; sales@crewtec.in &nbsp;·&nbsp; +91 99864 37648
+    </div>
+    <div style="text-align:center;font-size:10px;color:#9ca3af;margin-top:3px;font-style:italic">
+      This is a system generated quotation. Signature is not required.
+    </div>
+  `;
+}
+
+/* ── VALIDATION ── */
+const REQUIRED_FIELDS = [
+  { id: 'clientName',    err: 'err-clientName' },
+  { id: 'contactPerson', err: 'err-contactPerson' },
+  { id: 'contactPhone',  err: 'err-contactPhone' },
+  { id: 'contactEmail',  err: 'err-contactEmail' },
+  { id: 'clientGST',     err: 'err-clientGST' },
+  { id: 'clientAddress', err: 'err-clientAddress' }
+];
+
+function validateFields() {
+  let valid = true;
+  REQUIRED_FIELDS.forEach(function(f) {
+    const el  = document.getElementById(f.id);
+    const msg = document.getElementById(f.err);
+    if (!el.value.trim()) {
+      el.classList.add('field-error');
+      msg.classList.add('visible');
+      valid = false;
+    } else {
+      el.classList.remove('field-error');
+      msg.classList.remove('visible');
+    }
+  });
+  if (!valid) {
+    // Scroll to first error
+    const first = document.querySelector('.field-error');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return valid;
+}
+
+// Clear error on input
+REQUIRED_FIELDS.forEach(function(f) {
+  const el  = document.getElementById(f.id);
+  const msg = document.getElementById(f.err);
+  el.addEventListener('input', function() {
+    if (el.value.trim()) {
+      el.classList.remove('field-error');
+      msg.classList.remove('visible');
+    }
+  });
+});
+
+/* ── PDF DOWNLOAD ── */
+function downloadPDF() {
+  if (!validateFields()) return;
+  const client = (document.getElementById('clientName').value || 'Client').replace(/\s+/g, '-');
+  const qt = document.getElementById('qtNo').value || 'QT';
+  const today = getToday();
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const d = today.date;
+  const display = String(d.getDate()).padStart(2,'0') + months[d.getMonth()] + d.getFullYear();
+  document.title = 'CrewTEC_Quote_' + client + '_' + qt + '_' + display;
+  window.print();
+}
+
+/* ── STATE CODE MAP ── */
+const STATE_CODES = {
+  '01':'Jammu & Kashmir','02':'Himachal Pradesh','03':'Punjab','04':'Chandigarh',
+  '05':'Uttarakhand','06':'Haryana','07':'Delhi','08':'Rajasthan','09':'Uttar Pradesh',
+  '10':'Bihar','11':'Sikkim','12':'Arunachal Pradesh','13':'Nagaland','14':'Manipur',
+  '15':'Mizoram','16':'Tripura','17':'Meghalaya','18':'Assam','19':'West Bengal',
+  '20':'Jharkhand','21':'Odisha','22':'Chhattisgarh','23':'Madhya Pradesh','24':'Gujarat',
+  '26':'Dadra & Nagar Haveli and Daman & Diu','27':'Maharashtra','29':'Karnataka',
+  '30':'Goa','31':'Lakshadweep','32':'Kerala','33':'Tamil Nadu','34':'Puducherry',
+  '35':'Andaman & Nicobar Islands','36':'Telangana','37':'Andhra Pradesh','38':'Ladakh',
+  '97':'Other Territory','99':'Other Country'
+};
+
+/* ── GST INDICATOR ── */
+function updateGSTIndicator() {
+  const gstin = (document.getElementById('clientGST').value || '').trim();
+  const indicator = document.getElementById('gstTypeIndicator');
+  const code = gstin.substring(0, 2);
+  const isIntra = gstin === '' || code === '29';
+  if (gstin === '') {
+    indicator.style.background = '#f0f7ff';
+    indicator.style.borderColor = '#bfdbfe';
+    indicator.style.color = '#1e40af';
+    indicator.innerHTML = '🏠 <b>Intra-State (Karnataka)</b> — CGST + SGST will apply';
+  } else if (isIntra) {
+    indicator.style.background = '#f0f7ff';
+    indicator.style.borderColor = '#bfdbfe';
+    indicator.style.color = '#1e40af';
+    indicator.innerHTML = '🏠 <b>Intra-State — Karnataka (29)</b> — CGST + SGST will apply';
+  } else {
+    const stateName = STATE_CODES[code] || 'Unknown State (' + code + ')';
+    indicator.style.background = '#fff7ed';
+    indicator.style.borderColor = '#fed7aa';
+    indicator.style.color = '#9a3412';
+    indicator.innerHTML = '🚚 <b>Inter-State — ' + stateName + ' (' + code + ')</b> — IGST will apply';
+  }
+}
+
+/* ── EVENT LISTENERS ── */
+document.getElementById('gstMode').addEventListener('change', function() {
+  document.getElementById('customGSTField').style.display = this.value === 'custom' ? 'block' : 'none';
+  updatePreview();
+});
+
+document.getElementById('clientGST').addEventListener('input', function() {
+  updateGSTIndicator();
+  updatePreview();
+});
+
+document.querySelectorAll('input, textarea, select').forEach(el => {
+  el.addEventListener('input', updatePreview);
+  el.addEventListener('change', updatePreview);
+});
+
+document.querySelectorAll('#itemsBody input, #itemsBody select').forEach(el => {
+  el.addEventListener('input', updatePreview);
+  el.addEventListener('change', updatePreview);
+});
+
+/* ── INIT ── */
+const today = getToday();
+const y = today.date.getFullYear();
+const m = String(today.date.getMonth()+1).padStart(2,'0');
+const day = String(today.date.getDate()).padStart(2,'0');
+document.getElementById('qtNo').value = 'CTC-' + y + m + day + '-001';
+document.getElementById('date').valueAsDate = new Date();
+
+// Patch: add row event listeners after DOM ready
+function patchRowListeners() {
+  document.querySelectorAll('#itemsBody input, #itemsBody select').forEach(el => {
+    el.removeEventListener('input', updatePreview);
+    el.removeEventListener('change', updatePreview);
+    el.addEventListener('input', updatePreview);
+    el.addEventListener('change', updatePreview);
+  });
+}
+
+const origAddRow = addRow;
+window.addRow = function() { origAddRow(); patchRowListeners(); updatePreview(); };
+
+updatePreview();
+
+</script>
+</body>
+</html>
