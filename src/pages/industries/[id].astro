@@ -1,0 +1,309 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { industries } from '../../data/industries.js';
+
+export async function getStaticPaths() {
+  return industries.map(ind => ({ params: { id: ind.id }, props: { industry: ind } }));
+}
+
+const { industry: ind } = Astro.props;
+const related = industries.filter(i => i.id !== ind.id).slice(0, 3);
+
+const pillarConfig: Record<string, { color: string; bg: string; label: string; href: string }> = {
+  'it-solutions': {
+    color: 'text-[#0099EE]',
+    bg: 'bg-[#0099EE]/10',
+    label: 'IT Solutions',
+    href: '/it-solutions',
+  },
+  'digital-growth': {
+    color: 'text-[#00B4A0]',
+    bg: 'bg-[#00B4A0]/10',
+    label: 'Digital Growth',
+    href: '/digital-growth',
+  },
+  'app-development': {
+    color: 'text-[#6366F1]',
+    bg: 'bg-[#6366F1]/10',
+    label: 'App Development',
+    href: '/app-development',
+  },
+};
+---
+
+<BaseLayout
+  title={ind.metaTitle}
+  description={ind.metaDesc}
+  canonical={`/industries/${ind.id}`}
+>
+  <Header />
+
+  <!-- ── 1. HERO ─────────────────────────────────────────────────── -->
+  <section class="bg-[#0A1628] pt-24 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <!-- Background grid decoration -->
+    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 40px 40px;"></div>
+    <!-- Gradient blob -->
+    <div class="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 blur-3xl" style="background: radial-gradient(circle, #0099EE, transparent);"></div>
+
+    <div class="max-w-4xl mx-auto relative">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-white/40 mb-8" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-white/70 transition-colors">Home</a>
+        <span>/</span>
+        <a href="/industries" class="hover:text-white/70 transition-colors">Industries</a>
+        <span>/</span>
+        <span class="text-white/60">{ind.name}</span>
+      </nav>
+
+      <!-- Icon + Label -->
+      <div class="flex items-center gap-4 mb-6">
+        <span class="flex items-center justify-center w-16 h-16 rounded-2xl text-4xl" style="background: rgba(0,153,238,0.15);">{ind.icon}</span>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#0099EE]/20 text-[#0099EE] border border-[#0099EE]/30 uppercase tracking-wider">
+          Industry Focus
+        </span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6" style="font-family: 'Syne', sans-serif;">
+        {ind.name} IT Solutions
+      </h1>
+
+      <p class="text-lg sm:text-xl text-white/70 leading-relaxed max-w-3xl mb-10">
+        {ind.heroDesc}
+      </p>
+
+      <a
+        href="/contact"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-[#0099EE] hover:bg-[#0077CC] text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+      >
+        Get Industry-Specific Solutions
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── 2. CHALLENGES ──────────────────────────────────────────── -->
+  <section class="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold text-[#0099EE] uppercase tracking-wider mb-3">Industry Pain Points</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#0A1628]" style="font-family: 'Syne', sans-serif;">
+          Key Challenges in {ind.name}
+        </h2>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto text-lg">
+          Understanding the specific obstacles your industry faces is the foundation of every solution we build.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {ind.challenges.map((challenge: { title: string; desc: string }, i: number) => (
+          <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 group">
+            <div class="w-10 h-10 rounded-xl bg-[#0A1628] flex items-center justify-center mb-4 text-white font-bold text-sm" style="font-family: 'Syne', sans-serif;">
+              {String(i + 1).padStart(2, '0')}
+            </div>
+            <h3 class="text-base font-bold text-[#0A1628] mb-3 group-hover:text-[#0099EE] transition-colors" style="font-family: 'Syne', sans-serif;">
+              {challenge.title}
+            </h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              {challenge.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. CREWTEC SOLUTIONS ───────────────────────────────────── -->
+  <section class="bg-white py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold text-[#00B4A0] uppercase tracking-wider mb-3">Our Approach</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#0A1628]" style="font-family: 'Syne', sans-serif;">
+          How Crewtec Helps
+        </h2>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto text-lg">
+          Our three-pillar approach delivers end-to-end technology coverage specifically for {ind.name} enterprises.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {ind.solutions.map((sol: { pillar: string; service: string; desc: string }) => {
+          const config = pillarConfig[sol.pillar] || pillarConfig['it-solutions'];
+          return (
+            <div class="rounded-2xl border border-gray-100 p-8 hover:shadow-lg transition-all duration-200 group relative overflow-hidden">
+              <!-- Top accent line -->
+              <div class={`absolute top-0 left-0 right-0 h-1 ${config.bg.replace('/10', '')}`} style={`background: ${sol.pillar === 'it-solutions' ? '#0099EE' : sol.pillar === 'digital-growth' ? '#00B4A0' : '#6366F1'}`}></div>
+
+              <!-- Pillar badge -->
+              <span class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${config.bg} ${config.color} mb-5`}>
+                {config.label}
+              </span>
+
+              <!-- Service name -->
+              <h3 class="text-lg font-bold text-[#0A1628] mb-3 capitalize" style="font-family: 'Syne', sans-serif;">
+                {sol.service.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
+              </h3>
+
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                {sol.desc}
+              </p>
+
+              <a
+                href={`/${sol.pillar}/${sol.service}`}
+                class={`inline-flex items-center gap-1.5 text-sm font-semibold ${config.color} hover:gap-3 transition-all duration-200`}
+              >
+                Learn more
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4. STATS ───────────────────────────────────────────────── -->
+  <section class="bg-[#0A1628] py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 40px 40px;"></div>
+
+    <div class="max-w-5xl mx-auto relative">
+      <div class="text-center mb-12">
+        <p class="text-sm font-semibold text-[#0099EE] uppercase tracking-wider mb-3">By the Numbers</p>
+        <h2 class="text-3xl font-bold text-white" style="font-family: 'Syne', sans-serif;">
+          {ind.name} Industry at a Glance
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {ind.stats.map((stat: { value: string; label: string }) => (
+          <div class="text-center p-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors duration-200">
+            <div class="text-4xl font-extrabold text-[#0099EE] mb-3" style="font-family: 'Syne', sans-serif;">
+              {stat.value}
+            </div>
+            <p class="text-sm text-white/60 leading-relaxed">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5. CASE STUDY ─────────────────────────────────────────── -->
+  <section class="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-sm font-semibold text-[#0099EE] uppercase tracking-wider mb-3">Real Results</p>
+        <h2 class="text-3xl font-bold text-[#0A1628]" style="font-family: 'Syne', sans-serif;">
+          {ind.name} Case Study
+        </h2>
+      </div>
+
+      <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="grid grid-cols-1 lg:grid-cols-5">
+          <!-- Result highlight panel -->
+          <div class="lg:col-span-2 bg-[#0A1628] p-10 flex flex-col justify-center">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#0099EE]/20 text-[#0099EE] border border-[#0099EE]/30 uppercase tracking-wider mb-6 w-fit">
+              {ind.caseStudy.industry}
+            </span>
+            <p class="text-4xl font-extrabold text-white mb-4 leading-tight" style="font-family: 'Syne', sans-serif;">
+              {ind.caseStudy.result}
+            </p>
+            <p class="text-white/60 text-sm">Measured improvement delivered for our client</p>
+          </div>
+
+          <!-- Case study details -->
+          <div class="lg:col-span-3 p-10 flex flex-col justify-center">
+            <h3 class="text-xl font-bold text-[#0A1628] mb-4" style="font-family: 'Syne', sans-serif;">
+              {ind.caseStudy.title}
+            </h3>
+            <p class="text-gray-600 leading-relaxed mb-8">
+              {ind.caseStudy.desc}
+            </p>
+            <a
+              href="/contact"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-[#0099EE] hover:bg-[#0077CC] text-white font-semibold rounded-xl transition-all duration-200 shadow-sm hover:shadow w-fit"
+            >
+              Discuss Your Project
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 6. RELATED INDUSTRIES ────────────────────────────────── -->
+  <section class="bg-white py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-sm font-semibold text-[#6366F1] uppercase tracking-wider mb-3">Explore More</p>
+        <h2 class="text-3xl font-bold text-[#0A1628]" style="font-family: 'Syne', sans-serif;">
+          Other Industries We Serve
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {related.map((rel: { id: string; icon: string; name: string; shortDesc: string }) => (
+          <a
+            href={`/industries/${rel.id}`}
+            class="group block bg-gray-50 hover:bg-white rounded-2xl p-7 border border-gray-100 hover:border-[#0099EE]/30 hover:shadow-md transition-all duration-200"
+          >
+            <span class="text-3xl mb-4 block">{rel.icon}</span>
+            <h3 class="text-lg font-bold text-[#0A1628] mb-2 group-hover:text-[#0099EE] transition-colors" style="font-family: 'Syne', sans-serif;">
+              {rel.name}
+            </h3>
+            <p class="text-sm text-gray-600 leading-relaxed mb-4">{rel.shortDesc}</p>
+            <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0099EE] group-hover:gap-3 transition-all duration-200">
+              Learn more
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 7. CTA BANNER ────────────────────────────────────────── -->
+  <section class="bg-gradient-to-br from-[#0099EE] to-[#0077CC] py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4" style="font-family: 'Syne', sans-serif;">
+        Ready to Transform Your {ind.name} Operations?
+      </h2>
+      <p class="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
+        Talk to our {ind.name} technology specialists and get a tailored roadmap for your organisation within 48 hours.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#0099EE] font-bold rounded-xl hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+        >
+          Book Free Consultation
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a
+          href="https://wa.me/919986437648"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-white/20 hover:bg-white/30 text-white font-semibold rounded-xl border border-white/30 transition-all duration-200"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          WhatsApp Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

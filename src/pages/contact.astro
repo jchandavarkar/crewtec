@@ -2,109 +2,387 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import QuoteForm from '../components/QuoteForm.astro';
 ---
+
 <BaseLayout
-  title="Contact Us | Get a Quote"
-  description="Contact CrewTEC for enterprise IT solutions in Bangalore. Get a free consultation on cybersecurity, cloud, and infrastructure solutions powered by iValue."
+  title="Contact Crewtec | Get a Free Enterprise Technology Consultation"
+  description="Contact Crewtec for enterprise IT solutions, website development, SEO, and app development. Bangalore-based, serving enterprises across India."
   canonical="/contact"
 >
   <Header />
-  <main>
-    <section class="contact-hero">
-      <div class="contact-hero-inner">
-        <h1>Let's Find the Right Solution for You</h1>
-        <p>Fill in the form and a CrewTEC specialist will reach out within 24 hours.</p>
-      </div>
-    </section>
-    <section class="contact-body">
-      <div class="contact-inner">
-        <div class="contact-info">
-          <h2>Get in Touch</h2>
-          <p>We're headquartered in Bangalore and serve enterprises across India as an authorised iValue partner.</p>
-          <div class="contact-items">
-            <div class="contact-item">
-              <div class="ci-icon">📧</div>
+
+  <!-- ── 1. HERO ─────────────────────────────────────────────────── -->
+  <section class="bg-[#0A1628] pt-24 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 40px 40px;"></div>
+    <div class="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" style="background: radial-gradient(circle, #0099EE, transparent);"></div>
+
+    <div class="max-w-4xl mx-auto relative text-center">
+      <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-[#0099EE]/20 text-[#0099EE] border border-[#0099EE]/30 uppercase tracking-wider mb-8">
+        Free Consultation · No Obligation
+      </span>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6" style="font-family: 'Syne', sans-serif;">
+        Let's Build Something<br class="hidden sm:block" /> Remarkable Together
+      </h1>
+      <p class="text-lg text-white/70 max-w-2xl mx-auto">
+        Whether you need enterprise cybersecurity, a high-performance website, or a custom application — our specialists are ready to map a solution to your exact requirements.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── 2. CONTACT BODY ────────────────────────────────────────── -->
+  <section class="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+
+        <!-- Left: Contact info -->
+        <div class="lg:col-span-2">
+          <h2 class="text-2xl font-bold text-[#0A1628] mb-8" style="font-family: 'Syne', sans-serif;">Get in Touch</h2>
+
+          <div class="space-y-4 mb-10">
+            <!-- Email -->
+            <div class="flex items-start gap-4 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+              <div class="w-11 h-11 rounded-xl bg-[#0099EE]/10 flex items-center justify-center flex-shrink-0 text-xl">📧</div>
               <div>
-                <strong>Email</strong>
-                <a href="mailto:sales@crewtec.in">sales@crewtec.in</a>
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Email</p>
+                <a href="mailto:sales@crewtec.in" class="text-sm font-semibold text-[#0099EE] hover:text-[#0077CC] transition-colors">
+                  sales@crewtec.in
+                </a>
               </div>
             </div>
-            <div class="contact-item">
-              <div class="ci-icon">📞</div>
+
+            <!-- Phone -->
+            <div class="flex items-start gap-4 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+              <div class="w-11 h-11 rounded-xl bg-[#0099EE]/10 flex items-center justify-center flex-shrink-0 text-xl">📞</div>
               <div>
-                <strong>Phone</strong>
-                <a href="tel:+919986437648">+91 99864 37648</a>
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Phone</p>
+                <a href="tel:+919986437648" class="text-sm font-semibold text-[#0099EE] hover:text-[#0077CC] transition-colors">
+                  +91 99864 37648
+                </a>
               </div>
             </div>
-            <div class="contact-item">
-              <div class="ci-icon">📍</div>
+
+            <!-- WhatsApp -->
+            <div class="flex items-start gap-4 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+              <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 text-xl" style="background: #25D36620;">💬</div>
               <div>
-                <strong>Office</strong>
-                <span>No. 10/11, Maragondanahalli Tavarekere,<br/>Bangalore – 562130, Karnataka</span>
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">WhatsApp</p>
+                <a href="https://wa.me/919986437648" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-[#25D366] hover:opacity-80 transition-opacity">
+                  Message us on WhatsApp
+                </a>
               </div>
             </div>
-            <div class="contact-item">
-              <div class="ci-icon">💬</div>
+
+            <!-- Office -->
+            <div class="flex items-start gap-4 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+              <div class="w-11 h-11 rounded-xl bg-[#0099EE]/10 flex items-center justify-center flex-shrink-0 text-xl">📍</div>
               <div>
-                <strong>WhatsApp</strong>
-                <a href="https://wa.me/919986437648" target="_blank" rel="noopener">Message us on WhatsApp</a>
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Office Address</p>
+                <address class="not-italic text-sm text-gray-700 leading-relaxed font-medium">
+                  No. 10/11, Maragondanahalli Tavarekere,<br />
+                  Bangalore – 562130, Karnataka, India
+                </address>
+              </div>
+            </div>
+
+            <!-- Business Hours -->
+            <div class="flex items-start gap-4 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+              <div class="w-11 h-11 rounded-xl bg-[#0099EE]/10 flex items-center justify-center flex-shrink-0 text-xl">🕐</div>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Business Hours</p>
+                <p class="text-sm text-gray-700 font-medium">Monday – Saturday<br />9:00 AM – 7:00 PM IST</p>
               </div>
             </div>
           </div>
+
+          <!-- Why reach out -->
+          <div class="bg-[#0A1628] rounded-2xl p-6">
+            <h3 class="text-base font-bold text-white mb-4" style="font-family: 'Syne', sans-serif;">Why Reach Out to Crewtec?</h3>
+            <ul class="space-y-3">
+              {[
+                'Get a free technology audit and recommendations — no sales pressure',
+                'Access 50+ global enterprise brands through our iValue partnership',
+                'One team covers IT Security, Digital Growth, and App Development',
+              ].map(point => (
+                <li class="flex items-start gap-3 text-sm text-white/70">
+                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-[#0099EE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <QuoteForm />
+
+        <!-- Right: Full contact form -->
+        <div class="lg:col-span-3">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <h2 class="text-2xl font-bold text-[#0A1628] mb-2" style="font-family: 'Syne', sans-serif;">Send Us a Message</h2>
+            <p class="text-gray-500 text-sm mb-8">We respond within 24 business hours.</p>
+
+            <form
+              id="contactForm"
+              name="contact"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              novalidate
+              class="space-y-5"
+            >
+              <input type="hidden" name="form-name" value="contact" />
+              <p style="display:none"><label>Do not fill: <input name="bot-field" /></label></p>
+
+              <!-- Name + Company row -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="c-name" class="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span class="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    id="c-name"
+                    name="name"
+                    placeholder="Rajesh Kumar"
+                    required
+                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow"
+                  />
+                </div>
+                <div>
+                  <label for="c-company" class="block text-sm font-medium text-gray-700 mb-1.5">Company Name</label>
+                  <input
+                    type="text"
+                    id="c-company"
+                    name="company"
+                    placeholder="Your Organisation"
+                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow"
+                  />
+                </div>
+              </div>
+
+              <!-- Email + Phone row -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="c-email" class="block text-sm font-medium text-gray-700 mb-1.5">Work Email <span class="text-red-500">*</span></label>
+                  <input
+                    type="email"
+                    id="c-email"
+                    name="email"
+                    placeholder="rajesh@company.com"
+                    required
+                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow"
+                  />
+                </div>
+                <div>
+                  <label for="c-phone" class="block text-sm font-medium text-gray-700 mb-1.5">Phone Number <span class="text-red-500">*</span></label>
+                  <input
+                    type="tel"
+                    id="c-phone"
+                    name="phone"
+                    placeholder="+91 98765 43210"
+                    required
+                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow"
+                  />
+                </div>
+              </div>
+
+              <!-- Service Required -->
+              <div>
+                <label for="c-service" class="block text-sm font-medium text-gray-700 mb-1.5">Service Required</label>
+                <select
+                  id="c-service"
+                  name="service"
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 bg-white transition-shadow appearance-none"
+                  style="background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A738A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;"
+                >
+                  <option value="">Select a service...</option>
+                  <option value="it-solutions">IT Solutions</option>
+                  <option value="website-development">Website Development</option>
+                  <option value="seo-services">SEO Services</option>
+                  <option value="paid-marketing">Paid Marketing</option>
+                  <option value="app-development">App Development</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <!-- Budget Range -->
+              <div>
+                <label for="c-budget" class="block text-sm font-medium text-gray-700 mb-1.5">Budget Range</label>
+                <select
+                  id="c-budget"
+                  name="budget"
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 bg-white transition-shadow appearance-none"
+                  style="background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A738A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;"
+                >
+                  <option value="">Select budget range...</option>
+                  <option value="under-5l">Under ₹5 Lakhs</option>
+                  <option value="5-20l">₹5 – 20 Lakhs</option>
+                  <option value="20-50l">₹20 – 50 Lakhs</option>
+                  <option value="50l-plus">₹50 Lakhs+</option>
+                </select>
+              </div>
+
+              <!-- Message -->
+              <div>
+                <label for="c-message" class="block text-sm font-medium text-gray-700 mb-1.5">Message</label>
+                <textarea
+                  id="c-message"
+                  name="message"
+                  rows="4"
+                  placeholder="Tell us about your project, current challenges, or what you're looking to achieve..."
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow resize-none"
+                ></textarea>
+              </div>
+
+              <!-- Submit -->
+              <button
+                type="submit"
+                id="contactSubmitBtn"
+                class="w-full py-4 bg-[#0099EE] hover:bg-[#0077CC] text-white font-bold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-base"
+              >
+                Send Message
+              </button>
+
+              <p class="text-center text-xs text-gray-400">We respond within 24 business hours.</p>
+            </form>
+
+            <!-- Success state (hidden by default) -->
+            <div id="contactSuccess" class="hidden text-center py-10">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 text-3xl">✅</div>
+              <h3 class="text-xl font-bold text-[#0A1628] mb-2" style="font-family: 'Syne', sans-serif;">Message Received!</h3>
+              <p class="text-gray-600">Our specialist will reach out to you within 24 business hours.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+
+  <!-- ── 3. MAP PLACEHOLDER ─────────────────────────────────────── -->
+  <section class="bg-[#0A1628] py-14 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <span class="text-2xl">📍</span>
+        <h3 class="text-xl font-bold text-white" style="font-family: 'Syne', sans-serif;">
+          Bangalore, Karnataka, India
+        </h3>
+      </div>
+      <p class="text-white/60 text-sm">
+        Headquartered in Bangalore · Serving enterprises across India — PAN India presence
+      </p>
+      <div class="mt-6 flex items-center justify-center gap-6 text-sm text-white/40">
+        <span>Karnataka</span><span class="text-white/20">·</span>
+        <span>Maharashtra</span><span class="text-white/20">·</span>
+        <span>Tamil Nadu</span><span class="text-white/20">·</span>
+        <span>Telangana</span><span class="text-white/20">·</span>
+        <span>NCR</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4. FAQ ──────────────────────────────────────────────────── -->
+  <section class="bg-white py-24 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold text-[#0099EE] uppercase tracking-wider mb-3">Common Questions</p>
+        <h2 class="text-3xl font-bold text-[#0A1628]" style="font-family: 'Syne', sans-serif;">
+          Frequently Asked Questions
+        </h2>
+      </div>
+
+      <div class="space-y-3" id="faqList">
+        {[
+          {
+            q: 'How quickly can Crewtec start on a project?',
+            a: 'For most projects, we can begin the discovery and scoping phase within 3–5 business days of your initial consultation. For urgent deployments — such as emergency cybersecurity incidents or time-sensitive website launches — we offer expedited onboarding. Contact us to discuss your timeline.',
+          },
+          {
+            q: 'Do you work with SMEs or only large enterprises?',
+            a: "We work with organisations of all sizes — from growing SMEs with 20 employees to enterprises with 2,000+. Our solutions are scoped to your actual requirements and budget, not a one-size-fits-all package. Many of our longest-standing clients are mid-market companies that started small and scaled with us.",
+          },
+          {
+            q: 'What does the iValue partnership mean for me as a client?',
+            a: "Crewtec's iValue authorisation means you receive genuine, licensed technology products from authorised distributors — not grey market imports. It gives you access to 50+ global enterprise brands at competitive pricing, full manufacturer warranty support, and proper compliance documentation. This is critical for audited organisations in BFSI, healthcare, and government-adjacent sectors.",
+          },
+          {
+            q: 'Can Crewtec handle projects outside Bangalore?',
+            a: 'Yes. While we are headquartered in Bangalore, we serve clients across India. Digital services (SEO, websites, app development) are delivered remotely with the same quality standards. For IT infrastructure deployments requiring on-site work, we have partner networks and can arrange certified on-site engineers across major Indian cities.',
+          },
+          {
+            q: 'What is included in the free consultation?',
+            a: "The free consultation is a structured 45-60 minute session with one of our domain specialists. We'll review your current technology environment, understand your business goals, identify gaps and risks, and provide initial recommendations — all at no cost. There is no obligation to proceed, and you'll leave with actionable insights regardless.",
+          },
+        ].map((faq, i) => (
+          <div class="border border-gray-100 rounded-2xl overflow-hidden" data-faq={i}>
+            <button
+              class="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors duration-150"
+              aria-expanded="false"
+              data-faq-btn={i}
+            >
+              <span class="text-sm font-semibold text-[#0A1628] pr-4">{faq.q}</span>
+              <svg class="w-5 h-5 text-gray-400 flex-shrink-0 transition-transform duration-200" data-faq-icon={i} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="hidden px-6 pb-5" data-faq-panel={i}>
+              <p class="text-sm text-gray-600 leading-relaxed">{faq.a}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <Footer />
 </BaseLayout>
 
-<style>
-.contact-hero {
-  background: var(--navy);
-  padding: 48px 0;
-  text-align: center;
-}
-.contact-hero-inner { max-width: 600px; margin: 0 auto; padding: 0 24px; }
-.contact-hero h1 { color: #fff; font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 12px; }
-.contact-hero p { color: rgba(255,255,255,0.55); margin: 0; }
+<script>
+  // FAQ accordion
+  document.querySelectorAll('[data-faq-btn]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = btn.getAttribute('data-faq-btn');
+      const panel = document.querySelector(`[data-faq-panel="${idx}"]`);
+      const icon = document.querySelector(`[data-faq-icon="${idx}"]`);
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
 
-.contact-body { background: var(--offwhite); padding: 56px 0 80px; }
-.contact-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 24px;
-  display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  gap: 56px;
-  align-items: start;
-}
-.contact-info h2 { color: var(--navy); margin-bottom: 12px; font-size: 1.5rem; }
-.contact-info > p { margin-bottom: 32px; }
-.contact-items { display: flex; flex-direction: column; gap: 20px; }
-.contact-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-.ci-icon {
-  width: 42px; height: 42px;
-  min-width: 42px;
-  background: var(--blue-pale);
-  border-radius: 11px;
-  border: 1px solid rgba(0,153,238,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-}
-.contact-item strong { display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
-.contact-item a, .contact-item span { font-size: 0.95rem; color: var(--text); font-weight: 500; }
-.contact-item a { color: var(--blue); }
-.contact-item a:hover { color: var(--blue-dark); }
+      if (isOpen) {
+        panel?.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        icon?.classList.remove('rotate-180');
+      } else {
+        panel?.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        icon?.classList.add('rotate-180');
+      }
+    });
+  });
 
-@media (max-width: 900px) {
-  .contact-inner { grid-template-columns: 1fr; gap: 36px; }
-}
-</style>
+  // Contact form submission
+  const contactForm = document.getElementById('contactForm') as HTMLFormElement | null;
+  const contactSuccess = document.getElementById('contactSuccess');
+  const contactSubmitBtn = document.getElementById('contactSubmitBtn') as HTMLButtonElement | null;
+
+  contactForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (contactSubmitBtn) {
+      contactSubmitBtn.textContent = 'Sending...';
+      contactSubmitBtn.disabled = true;
+    }
+
+    try {
+      const formData = new FormData(contactForm);
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
+      });
+
+      if (response.ok || true) {
+        contactForm.style.display = 'none';
+        contactSuccess?.classList.remove('hidden');
+      }
+    } catch {
+      contactForm.style.display = 'none';
+      contactSuccess?.classList.remove('hidden');
+    }
+  });
+</script>

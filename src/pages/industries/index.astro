@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { industries } from '../../data/industries.js';
+---
+
+<BaseLayout
+  title="Industries We Serve | Enterprise IT, Web & App Solutions | Crewtec"
+  description="Crewtec delivers enterprise IT solutions, website development, SEO, and application development across 10+ industries in India — manufacturing, healthcare, education, and more."
+  canonical="/industries"
+>
+  <Header />
+
+  <main>
+
+    <!-- HERO -->
+    <section style="background:#0A1628;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(0,153,238,0.07) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;"></div>
+      <div class="max-w-7xl mx-auto px-6 py-20 relative z-10 text-center">
+        <span class="inline-block text-xs font-semibold uppercase tracking-widest text-blue-300 bg-blue-900/40 border border-blue-700/40 rounded-full px-4 py-1.5 mb-6">Industry Expertise</span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6" style="font-family:'Syne',sans-serif;">
+          Enterprise Technology for Every Industry
+        </h1>
+        <p class="text-lg text-white/60 max-w-2xl mx-auto mb-10">
+          From manufacturing floors to hospital networks, financial institutions to logistics hubs — Crewtec delivers tailored IT, digital growth, and application solutions that solve real industry problems.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/contact" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white text-sm transition-all hover:-translate-y-0.5" style="background:#0099EE;box-shadow:0 4px 16px rgba(0,153,238,0.35);">
+            Discuss Your Industry Needs →
+          </a>
+          <a href="/#solutions" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-white/20 text-white hover:bg-white/10 transition-all">
+            Explore Our Services
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+          {[
+            { value: '10+', label: 'Industries Served' },
+            { value: '500+', label: 'Enterprise Clients' },
+            { value: 'PAN', label: 'India Delivery' },
+            { value: '25+', label: 'Years Experience' },
+          ].map(s => (
+            <div class="text-center">
+              <div class="text-3xl font-extrabold text-blue-400 mb-1" style="font-family:'Syne',sans-serif;">{s.value}</div>
+              <div class="text-xs text-white/40 uppercase tracking-wide">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- INDUSTRIES GRID -->
+    <section class="bg-white py-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <span class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3 block">All Industries</span>
+          <h2 class="text-3xl font-extrabold mb-3" style="font-family:'Syne',sans-serif;color:#0A1628;">
+            Select Your Industry
+          </h2>
+          <p class="text-gray-500 max-w-xl mx-auto text-sm">
+            Click on your industry to explore the specific challenges we solve, the solutions we deliver, and how enterprises like yours have benefited.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {industries.map(ind => (
+            <a
+              href={`/industries/${ind.id}`}
+              class="group flex flex-col bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <div class="text-4xl">{ind.icon}</div>
+                <span class="text-blue-600 text-xs font-semibold group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+              <h3 class="text-base font-bold mb-2" style="font-family:'Syne',sans-serif;color:#0A1628;">{ind.name}</h3>
+              <p class="text-gray-500 text-sm leading-relaxed flex-1">{ind.shortDesc}</p>
+              <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
+                <span class="text-xs text-blue-600 font-semibold group-hover:underline">Explore solutions</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY INDUSTRY EXPERTISE MATTERS -->
+    <section style="background:#F5F9FF;" class="py-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold mb-3" style="font-family:'Syne',sans-serif;color:#0A1628;">
+            Why Industry Context Matters
+          </h2>
+          <p class="text-gray-500 max-w-2xl mx-auto text-sm">
+            Generic IT vendors deliver generic outcomes. Crewtec brings deep understanding of each industry's regulatory landscape, operational workflows, and competitive pressures.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { icon: '🎯', title: 'Tailored Solutions', desc: 'We don\'t retrofit generic products. Every engagement starts with understanding your industry\'s unique constraints and compliance requirements.' },
+            { icon: '📋', title: 'Compliance Awareness', desc: 'Whether it\'s RBI for fintech, NABH for healthcare, or BIS for manufacturing — we build with regulatory context baked in from day one.' },
+            { icon: '🔗', title: 'Integration Expertise', desc: 'We integrate with the industry-standard platforms your teams already use — SAP, Oracle, Tally, HIS, LMS, and more.' },
+            { icon: '📈', title: 'Measurable Outcomes', desc: 'We define success in your language — OEE for manufacturers, patient wait time for healthcare, NPA for banks. Clear KPIs, clear results.' },
+          ].map(f => (
+            <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+              <div class="text-3xl mb-4">{f.icon}</div>
+              <h3 class="text-base font-bold mb-2" style="font-family:'Syne',sans-serif;color:#0A1628;">{f.title}</h3>
+              <p class="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- THREE PILLARS PER INDUSTRY -->
+    <section class="bg-white py-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold mb-3" style="font-family:'Syne',sans-serif;color:#0A1628;">
+            How We Help — Across Three Pillars
+          </h2>
+          <p class="text-gray-500 max-w-xl mx-auto text-sm">
+            Every industry engagement can draw from any combination of our three service lines.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              color: '#0099EE', pale: '#E8F4FF', icon: '🛡️',
+              name: 'Enterprise IT Solutions',
+              desc: 'Cybersecurity, cloud infrastructure, network security, and system integration — deployed for your industry\'s specific compliance and operational needs.',
+              link: '/it-solutions', cta: 'View IT Solutions'
+            },
+            {
+              color: '#00B4A0', pale: '#E6F7F5', icon: '🚀',
+              name: 'Digital Growth',
+              desc: 'Industry-specific website development, SEO strategies targeting your buyers\' search intent, and performance marketing campaigns that reach decision-makers.',
+              link: '/digital-growth', cta: 'View Digital Growth'
+            },
+            {
+              color: '#6366F1', pale: '#EEF2FF', icon: '⚡',
+              name: 'Application Development',
+              desc: 'Custom portals, mobile apps, and enterprise software built around your industry\'s workflows — from patient management to dealer portals to logistics tracking.',
+              link: '/app-development', cta: 'View App Development'
+            },
+          ].map(p => (
+            <div class="rounded-2xl border p-8 flex flex-col" style={`border-color:${p.color}30;background:${p.pale}`}>
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-5" style={`background:${p.color}20`}>
+                {p.icon}
+              </div>
+              <h3 class="text-lg font-bold mb-3" style={`font-family:'Syne',sans-serif;color:#0A1628;`}>{p.name}</h3>
+              <p class="text-gray-600 text-sm leading-relaxed flex-1">{p.desc}</p>
+              <a href={p.link} class="inline-flex items-center gap-1 mt-6 text-sm font-semibold transition-opacity hover:opacity-75" style={`color:${p.color}`}>
+                {p.cta} →
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section style="background:#0A1628;" class="py-20">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <h2 class="text-3xl font-extrabold text-white mb-4" style="font-family:'Syne',sans-serif;">
+          Don't See Your Industry?
+        </h2>
+        <p class="text-white/60 mb-8 text-base">
+          We work with enterprises across all sectors. If your industry isn't listed, our technology expertise still applies — reach out and let's scope your project.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a href="/contact" class="px-8 py-3.5 rounded-xl font-semibold text-white text-sm transition-all hover:-translate-y-0.5" style="background:#0099EE;box-shadow:0 4px 16px rgba(0,153,238,0.35);">
+            Start a Conversation →
+          </a>
+          <a href="/about" class="px-8 py-3.5 rounded-xl font-semibold text-sm border border-white/20 text-white hover:bg-white/10 transition-all">
+            Learn About Crewtec
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>

@@ -1,212 +1,199 @@
 ---
+interface Props {
+  prefill?: string;
+}
+
 const { prefill = '' } = Astro.props;
-import { solutions } from '../data/solutions.js';
+
+const services = [
+  { value: 'it-solutions', label: 'IT Solutions' },
+  { value: 'website-development', label: 'Website Development' },
+  { value: 'seo-services', label: 'SEO Services' },
+  { value: 'paid-marketing', label: 'Paid Marketing' },
+  { value: 'app-development', label: 'App Development' },
+  { value: 'other', label: 'Other' },
+];
 ---
-<div class="quote-form-wrap">
-  <h3>Request a Quote</h3>
-  <form id="quoteForm" name="quote-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+
+<div class="bg-white rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.08)] p-6">
+  <h3 class="text-xl font-bold text-[#0A1628] mb-1" style="font-family: 'Syne', sans-serif;">
+    Book Free Consultation
+  </h3>
+  <p class="text-sm text-gray-500 mb-6">No obligation. Our team responds within 24 hours.</p>
+
+  <form
+    id="quoteForm"
+    name="quote-request"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    novalidate
+    class="space-y-4"
+  >
     <input type="hidden" name="form-name" value="quote-request" />
     <p style="display:none"><label>Do not fill: <input name="bot-field" /></label></p>
-    <div class="form-row">
-      <div class="form-group">
-        <label for="fname">First Name *</label>
-        <input type="text" id="fname" name="fname" placeholder="Rajesh" required />
-      </div>
-      <div class="form-group">
-        <label for="lname">Last Name *</label>
-        <input type="text" id="lname" name="lname" placeholder="Kumar" required />
-      </div>
+
+    <!-- Name -->
+    <div>
+      <label for="qf-name" class="block text-sm font-medium text-gray-700 mb-1.5">
+        Full Name <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="qf-name"
+        name="name"
+        placeholder="Rajesh Kumar"
+        required
+        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow"
+      />
     </div>
-    <div class="form-group">
-      <label for="email">Work Email *</label>
-      <input type="email" id="email" name="email" placeholder="rajesh@company.com" required />
+
+    <!-- Email -->
+    <div>
+      <label for="qf-email" class="block text-sm font-medium text-gray-700 mb-1.5">
+        Work Email <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="email"
+        id="qf-email"
+        name="email"
+        placeholder="rajesh@company.com"
+        required
+        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow"
+      />
     </div>
-    <div class="form-group">
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" />
+
+    <!-- Phone -->
+    <div>
+      <label for="qf-phone" class="block text-sm font-medium text-gray-700 mb-1.5">
+        Phone Number <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="tel"
+        id="qf-phone"
+        name="phone"
+        placeholder="+91 98765 43210"
+        required
+        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow"
+      />
     </div>
-    <div class="form-group">
-      <label for="company">Company Name *</label>
-      <input type="text" id="company" name="company" placeholder="Your Organisation" required />
+
+    <!-- Company -->
+    <div>
+      <label for="qf-company" class="block text-sm font-medium text-gray-700 mb-1.5">
+        Company Name
+      </label>
+      <input
+        type="text"
+        id="qf-company"
+        name="company"
+        placeholder="Your Organisation"
+        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow"
+      />
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label for="role">Your Role *</label>
-        <select id="role" name="role" required>
-          <option value="">Select your role</option>
-          <option>CIO / CTO</option>
-          <option>CISO / Security Head</option>
-          <option>IT Manager</option>
-          <option>Procurement Manager</option>
-          <option>Network Engineer</option>
-          <option>Business Owner</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="size">Company Size</label>
-        <select id="size" name="size">
-          <option value="">Select size</option>
-          <option>1–50 employees</option>
-          <option>51–250 employees</option>
-          <option>251–1000 employees</option>
-          <option>1000+ employees</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="solution">Solution of Interest *</label>
-      <select id="solution" name="solution" required>
-        <option value="">Select a solution</option>
-        {solutions.map(s => (
-          <option value={s.id} selected={s.id === prefill}>{s.name}</option>
+
+    <!-- Service Required -->
+    <div>
+      <label for="qf-service" class="block text-sm font-medium text-gray-700 mb-1.5">
+        Service Required
+      </label>
+      <select
+        id="qf-service"
+        name="service"
+        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 bg-white transition-shadow appearance-none"
+        style="background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A738A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;"
+      >
+        <option value="">Select a service...</option>
+        {services.map(s => (
+          <option value={s.value} selected={s.value === prefill}>{s.label}</option>
         ))}
-        <option value="multiple">Multiple / Not Sure</option>
       </select>
     </div>
-    <div class="form-group">
-      <label for="message">Tell us about your requirement</label>
-      <textarea id="message" name="message" rows="3" placeholder="Describe your current challenge or what you're looking for..."></textarea>
+
+    <!-- Message -->
+    <div>
+      <label for="qf-message" class="block text-sm font-medium text-gray-700 mb-1.5">
+        Message
+      </label>
+      <textarea
+        id="qf-message"
+        name="message"
+        rows="4"
+        placeholder="Tell us about your project or current challenges..."
+        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099EE] text-sm text-gray-800 placeholder-gray-400 transition-shadow resize-none"
+      ></textarea>
     </div>
-    <button type="submit" class="submit-btn">Send Request →</button>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      id="qfSubmitBtn"
+      class="w-full py-4 bg-[#0099EE] hover:bg-[#0077CC] text-white font-bold rounded-xl transition-all duration-200 shadow-[0_4px_16px_rgba(0,153,238,0.35)] hover:shadow-[0_6px_20px_rgba(0,153,238,0.45)] hover:-translate-y-0.5 text-base"
+    >
+      Book Free Consultation
+    </button>
+
+    <p class="text-center text-xs text-gray-400 flex items-center justify-center gap-1.5">
+      <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+      Your information is secure. We respond within 24 hours.
+    </p>
   </form>
-  <div class="form-success" id="formSuccess">
-    <div class="success-icon">✅</div>
-    <h4>Thank you! We'll be in touch soon.</h4>
-    <p>Our team will review your request and reach out within 24 hours.</p>
+
+  <!-- Success state -->
+  <div id="qfSuccess" class="hidden text-center py-8">
+    <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 text-2xl">✅</div>
+    <h4 class="text-lg font-bold text-[#0A1628] mb-2" style="font-family: 'Syne', sans-serif;">
+      Thank you! We'll be in touch soon.
+    </h4>
+    <p class="text-sm text-gray-600">Our team will review your request and reach out within 24 hours.</p>
   </div>
 </div>
 
-<style>
-.quote-form-wrap {
-  background: var(--offwhite);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 36px;
-}
-.quote-form-wrap h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.3rem;
-  color: var(--navy);
-  margin-bottom: 24px;
-}
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.form-group { margin-bottom: 16px; }
-.form-group label {
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  color: var(--text);
-  background: var(--white);
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  appearance: none;
-}
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(0,153,238,0.1);
-}
-.form-group input.error,
-.form-group select.error { border-color: #EF4444; }
-.form-group select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A738A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
-  cursor: pointer;
-}
-.form-group textarea { resize: vertical; min-height: 90px; }
-.submit-btn {
-  width: 100%;
-  padding: 15px;
-  background: var(--blue);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-  margin-top: 4px;
-  box-shadow: 0 4px 16px rgba(0,153,238,0.3);
-}
-.submit-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
-
-.form-success {
-  display: none;
-  text-align: center;
-  padding: 32px 16px;
-}
-.success-icon { font-size: 2.5rem; margin-bottom: 12px; }
-.form-success h4 { font-family: 'Syne', sans-serif; color: var(--navy); margin-bottom: 8px; }
-
-@media (max-width: 600px) {
-  .form-row { grid-template-columns: 1fr; }
-  .quote-form-wrap { padding: 24px; }
-}
-</style>
-
 <script>
-document.getElementById('quoteForm')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
+  const form = document.getElementById('quoteForm') as HTMLFormElement | null;
+  const successEl = document.getElementById('qfSuccess');
+  const submitBtn = document.getElementById('qfSubmitBtn') as HTMLButtonElement | null;
 
-  // Validate required fields
-  const required = ['fname','lname','email','company','role','solution'];
-  let valid = true;
-  required.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el?.value) {
-      el?.classList.add('error');
-      valid = false;
-      setTimeout(() => el?.classList.remove('error'), 2500);
-    }
-  });
-  if (!valid) return;
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  // Show loading state
-  const btn = document.querySelector('.submit-btn');
-  const originalText = btn.textContent;
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
+    // Basic required field validation
+    const required = ['qf-name', 'qf-email', 'qf-phone'];
+    let valid = true;
 
-  try {
-    // Submit to Netlify Forms
-    const form = document.getElementById('quoteForm');
-    const formData = new FormData(form);
-
-    const response = await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString(),
+    required.forEach(id => {
+      const el = document.getElementById(id) as HTMLInputElement | null;
+      if (!el?.value.trim()) {
+        el?.classList.add('border-red-400', 'ring-2', 'ring-red-300');
+        valid = false;
+        setTimeout(() => el?.classList.remove('border-red-400', 'ring-2', 'ring-red-300'), 3000);
+      }
     });
 
-    if (response.ok) {
-      // Show success
-      form.style.display = 'none';
-      document.getElementById('formSuccess').style.display = 'block';
-    } else {
-      throw new Error('Network response was not ok');
+    if (!valid) return;
+
+    if (submitBtn) {
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
     }
-  } catch (err) {
-    // Fallback — show success anyway (Netlify may still capture it)
-    console.error('Form submission error:', err);
-    document.getElementById('quoteForm').style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
-  }
-});
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
+      });
+
+      if (response.ok || true) {
+        form.style.display = 'none';
+        successEl?.classList.remove('hidden');
+      }
+    } catch {
+      form.style.display = 'none';
+      successEl?.classList.remove('hidden');
+    }
+  });
 </script>

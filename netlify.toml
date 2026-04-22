@@ -5,6 +5,18 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Preserve old /solutions/* URLs → new /it-solutions/*
+[[redirects]]
+  from = "/solutions/:id"
+  to = "/it-solutions/:id"
+  status = 301
+
+[[redirects]]
+  from = "/solutions"
+  to = "/it-solutions"
+  status = 301
+
+# SPA fallback (keep at bottom)
 [[redirects]]
   from = "/*"
   to = "/index.html"

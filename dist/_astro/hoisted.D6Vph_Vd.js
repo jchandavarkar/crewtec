@@ -1,1 +1,0 @@
-window.addEventListener("scroll",()=>{document.getElementById("site-header")?.classList.toggle("scrolled",scrollY>10)});document.getElementById("hamburger")?.addEventListener("click",()=>{document.getElementById("mobile-nav")?.classList.toggle("open")});

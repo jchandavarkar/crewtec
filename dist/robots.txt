@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://crewtec.in/sitemap-index.xml

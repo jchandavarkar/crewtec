@@ -1,0 +1,432 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import { solutions, colorMap, LOGO_DEV_TOKEN } from '../../data/solutions.js';
+
+export async function getStaticPaths() {
+  return solutions.map(s => ({ params: { id: s.id }, props: { solution: s } }));
+}
+
+const { solution: sol } = Astro.props;
+const colors = colorMap[sol.color];
+const related = solutions.filter(s => s.id !== sol.id).slice(0, 3);
+
+function getLogoUrl(domain) {
+  return `https://img.logo.dev/${domain}?token=${LOGO_DEV_TOKEN}&size=120&format=webp`;
+}
+---
+
+<BaseLayout
+  title={sol.name}
+  description={sol.metaDesc}
+  canonical={`/it-solutions/${sol.id}`}
+>
+  <Header backLink={true} />
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- HERO                                           -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <section class="relative overflow-hidden" style="background:#0A1628;">
+      <!-- Dot-grid -->
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="background-image:radial-gradient(circle, rgba(0,153,238,0.07) 1px, transparent 1px);background-size:44px 44px;"
+      ></div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-6 py-16 lg:py-24">
+
+        <!-- Breadcrumb -->
+        <nav class="mb-8" aria-label="Breadcrumb">
+          <ol class="flex flex-wrap items-center gap-2 text-sm" style="color:rgba(255,255,255,0.5);">
+            <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+            <li aria-hidden="true">/</li>
+            <li><a href="/it-solutions" class="hover:text-white transition-colors">IT Solutions</a></li>
+            <li aria-hidden="true">/</li>
+            <li style="color:rgba(255,255,255,0.85);">{sol.name}</li>
+          </ol>
+        </nav>
+
+        <div class="flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16">
+
+          <!-- Left: text -->
+          <div class="flex-1">
+            <span
+              class="inline-block text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-5"
+              style={`background:${colors.bg};color:${colors.text};`}
+            >
+              Solution {sol.number}
+            </span>
+
+            <h1
+              class="text-4xl lg:text-5xl font-extrabold text-white mb-5 leading-tight"
+              style="font-family:'Syne',sans-serif;"
+            >
+              {sol.name}
+            </h1>
+
+            <p class="text-base max-w-xl mb-8 leading-relaxed" style="color:rgba(255,255,255,0.7);">
+              {sol.fullDesc}
+            </p>
+
+            <a
+              href="#quote"
+              class="inline-flex items-center px-7 py-4 rounded-xl font-bold text-white text-base transition-all duration-200 hover:-translate-y-0.5"
+              style={`background:${colors.text};box-shadow:0 4px 18px rgba(0,0,0,0.25);`}
+            >
+              Request a Quote →
+            </a>
+          </div>
+
+          <!-- Right: large icon -->
+          <div
+            class="w-28 h-28 rounded-3xl border-2 flex items-center justify-center text-6xl shrink-0 hidden lg:flex"
+            style={`background:${colors.bg};border-color:${colors.border};`}
+          >
+            {sol.icon}
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- TWO-COLUMN BODY                                -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div style="background:#F5F9FF;" class="py-14">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col lg:flex-row gap-10 items-start">
+
+          <!-- ─────────────────────────────────────── -->
+          <!-- LEFT COLUMN                            -->
+          <!-- ─────────────────────────────────────── -->
+          <div class="flex-1 min-w-0 space-y-10">
+
+            <!-- SECTION A: Key Vendors & Brands -->
+            <section>
+              <h2
+                class="text-xs font-bold tracking-widest uppercase pb-3 mb-1 border-b border-gray-200"
+                style={`color:${colors.text};`}
+              >
+                Key Vendors &amp; Brands
+              </h2>
+              <p class="text-xs text-gray-400 mb-5">Click any brand to see full details</p>
+
+              <div class="flex flex-col gap-2.5" id="brandsList">
+                {sol.brands.map((brand, idx) => (
+                  <div class="brand-row-wrap rounded-2xl border border-gray-200 bg-white overflow-hidden transition-shadow duration-200">
+
+                    <!-- Collapsed row -->
+                    <div
+                      class="brand-card flex items-center gap-4 px-5 py-4 cursor-pointer select-none"
+                      data-idx={String(idx)}
+                      role="button"
+                      tabindex="0"
+                      aria-expanded="false"
+                    >
+                      <!-- Logo -->
+                      <div class="w-16 h-16 rounded-xl border border-gray-100 bg-white overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+                        <img
+                          src={getLogoUrl(brand.domain)}
+                          alt={`${brand.name} logo`}
+                          width="80"
+                          height="80"
+                          loading="lazy"
+                          class="w-14 h-14 object-contain p-1"
+                          onerror={`this.style.display='none';this.nextElementSibling.style.display='flex'`}
+                        />
+                        <span
+                          class="brand-fallback w-full h-full items-center justify-center text-xs font-bold rounded-lg"
+                          style={`background:${colors.bg};color:${colors.text};display:none;`}
+                        >
+                          {brand.name.slice(0,2).toUpperCase()}
+                        </span>
+                      </div>
+
+                      <!-- Info -->
+                      <div class="flex-1 min-w-0">
+                        <span class="block font-semibold text-[#0A1628] text-sm">{brand.name}</span>
+                        <span class="text-xs text-gray-400">{brand.type}</span>
+                      </div>
+
+                      <!-- Toggle -->
+                      <div class="flex items-center gap-1.5 text-xs font-semibold shrink-0" style={`color:${colors.text};`}>
+                        <span class="toggle-icon text-lg font-normal leading-none transition-transform duration-300">＋</span>
+                        <span class="toggle-label">View details</span>
+                      </div>
+                    </div>
+
+                    <!-- Expanded panel -->
+                    <div class="brand-detail" style={`border-top:2px solid ${colors.border};`}>
+
+                      <!-- Detail header -->
+                      <div class="flex gap-5 items-start p-5" style={`background:${colors.bg};`}>
+                        <div class="w-16 h-16 min-w-[64px] rounded-xl border border-gray-100 bg-white overflow-hidden flex items-center justify-center shadow-sm">
+                          <img
+                            src={getLogoUrl(brand.domain)}
+                            alt={brand.name}
+                            width="80"
+                            height="80"
+                            loading="lazy"
+                            class="w-14 h-14 object-contain p-1"
+                            onerror={`this.style.display='none';this.nextElementSibling.style.display='flex'`}
+                          />
+                          <span
+                            class="brand-fallback w-full h-full items-center justify-center text-sm font-bold rounded-lg"
+                            style={`background:${colors.border};color:${colors.text};display:none;`}
+                          >
+                            {brand.name.slice(0,2).toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <h3 class="font-bold text-[#0A1628] text-base mb-1" style="font-family:'Syne',sans-serif;">{brand.name}</h3>
+                          <span class="inline-block text-xs font-semibold tracking-wide uppercase mb-2" style={`color:${colors.text};`}>{brand.type}</span>
+                          <p class="text-sm text-gray-600 leading-relaxed">{brand.overview}</p>
+                        </div>
+                      </div>
+
+                      <!-- Detail body -->
+                      <div class="p-5">
+
+                        <!-- Two-column: features + use cases -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+                          <div>
+                            <h4 class="text-xs font-bold tracking-widest uppercase mb-3" style={`color:${colors.text};`}>Key Features</h4>
+                            <ul class="flex flex-col gap-2">
+                              {brand.features.map(f => (
+                                <li class="flex items-start gap-2 text-sm text-gray-700 leading-relaxed">
+                                  <span class="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={`background:${colors.text};`}></span>
+                                  {f}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div>
+                            <h4 class="text-xs font-bold tracking-widest uppercase mb-3" style={`color:${colors.text};`}>Use Cases</h4>
+                            <ul class="flex flex-col gap-2">
+                              {brand.useCases.map(u => (
+                                <li class="flex items-start gap-2 text-sm text-gray-700 leading-relaxed">
+                                  <span class="text-xs font-bold mt-0.5 shrink-0" style={`color:${colors.text};`}>✓</span>
+                                  {u}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                        </div>
+
+                        <!-- Why Crewtec block -->
+                        <div
+                          class="rounded-r-xl p-4 mb-4 bg-gray-50"
+                          style={`border-left:3px solid ${colors.text};`}
+                        >
+                          <span class="block text-xs font-bold tracking-widest uppercase mb-2" style={`color:${colors.text};`}>
+                            Why Crewtec recommends {brand.name}
+                          </span>
+                          <p class="text-sm text-gray-700 leading-relaxed">{brand.whyCrewtec}</p>
+                        </div>
+
+                        <!-- CTA row -->
+                        <div class="flex flex-wrap items-center justify-between gap-4 bg-white border border-gray-100 rounded-xl p-4">
+                          <p class="text-sm text-gray-700 m-0">
+                            Interested in <strong class="text-[#0A1628]">{brand.name}</strong>? Talk to our specialists for a free consultation.
+                          </p>
+                          <a
+                            href="/contact"
+                            class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white whitespace-nowrap transition-all duration-200 hover:opacity-85 hover:-translate-y-0.5"
+                            style={`background:${colors.text};`}
+                          >
+                            Get a Quote for {brand.name} →
+                          </a>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                ))}
+              </div>
+            </section>
+
+
+            <!-- SECTION B: What We Help You Achieve -->
+            <section>
+              <h2
+                class="text-xs font-bold tracking-widest uppercase pb-3 mb-5 border-b border-gray-200"
+                style={`color:${colors.text};`}
+              >
+                What We Help You Achieve
+              </h2>
+              <ul class="flex flex-col gap-3">
+                {sol.useCases.map(uc => (
+                  <li class="flex items-start gap-3 bg-white border border-gray-100 rounded-xl px-4 py-3.5">
+                    <span
+                      class="w-6 h-6 min-w-[24px] rounded-lg flex items-center justify-center text-xs font-bold text-white mt-0.5"
+                      style={`background:${colors.text};`}
+                    >
+                      ✓
+                    </span>
+                    <span class="text-sm text-gray-700 leading-relaxed">{uc}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+
+            <!-- SECTION C: Key Features -->
+            <section>
+              <h2
+                class="text-xs font-bold tracking-widest uppercase pb-3 mb-5 border-b border-gray-200"
+                style={`color:${colors.text};`}
+              >
+                Key Features
+              </h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {sol.features.map(f => (
+                  <div
+                    class="bg-white border border-gray-100 rounded-r-xl px-4 py-3.5"
+                    style={`border-left:3px solid ${colors.text};`}
+                  >
+                    <p class="text-sm text-gray-700 leading-relaxed m-0">{f}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+
+            <!-- SECTION D: Related Solutions -->
+            <section>
+              <h2
+                class="text-xs font-bold tracking-widest uppercase pb-3 mb-5 border-b border-gray-200"
+                style={`color:${colors.text};`}
+              >
+                Related Solutions
+              </h2>
+              <div class="flex flex-col gap-3">
+                {related.map(r => {
+                  const rc = colorMap[r.color];
+                  return (
+                    <a
+                      href={`/it-solutions/${r.id}`}
+                      class="flex items-center gap-4 bg-white border border-gray-200 rounded-xl px-4 py-4 transition-all duration-200 hover:border-[#0099EE] hover:translate-x-1"
+                    >
+                      <span
+                        class="text-2xl shrink-0 w-10 h-10 flex items-center justify-center rounded-xl"
+                        style={`background:${rc.bg};`}
+                      >
+                        {r.icon}
+                      </span>
+                      <div class="flex-1 min-w-0">
+                        <span class="block text-sm font-semibold text-[#0A1628]">{r.name}</span>
+                        <span class="block text-xs text-gray-400 mt-0.5 truncate">{r.shortDesc}</span>
+                      </div>
+                      <span class="text-[#0099EE] text-base shrink-0">→</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+
+          </div>
+
+
+          <!-- ─────────────────────────────────────── -->
+          <!-- RIGHT COLUMN: Sticky form              -->
+          <!-- ─────────────────────────────────────── -->
+          <aside class="w-full lg:w-80 shrink-0" id="quote">
+            <div class="lg:sticky" style="top:88px;">
+
+              <!-- Context banner -->
+              <div
+                class="rounded-xl border px-4 py-3 mb-4 text-sm"
+                style={`background:${colors.bg};border-color:${colors.border};color:${colors.text};`}
+              >
+                Interested in <strong>{sol.name}</strong>? Talk to our specialists.
+              </div>
+
+              <QuoteForm prefill={sol.id} />
+
+              <!-- Contact strip -->
+              <div class="mt-4 bg-white border border-gray-100 rounded-xl px-4 py-4 flex flex-col gap-3">
+                <a
+                  href="tel:+919986437648"
+                  class="flex items-center gap-2 text-sm font-medium text-[#0099EE] hover:text-[#007acc] transition-colors"
+                >
+                  <span>📞</span> +91 99864 37648
+                </a>
+                <a
+                  href="mailto:sales@crewtec.in"
+                  class="flex items-center gap-2 text-sm font-medium text-[#0099EE] hover:text-[#007acc] transition-colors"
+                >
+                  <span>✉️</span> sales@crewtec.in
+                </a>
+              </div>
+
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+/* Accordion: default hidden, shown when parent has .open */
+.brand-detail {
+  display: none;
+}
+.brand-row-wrap.open .brand-detail {
+  display: block;
+}
+.brand-row-wrap.open .toggle-icon {
+  transform: rotate(45deg);
+}
+.brand-row-wrap.open .toggle-label {
+  display: none;
+}
+
+/* Hover shadow on brand rows */
+.brand-row-wrap:hover {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+.brand-row-wrap.open {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Brand card hover bg */
+.brand-card:hover {
+  background: #f9fafb;
+}
+</style>
+
+<script>
+document.querySelectorAll('.brand-card').forEach(card => {
+  function toggle() {
+    const wrap = card.closest('.brand-row-wrap');
+    if (!wrap) return;
+    const isOpen = wrap.classList.contains('open');
+    document.querySelectorAll('.brand-row-wrap.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) {
+      wrap.classList.add('open');
+      setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+    }
+  }
+  card.addEventListener('click', toggle);
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggle();
+    }
+  });
+});
+</script>
