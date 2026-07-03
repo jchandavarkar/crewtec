@@ -5,106 +5,213 @@ import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout
-  title="About Crewtec | Authorised iValue Partner & Enterprise Technology Company Bangalore"
-  description="Crewtec is Bangalore's enterprise technology partner — IT solutions, web development, SEO, and app development. Authorised iValue partner."
+  title="About Crewtec | GRC & Cybersecurity Consultants Bangalore India"
+  description="Crewtec is a Bangalore-based GRC and cybersecurity consultancy, est. 2021. Certified ISO 27001 Lead Auditors, iValue Technology partner — helping Indian enterprises achieve certification and compliance."
   canonical="/about"
 >
   <Header />
 
-  <!-- ── 1. HERO ─────────────────────────────────────────────────── -->
-  <section class="bg-[#0A1628] pt-24 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 40px 40px;"></div>
-    <div class="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-10 blur-3xl pointer-events-none" style="background: radial-gradient(circle, #0099EE, transparent);"></div>
-    <div class="absolute bottom-0 left-0 w-80 h-80 rounded-full opacity-8 blur-3xl pointer-events-none" style="background: radial-gradient(circle, #00B4A0, transparent);"></div>
+  <!-- Hero -->
+  <section class="relative overflow-hidden pt-24 pb-20" style="background:#0A0A0A;">
+    <div class="absolute inset-0 pointer-events-none opacity-20" style="background-image:radial-gradient(rgba(255,255,255,0.05) 1px,transparent 1px);background-size:28px 28px;"></div>
+    <div class="absolute top-0 right-0 w-1/2 h-full pointer-events-none opacity-20" style="background:radial-gradient(ellipse at 80% 20%,#DC2626 0%,transparent 60%);"></div>
 
-    <div class="max-w-5xl mx-auto relative text-center">
-      <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-[#0099EE]/20 text-[#0099EE] border border-[#0099EE]/30 uppercase tracking-wider mb-8">
-        Authorised iValue Partner · Est. Bangalore
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <span class="inline-block px-4 py-1.5 rounded-full text-sm font-semibold mb-6" style="background:rgba(220,38,38,0.12);color:#DC2626;">
+        About Crewtec
       </span>
-
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-8" style="font-family: 'Syne', sans-serif;">
-        India's Full-Stack Enterprise<br class="hidden sm:block" /> Technology Partner
+      <h1 class="text-5xl font-bold text-white mb-6" style="font-family:'Rajdhani',sans-serif;">
+        Who Is Behind Crewtec's Governance, Security &amp; Compliance Practice?
       </h1>
-
-      <p class="text-lg sm:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto">
-        From Bangalore to pan-India — delivering cybersecurity, digital growth, and application development under one trusted brand.
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+        A Bangalore-based GRC consultancy, founded in 2021 — built specifically for the regulatory reality facing Indian enterprises today.
       </p>
+    </div>
+  </section>
 
-      <!-- Quick stats ribbon -->
-      <div class="mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+  <!-- Mission & Story -->
+  <section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div>
+          <h2 class="text-4xl font-bold mb-6" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+            Why We Started — and Why It Still Matters
+          </h2>
+          <div class="space-y-5 text-gray-600 leading-relaxed">
+            <p>
+              Crewtec was founded in 2021 in Bangalore with a simple belief: Governance, Security, and Compliance should be accessible to every Indian enterprise — not just multinationals with large security budgets.
+            </p>
+            <p>
+              We are not a software company that added "consulting" to its service menu. We are GRC consultants first and always — certified ISO 27001 Lead Auditors and iValue Technology Group's authorised partner for security deployments in India.
+            </p>
+            <p>
+              Our team has deep experience across ISO 27001, ISO 42001 (AI Governance), DPDPA 2023, RBI Cyber Security Framework, SEBI CSCRF, and VAPT. We work with clients ranging from 50-person SaaS startups preparing for enterprise sales to mid-size manufacturing groups managing ICS/OT risk.
+            </p>
+            <p>
+              What they have in common: they chose Crewtec because they needed an expert who speaks their language, understands Indian regulation, and gives them honest advice — not a vendor trying to sell the largest retainer.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-5">
+          <div class="grid grid-cols-2 gap-5">
+            {[
+              { v: '2021', l: 'Est. in Bangalore' },
+              { v: '11', l: 'GRC Services' },
+              { v: '10+', l: 'Regulatory Frameworks' },
+              { v: '12+', l: 'Industry Verticals' },
+            ].map(s => (
+              <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50 text-center">
+                <p class="text-3xl font-bold mb-1" style="font-family:'Rajdhani',sans-serif;color:#DC2626;">{s.v}</p>
+                <p class="text-sm text-gray-500">{s.l}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="p-6 rounded-2xl border border-amber-100 bg-amber-50">
+            <p class="text-xs font-semibold uppercase tracking-wider text-[#D97706] mb-2">New: AI Governance</p>
+            <p class="text-sm font-bold text-[#111111] mb-1">ISO/IEC 42001:2023 — AI Management Systems</p>
+            <p class="text-sm text-gray-600">
+              Crewtec is among the few Indian consultancies offering structured ISO 42001 AI Governance programmes. Published in December 2023, this standard is already being demanded by enterprise procurement and financial regulators.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-green-100 bg-green-50">
+            <p class="text-xs font-semibold uppercase tracking-wider text-[#16A34A] mb-2">Partner Credential</p>
+            <p class="text-sm font-bold text-[#111111] mb-1">iValue Technology Group — Authorised Partner</p>
+            <p class="text-sm text-gray-600">
+              Crewtec is an authorised partner of iValue, India's leading value-added distributor for cybersecurity technology — giving our clients access to best-in-class security platforms alongside our advisory and audit services.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credentials -->
+  <section class="py-24" style="background:#F5F5F5;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="text-center mb-14">
+        <h2 class="text-4xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+          What Credentials Does Crewtec Hold?
+        </h2>
+        <p class="text-gray-600 max-w-xl mx-auto">
+          Certifications that regulators and enterprise procurement teams recognise.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {[
-          { v: '25+', l: 'Years Experience' },
-          { v: '500+', l: 'Clients Served' },
-          { v: '50+', l: 'Technology Brands' },
-          { v: '17', l: 'IT Categories' },
-          { v: '3', l: 'Service Pillars' },
-          { v: 'PAN', l: 'India Presence' },
-        ].map(s => (
-          <div class="text-center py-4 px-3 rounded-xl bg-white/5 border border-white/10">
-            <div class="text-2xl font-extrabold text-[#0099EE]" style="font-family: 'Syne', sans-serif;">{s.v}</div>
-            <div class="text-xs text-white/50 mt-1">{s.l}</div>
+          {
+            icon: '🏆',
+            title: 'ISO 27001 Lead Auditors',
+            desc: 'Our senior consultants are certified ISO 27001 Lead Auditors and Lead Implementers — not just practitioners who have read the standard. We conduct gap assessments, Stage 1 and Stage 2 audit support, and ongoing ISMS maintenance.',
+          },
+          {
+            icon: '🔒',
+            title: 'VAPT & Security Testing',
+            desc: "Crewtec's penetration testing follows OWASP, PTES, and CERT-In published guidelines for information security audit. Our reports are structured with CVSS-scored findings, executive summaries, and step-by-step remediation guidance.",
+          },
+          {
+            icon: '🤖',
+            title: 'ISO 42001 AI Governance',
+            desc: 'ISO/IEC 42001:2023 is the first international standard for AI Management Systems. Published December 2023, it is already being demanded by enterprise buyers and regulators. Crewtec helps organisations design and audit compliant AI governance frameworks.',
+          },
+          {
+            icon: '📋',
+            title: 'Multi-Framework Expertise',
+            desc: 'ISO 27001 · ISO 42001 · NIST CSF · NIST AI RMF · CIS Controls · PCI-DSS v4.0 · DPDPA 2023 · RBI Cyber Security Framework · SEBI CSCRF · CERT-In guidelines.',
+          },
+          {
+            icon: '🏭',
+            title: '12+ Industry Verticals',
+            desc: 'BFSI / NBFC · Healthcare & Hospitals · IT Services & SaaS · Manufacturing & ICS · Retail & E-commerce · Education & EdTech · Logistics · Real Estate · Construction · Solar & Renewable Energy.',
+          },
+          {
+            icon: '🤝',
+            title: 'iValue Technology Partner',
+            desc: "Authorised partner of iValue Technology Group — India's leading cybersecurity value-added distributor. This gives our clients access to best-in-class security platforms alongside our advisory and audit services.",
+          },
+        ].map(c => (
+          <div class="bg-white p-7 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-4">{c.icon}</div>
+            <h3 class="text-lg font-bold mb-3" style="font-family:'Rajdhani',sans-serif;color:#111111;">{c.title}</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">{c.desc}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- ── 2. COMPANY STORY ───────────────────────────────────────── -->
-  <section class="bg-white py-24 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
-        <!-- Left: Long-form about text -->
+  <!-- How we work -->
+  <section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
         <div>
-          <p class="text-sm font-semibold text-[#0099EE] uppercase tracking-wider mb-4">Our Story</p>
-          <h2 class="text-3xl sm:text-4xl font-bold text-[#0A1628] mb-8" style="font-family: 'Syne', sans-serif;">
-            Built on Expertise.<br />Driven by Results.
+          <h2 class="text-4xl font-bold mb-6" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+            How Does Crewtec Work With Clients?
           </h2>
-
-          <div class="space-y-6 text-gray-600 leading-relaxed">
-            <p>
-              Crewtec was founded with a singular conviction: that Indian enterprises deserve a technology partner that understands their unique challenges and has the depth of expertise to solve them. Born in Bangalore — the heart of India's technology ecosystem — we set out to build a firm that could deliver enterprise-grade IT solutions with the speed and cost-effectiveness that growing businesses demand.
-            </p>
-            <p>
-              Our journey began in IT infrastructure and cybersecurity, where we quickly established ourselves as a trusted name among manufacturing companies, healthcare organisations, and financial institutions across Karnataka. Our early recognition as an authorised <strong class="text-[#0A1628] font-semibold">iValue Distribution partner</strong> opened access to 50+ global technology brands — Sophos, Fortinet, Cisco, Palo Alto Networks, CrowdStrike, and many more — enabling us to offer best-in-class solutions backed by authorised support and genuine licensing.
-            </p>
-            <p>
-              As our clients' needs evolved beyond IT infrastructure, so did Crewtec. We expanded into digital growth services — building high-performance websites, launching data-driven SEO strategies, and running performance marketing campaigns that generate measurable business outcomes. We then added custom application development, creating a genuinely full-stack technology partner capable of handling every dimension of an enterprise's technology requirements under one roof.
-            </p>
-            <p>
-              Today, our three-pillar model — IT Solutions, Digital Growth, and Application Development — represents the most comprehensive enterprise technology offering available from a Bangalore-based partner. We serve 500+ clients across 10 industries, from SMEs taking their first digital steps to large enterprises undergoing complex transformation programmes. Our mission remains unchanged: to be the technology partner that makes Indian enterprises genuinely competitive in a digital-first world.
-            </p>
+          <div class="space-y-6">
+            {[
+              {
+                n: '01',
+                title: 'Honest, not aspirational',
+                desc: 'We tell you what you need — not what you want to hear. If you are not ready for ISO 27001 certification in 12 weeks, we say so and explain why. If you need a control we recommend against buying, we say that too.',
+              },
+              {
+                n: '02',
+                title: 'Fixed price, not open-ended billing',
+                desc: 'We quote a fixed price after the initial gap assessment. You know what you will pay before you sign — no billable-hour surprises, no scope creep discussions mid-engagement.',
+              },
+              {
+                n: '03',
+                title: 'Knowledge transfer, not dependency',
+                desc: "Our goal is to leave your team more capable than we found it. We document everything, train your staff, and structure engagements so you can maintain your ISMS without us.",
+              },
+              {
+                n: '04',
+                title: 'India-first, not template-driven',
+                desc: "We do not take a Western cybersecurity framework and retrofit it to India. We understand CERT-In, DPDPA 2023, RBI's IT Act obligations, and what Indian auditors actually check.",
+              },
+            ].map(v => (
+              <div class="flex gap-5">
+                <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-white" style="background:#DC2626;font-family:'Rajdhani',sans-serif;">{v.n}</div>
+                <div>
+                  <h3 class="font-bold text-[#111111] mb-1">{v.title}</h3>
+                  <p class="text-gray-600 text-sm leading-relaxed">{v.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <!-- Right: Timeline of milestones -->
-        <div>
-          <p class="text-sm font-semibold text-[#00B4A0] uppercase tracking-wider mb-4">Our Journey</p>
-          <h3 class="text-2xl font-bold text-[#0A1628] mb-8" style="font-family: 'Syne', sans-serif;">Key Milestones</h3>
-
-          <div class="relative">
-            <!-- Vertical line -->
-            <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-100"></div>
-
-            <div class="space-y-8">
-              {[
-                { year: '2000', title: 'Crewtec Founded', desc: 'Established in Bangalore as an IT infrastructure and networking solutions provider serving local enterprises.' },
-                { year: '2005', title: 'iValue Partnership', desc: 'Became an authorised iValue Distribution partner, unlocking access to 50+ global technology brands and enterprise-grade procurement.' },
-                { year: '2010', title: 'Cybersecurity Expansion', desc: 'Launched dedicated cybersecurity practice covering firewalls, endpoint security, email security, and SOC services.' },
-                { year: '2016', title: 'Digital Growth Pillar', desc: 'Added enterprise website development, SEO, and performance marketing services to address growing digital transformation demand.' },
-                { year: '2019', title: 'App Development Launch', desc: 'Established custom software and application development capability, completing the full-stack technology partner offering.' },
-                { year: '2024', title: 'PAN India Reach', desc: '500+ clients served across 10 industries in Karnataka, Maharashtra, Tamil Nadu, Telangana, and beyond.' },
-              ].map(m => (
-                <div class="relative flex gap-6">
-                  <div class="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-[#0A1628] flex items-center justify-center border-4 border-white shadow-sm">
-                    <div class="w-2 h-2 rounded-full bg-[#0099EE]"></div>
-                  </div>
-                  <div class="pb-2">
-                    <span class="inline-block text-xs font-bold text-[#0099EE] bg-[#0099EE]/10 px-2 py-0.5 rounded mb-2">{m.year}</span>
-                    <h4 class="text-base font-bold text-[#0A1628] mb-1" style="font-family: 'Syne', sans-serif;">{m.title}</h4>
-                    <p class="text-sm text-gray-600 leading-relaxed">{m.desc}</p>
-                  </div>
+        <div class="rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50 p-8">
+          <p class="text-lg font-semibold text-[#111111] mb-5" style="font-family:'Rajdhani',sans-serif;">
+            What We Cover
+          </p>
+          <div class="space-y-4">
+            {[
+              { label: 'Regulatory Frameworks Supported', value: '10+', pct: 100 },
+              { label: 'Industry Verticals Served', value: '12+', pct: 80 },
+              { label: 'Average Weeks to ISO 27001 Certification', value: '14 wks', pct: 60 },
+              { label: 'GRC Services Available', value: '11', pct: 55 },
+            ].map(m => (
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm text-gray-700">{m.label}</span>
+                  <span class="text-sm font-bold text-[#111111]">{m.value}</span>
                 </div>
+                <div class="h-2 rounded-full bg-gray-200 overflow-hidden">
+                  <div class="h-full rounded-full" style={`background:#DC2626;width:${m.pct}%;`}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div class="mt-6 pt-6 border-t border-gray-200">
+            <div class="flex flex-wrap gap-2">
+              {['ISO 27001 Lead Auditors', 'iValue Partner', 'Est. 2021 · Bangalore'].map(tag => (
+                <span class="text-xs px-3 py-1.5 rounded-full bg-white border border-gray-200 text-gray-600">{tag}</span>
               ))}
             </div>
           </div>
@@ -113,296 +220,21 @@ import Footer from '../components/Footer.astro';
     </div>
   </section>
 
-  <!-- ── 3. THREE PILLARS OVERVIEW ─────────────────────────────── -->
-  <section class="bg-gray-50 py-24 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-14">
-        <p class="text-sm font-semibold text-[#6366F1] uppercase tracking-wider mb-3">Our Model</p>
-        <h2 class="text-3xl sm:text-4xl font-bold text-[#0A1628] mb-4" style="font-family: 'Syne', sans-serif;">
-          Three Pillars. One Partner.
-        </h2>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-          Everything a growing Indian enterprise needs, delivered by a single accountable team that understands how each pillar supports the others.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- IT Solutions -->
-        <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-200 relative overflow-hidden group">
-          <div class="absolute top-0 left-0 right-0 h-1 bg-[#0099EE]"></div>
-          <div class="w-14 h-14 rounded-2xl bg-[#0099EE]/10 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform duration-200">
-            🛡️
-          </div>
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#0099EE]/10 text-[#0099EE] mb-4">
-            Pillar 1
-          </span>
-          <h3 class="text-xl font-bold text-[#0A1628] mb-4" style="font-family: 'Syne', sans-serif;">IT Solutions</h3>
-          <p class="text-gray-600 text-sm leading-relaxed mb-6">
-            Enterprise-grade cybersecurity, network infrastructure, identity management, and cloud solutions — backed by 50+ global technology brands through our iValue partnership. Covering 17 IT categories including firewall, endpoint security, DLP, zero trust, HSM, and SOC services.
-          </p>
-          <a href="/it-solutions" class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0099EE] hover:gap-3 transition-all duration-200">
-            Explore IT Solutions
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
-
-        <!-- Digital Growth -->
-        <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-200 relative overflow-hidden group">
-          <div class="absolute top-0 left-0 right-0 h-1 bg-[#00B4A0]"></div>
-          <div class="w-14 h-14 rounded-2xl bg-[#00B4A0]/10 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform duration-200">
-            📈
-          </div>
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#00B4A0]/10 text-[#00B4A0] mb-4">
-            Pillar 2
-          </span>
-          <h3 class="text-xl font-bold text-[#0A1628] mb-4" style="font-family: 'Syne', sans-serif;">Digital Growth</h3>
-          <p class="text-gray-600 text-sm leading-relaxed mb-6">
-            High-performance enterprise websites, technical and content SEO, and ROI-focused paid marketing campaigns. We build digital presences that generate real leads, improve search rankings, and deliver measurable returns — not just beautiful designs.
-          </p>
-          <a href="/digital-growth" class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#00B4A0] hover:gap-3 transition-all duration-200">
-            Explore Digital Growth
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
-
-        <!-- App Development -->
-        <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-200 relative overflow-hidden group">
-          <div class="absolute top-0 left-0 right-0 h-1 bg-[#6366F1]"></div>
-          <div class="w-14 h-14 rounded-2xl bg-[#6366F1]/10 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform duration-200">
-            💻
-          </div>
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#6366F1]/10 text-[#6366F1] mb-4">
-            Pillar 3
-          </span>
-          <h3 class="text-xl font-bold text-[#0A1628] mb-4" style="font-family: 'Syne', sans-serif;">App Development</h3>
-          <p class="text-gray-600 text-sm leading-relaxed mb-6">
-            Custom web applications, mobile apps, enterprise software, and API integrations — built with modern frameworks and designed for scale. From internal tools and dashboards to customer-facing platforms, we build software that solves real business problems.
-          </p>
-          <a href="/app-development" class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#6366F1] hover:gap-3 transition-all duration-200">
-            Explore App Development
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 4. iVALUE PARTNERSHIP ─────────────────────────────────── -->
-  <section class="bg-white py-24 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-        <!-- Content -->
-        <div>
-          <p class="text-sm font-semibold text-[#0099EE] uppercase tracking-wider mb-4">Partnership Advantage</p>
-          <h2 class="text-3xl sm:text-4xl font-bold text-[#0A1628] mb-6" style="font-family: 'Syne', sans-serif;">
-            Authorised iValue Distribution Partner
-          </h2>
-          <p class="text-gray-600 leading-relaxed mb-6">
-            iValue InfoSolutions is one of India's largest and most respected IT distribution companies, representing over 50 global technology brands across enterprise computing, cybersecurity, networking, and cloud. Crewtec's status as an authorised iValue partner since our founding is not merely a credential — it is the foundation of everything we deliver to clients.
-          </p>
-          <p class="text-gray-600 leading-relaxed mb-8">
-            Being an authorised iValue partner means our clients get genuine, licensed products with full manufacturer support. It means we have access to technical pre-sales resources, product training, and competitive pricing that independent resellers cannot match. Most importantly, it means that when we recommend a solution, it is backed by an authorised supply chain — not grey market imports.
-          </p>
-
-          <div class="grid grid-cols-2 gap-4 mb-8">
-            {[
-              { icon: '✅', text: 'Genuine licensed products only' },
-              { icon: '🔧', text: 'Full manufacturer support access' },
-              { icon: '💰', text: 'Competitive authorised pricing' },
-              { icon: '📋', text: 'Complete audit trail documentation' },
-            ].map(item => (
-              <div class="flex items-start gap-3">
-                <span class="text-lg flex-shrink-0">{item.icon}</span>
-                <span class="text-sm text-gray-700 font-medium">{item.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- Brand grid -->
-        <div>
-          <p class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6 text-center">Technology Brands We Represent</p>
-          <div class="grid grid-cols-3 gap-3">
-            {[
-              'Sophos', 'Fortinet', 'Cisco', 'Palo Alto', 'CrowdStrike',
-              'SentinelOne', 'Thales', 'Acronis', 'ManageEngine', 'Barracuda',
-              'Veeam', 'Commvault', 'Netsol', 'Zscaler', 'Qualys',
-            ].map(brand => (
-              <div class="bg-gray-50 rounded-xl py-3 px-3 text-center text-xs font-semibold text-gray-700 border border-gray-100 hover:border-[#0099EE]/30 hover:bg-[#0099EE]/5 transition-colors duration-150">
-                {brand}
-              </div>
-            ))}
-          </div>
-          <p class="text-center text-xs text-gray-400 mt-4">+ 35 more authorised brands</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 5. LEADERSHIP / EXPERTISE ────────────────────────────── -->
-  <section class="bg-gray-50 py-24 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-14">
-        <p class="text-sm font-semibold text-[#00B4A0] uppercase tracking-wider mb-3">The Team</p>
-        <h2 class="text-3xl sm:text-4xl font-bold text-[#0A1628] mb-4" style="font-family: 'Syne', sans-serif;">
-          Our Expertise
-        </h2>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-          Deep domain specialists who have spent careers solving enterprise technology challenges for Indian businesses.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          {
-            title: 'IT Security Expert',
-            domain: 'Cybersecurity',
-            initial: 'S',
-            color: 'bg-[#0099EE]',
-            bio: '20+ years in enterprise cybersecurity. Certified in Sophos, Fortinet, and Palo Alto technologies. Leads our Security Operations Centre practice and IT risk assessment engagements across BFSI and manufacturing sectors.',
-          },
-          {
-            title: 'Digital Growth Lead',
-            domain: 'Digital Marketing & SEO',
-            initial: 'D',
-            color: 'bg-[#00B4A0]',
-            bio: '15+ years in enterprise digital marketing, SEO, and performance advertising. Has managed campaigns for over 200 clients generating measurable organic and paid ROI. Google and Meta certified with deep expertise in B2B lead generation.',
-          },
-          {
-            title: 'App Development Lead',
-            domain: 'Software Engineering',
-            initial: 'A',
-            color: 'bg-[#6366F1]',
-            bio: '18+ years building enterprise software across healthcare, logistics, and retail. Specialist in full-stack web applications, mobile apps, and system integrations. Has led development teams delivering products used by 1M+ end users.',
-          },
-          {
-            title: 'Enterprise Solutions Architect',
-            domain: 'IT Infrastructure & Cloud',
-            initial: 'E',
-            color: 'bg-[#0A1628]',
-            bio: '22+ years in enterprise IT architecture, cloud infrastructure, and hybrid networking. Designs complex multi-vendor environments for large organisations and leads our pre-sales technical engagement for infrastructure and cloud projects.',
-          },
-        ].map(expert => (
-          <div class="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200">
-            <div class={`w-16 h-16 rounded-2xl ${expert.color} flex items-center justify-center mb-5 text-white text-2xl font-bold`} style="font-family: 'Syne', sans-serif;">
-              {expert.initial}
-            </div>
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 mb-3">
-              {expert.domain}
-            </span>
-            <h3 class="text-base font-bold text-[#0A1628] mb-3" style="font-family: 'Syne', sans-serif;">
-              {expert.title}
-            </h3>
-            <p class="text-sm text-gray-600 leading-relaxed">
-              {expert.bio}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 6. STATS GRID ─────────────────────────────────────────── -->
-  <section class="bg-[#0A1628] py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 40px 40px;"></div>
-
-    <div class="max-w-6xl mx-auto relative">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-white" style="font-family: 'Syne', sans-serif;">Crewtec by the Numbers</h2>
-      </div>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        {[
-          { v: '25+', l: 'Years in Business' },
-          { v: '500+', l: 'Clients Served' },
-          { v: '50+', l: 'Authorised Brands' },
-          { v: '17', l: 'IT Categories' },
-          { v: '3', l: 'Service Pillars' },
-          { v: 'PAN', l: 'India Coverage' },
-        ].map(s => (
-          <div class="text-center p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors duration-200">
-            <div class="text-3xl font-extrabold text-[#0099EE] mb-2" style="font-family: 'Syne', sans-serif;">{s.v}</div>
-            <div class="text-xs text-white/50 leading-snug">{s.l}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 7. VALUES ─────────────────────────────────────────────── -->
-  <section class="bg-white py-24 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-14">
-        <p class="text-sm font-semibold text-[#6366F1] uppercase tracking-wider mb-3">What We Stand For</p>
-        <h2 class="text-3xl sm:text-4xl font-bold text-[#0A1628]" style="font-family: 'Syne', sans-serif;">
-          Our Values
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          {
-            value: 'Integrity',
-            icon: '🤝',
-            desc: "We recommend only what is right for the client — not what earns us the highest margin. Our long-term client relationships are built on honest advice and transparent pricing.",
-          },
-          {
-            value: 'Innovation',
-            icon: '💡',
-            desc: "Technology moves fast. We invest continuously in certifications, partnerships, and learning so that our clients always have access to proven solutions, not yesterday's thinking.",
-          },
-          {
-            value: 'Excellence',
-            icon: '⭐',
-            desc: 'We take pride in every deployment, every website, and every line of code. Our team holds high standards for quality, documentation, and post-delivery support regardless of project size.',
-          },
-          {
-            value: 'Partnership',
-            icon: '🌐',
-            desc: "We see ourselves as a long-term extension of our clients' teams — not just a vendor. This means being proactive, responsive, and invested in outcomes beyond the initial project scope.",
-          },
-        ].map(v => (
-          <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-md transition-shadow duration-200 text-center group">
-            <span class="text-4xl mb-5 block group-hover:scale-110 transition-transform duration-200">{v.icon}</span>
-            <h3 class="text-xl font-bold text-[#0A1628] mb-4" style="font-family: 'Syne', sans-serif;">{v.value}</h3>
-            <p class="text-sm text-gray-600 leading-relaxed">{v.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 8. CTA ─────────────────────────────────────────────────── -->
-  <section class="bg-gradient-to-br from-[#0099EE] to-[#0077CC] py-20 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4" style="font-family: 'Syne', sans-serif;">
-        Partner with Crewtec
+  <!-- CTA -->
+  <section class="py-20" style="background:#0A0A0A;">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold text-white mb-5" style="font-family:'Rajdhani',sans-serif;">
+        Talk to a GRC Expert
       </h2>
-      <p class="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
-        Join 500+ enterprises that trust Crewtec for their technology needs. Let's discuss how our three-pillar approach can accelerate your growth.
+      <p class="text-gray-300 mb-8">
+        30-minute free consultation. No obligation. We will review your current posture across Governance, Security, and Compliance — and give you an honest recommendation.
       </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a
-          href="/contact"
-          class="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#0099EE] font-bold rounded-xl hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
-        >
-          Book Free Consultation
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/contact" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white hover:opacity-90 transition-all" style="background:#DC2626;">
+          Book Free Consultation →
         </a>
-        <a
-          href="/it-solutions"
-          class="inline-flex items-center gap-2 px-8 py-4 bg-white/20 hover:bg-white/30 text-white font-semibold rounded-xl border border-white/30 transition-all duration-200"
-        >
-          Explore Our Solutions
+        <a href="https://wa.me/919986437648" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white border-2 border-white hover:bg-white hover:text-gray-900 transition-all duration-200">
+          WhatsApp Us
         </a>
       </div>
     </div>

@@ -1,0 +1,206 @@
+---
+title: "ISO 27001 Audit Checklist: What Auditors Actually Look For"
+description: "Preparing for an ISO 27001 audit? This checklist covers what Stage 1 and Stage 2 auditors examine — documentation, controls, evidence, and common reasons certifications are delayed."
+pubDate: 2024-10-03
+author: "Crewtec Security Team"
+category: "ISO 27001"
+tags: ["ISO 27001", "audit", "certification", "ISMS", "checklist", "India"]
+featured: true
+---
+
+An ISO 27001 certification audit is not a surprise inspection — it follows a predictable structure, examines specific evidence, and can be prepared for systematically. Most organisations that fail or get delayed at audit do so not because of weak security, but because of documentation gaps, scope ambiguities, or evidence that doesn't match what auditors expect to see.
+
+This checklist is based on what ISO 27001:2022 auditors actually look for — drawn from our experience supporting certification across banking, healthcare, IT/SaaS, and manufacturing organisations in India.
+
+## How ISO 27001 Certification Audits Work
+
+ISO 27001 certification is granted by an **accredited certification body** (CB) after a two-stage audit:
+
+- **Stage 1 (Documentation Review)**: The auditor reviews your ISMS documentation to assess readiness. Typically 1–2 days. No certification is granted at Stage 1 — it results in a readiness assessment and a list of items to address before Stage 2.
+- **Stage 2 (Certification Audit)**: The auditor examines whether your controls are actually implemented and operating effectively. This is where certification is granted or withheld.
+
+After certification, **surveillance audits** happen annually, and a **recertification audit** happens every three years.
+
+## Stage 1: Documentation Checklist
+
+At Stage 1, auditors review whether your ISMS is properly documented. Missing or immature documentation at Stage 1 results in postponement of Stage 2.
+
+### Mandatory ISMS Documents
+
+These documents are explicitly required by ISO 27001:2022:
+
+- [ ] **Information Security Policy** (Clause 5.2) — signed by top management, communicated to all staff
+- [ ] **ISMS Scope document** (Clause 4.3) — defines what is inside and outside the ISMS boundary
+- [ ] **Information Security Risk Assessment methodology** (Clause 6.1.2) — how you identify, analyse, and evaluate risks
+- [ ] **Statement of Applicability (SoA)** (Clause 6.1.3d) — all 93 Annex A controls listed, with justification for inclusion or exclusion of each
+- [ ] **Risk Treatment Plan (RTP)** (Clause 6.1.3e) — how identified risks will be treated, with owners and timelines
+- [ ] **Information Security Objectives** (Clause 6.2) — measurable targets for the ISMS
+- [ ] **Evidence of competence** (Clause 7.2) — training records, certifications, or qualifications of personnel with ISMS roles
+- [ ] **Documented operational planning** (Clause 8.1) — how you implement risk treatment plans
+- [ ] **Risk assessment results** (Clause 8.2) — actual risk register with assessment outputs
+- [ ] **Risk treatment results** (Clause 8.3) — evidence that risk treatment decisions have been made
+- [ ] **Internal audit programme and results** (Clause 9.2) — at least one complete internal audit cycle
+- [ ] **Management review records** (Clause 9.3) — minutes from at least one management review meeting
+- [ ] **Nonconformity and corrective action records** (Clause 10.1) — how you handle and correct ISMS failures
+
+### Annex A Control Documentation
+
+For each control in your Statement of Applicability (marked as applicable), auditors will expect documented procedures. Key ones:
+
+- [ ] Asset inventory (A.5.9)
+- [ ] Acceptable use policy (A.5.10)
+- [ ] Access control policy (A.5.15)
+- [ ] Cryptography policy (A.5.33)
+- [ ] Physical security perimeter definition (A.7.1)
+- [ ] Incident management procedure (A.5.24–A.5.28)
+- [ ] Business continuity plan / DR procedure (A.5.29–A.5.30)
+- [ ] Supplier security policy (A.5.19–A.5.22)
+- [ ] Secure development policy (A.8.25–A.8.34, if software development is in scope)
+
+## Stage 2: Evidence Checklist
+
+At Stage 2, documentation is not enough — auditors want to see **evidence of implementation**. This is where most organisations get findings.
+
+### Risk Management Evidence
+
+- [ ] Risk register with identified information security risks, likelihood, impact, and risk rating
+- [ ] Risk treatment decisions documented — accept, mitigate, transfer, or avoid — with owner names
+- [ ] Risk Treatment Plan with implementation status (not all tasks need to be complete, but progress must be evident)
+- [ ] Evidence that risk owners have reviewed and accepted their risks
+
+**Common audit finding**: Risk register exists, but risks have not been reviewed in 6+ months, or risk owners cannot explain their risks when interviewed.
+
+### Access Control Evidence
+
+- [ ] User access provisioning and deprovisioning records — show that when an employee joins or leaves, access is granted/revoked within your defined timeframe
+- [ ] Privileged access review — evidence that admin and privileged accounts are reviewed periodically (quarterly is typical)
+- [ ] Multi-factor authentication (MFA) implemented for remote access, email, and admin consoles
+- [ ] Segregation of duties controls — no individual has end-to-end control over a critical process
+
+**Common audit finding**: A leaver's accounts were not disabled within the policy-defined timeframe, or MFA is not enforced on all remote access paths.
+
+### Incident Management Evidence
+
+- [ ] Incident register — log of all information security events and incidents in the audit period
+- [ ] At least one documented incident (even if minor) showing the full cycle: detection → containment → investigation → recovery → lessons learned
+- [ ] Evidence that the incident management procedure was followed
+
+**Common audit finding**: No incidents recorded in 12 months. Auditors are suspicious — every organisation has events. If you have no incident log, it signals the procedure is not operating.
+
+### Internal Audit Evidence
+
+- [ ] Internal audit plan for the audit period
+- [ ] Completed internal audit reports covering all clauses and applicable controls
+- [ ] Internal auditor competence evidence (training, certification, or independence declaration)
+- [ ] Nonconformities identified during internal audit and corresponding corrective actions
+
+**Common audit finding**: Internal audit was completed too close to Stage 2 (less than 4 weeks before), or the internal auditor audited their own work.
+
+### Management Review Evidence
+
+- [ ] Management review meeting minutes, signed by top management
+- [ ] Review inputs covered: audit results, incident trends, risk assessment status, performance against objectives, supplier performance, and continual improvement opportunities
+- [ ] Decisions and actions from the management review with owners and due dates
+- [ ] Evidence that previous management review actions were completed
+
+**Common audit finding**: Management review was a box-ticking exercise — minutes show no real discussion, no decisions, and no assigned actions.
+
+### Supplier Management Evidence
+
+- [ ] Supplier inventory — list of all third parties with access to in-scope information or systems
+- [ ] Supplier security assessments — evidence that key suppliers have been assessed for information security risk
+- [ ] Supplier contracts with information security clauses (NDA, data processing terms, right to audit)
+- [ ] Evidence of supplier performance monitoring
+
+**Common audit finding**: Cloud providers (AWS, Azure, Microsoft 365) not included in supplier register, or no security clauses in supplier contracts.
+
+### Human Resources Security Evidence
+
+- [ ] Onboarding process — background checks, security awareness training completion records, signed acceptable use policy
+- [ ] Offboarding process — account deactivation records, access removal confirmation, equipment return records
+- [ ] Security awareness training attendance records for all in-scope staff
+- [ ] Phishing simulation results (if social engineering testing is in scope)
+
+### Physical Security Evidence
+
+- [ ] Physical security perimeter defined — server rooms, network closets, and sensitive areas have controlled access
+- [ ] Access logs for physical security areas (card access logs or visitor logs)
+- [ ] Clear desk / clear screen policy, with evidence of periodic compliance checks
+- [ ] CCTV or physical security monitoring in place for critical areas
+
+### Business Continuity Evidence
+
+- [ ] Business continuity plan (BCP) and IT disaster recovery (DR) plan documented
+- [ ] Recovery Time Objective (RTO) and Recovery Point Objective (RPO) defined for critical systems
+- [ ] Business impact assessment (BIA) completed
+- [ ] BCP / DR plan tested — exercise records, test results, and lessons learned
+
+**Common audit finding**: BCP exists but has never been tested. ISO 27001 requires evidence of testing, not just the existence of a plan.
+
+### Vulnerability Management Evidence
+
+- [ ] Vulnerability scanning performed — scan reports from the audit period
+- [ ] Patch management process — evidence that identified vulnerabilities are patched within policy-defined timelines
+- [ ] Penetration testing report — for most organisations, an annual pen test is expected
+- [ ] Tracking of remediation for critical and high vulnerabilities
+
+## Common Reasons ISO 27001 Certification is Delayed
+
+Based on our experience supporting certifications, these are the most frequent causes of audit delays or non-conformities:
+
+1. **Statement of Applicability not justified** — Controls are marked as applicable or not applicable without a documented reason. Every exclusion needs a justification.
+
+2. **Risk register not maintained** — The risk register was completed as a one-time exercise and has not been reviewed since. Risks must be reviewed at defined intervals.
+
+3. **Internal audit too shallow** — The internal audit only covered documentation, not whether controls are operating in practice. Auditors interview staff and request evidence samples.
+
+4. **Management review pro-forma** — Management review minutes that clearly show no real discussion took place. Top management must demonstrate genuine engagement with ISMS performance.
+
+5. **Scope too narrow or too broad** — An overly narrow scope (e.g., one server room excluded from the scope boundary) raises questions about what you are protecting. An overly broad scope means more controls to implement and evidence to collect.
+
+6. **No evidence of corrective action** — Nonconformities were identified (in internal audits or incidents) but no corrective action was documented or completed.
+
+7. **Staff cannot answer questions** — Auditors interview staff across the organisation. If employees cannot explain the information security policy, what to do in a security incident, or what their access control obligations are, this is a nonconformity even if the documentation is perfect.
+
+## ISO 27001:2022 Changes to be Aware Of
+
+If you are transitioning from ISO 27001:2013, note that the 2022 version introduced:
+
+- Restructured Annex A: 114 controls reduced to 93 controls, reorganised into 4 themes (Organisational, People, Physical, Technological)
+- 11 new controls, including threat intelligence (A.5.7), cloud service security (A.5.23), data masking (A.8.11), and data leakage prevention (A.8.12)
+- Attribute classification for each control (control type, information security property, cybersecurity concept, operational capability, security domain)
+
+All new certifications issued after October 2023 must be against ISO 27001:2022. Organisations certified against 2013 must transition by October 2025.
+
+## How Long Does ISO 27001 Certification Take?
+
+For a typical Indian mid-market organisation (100–500 employees, cloud-first, single office):
+
+| Phase | Typical Duration |
+|---|---|
+| Gap assessment | 2–3 weeks |
+| ISMS design and documentation | 4–8 weeks |
+| Control implementation | 8–16 weeks |
+| Internal audit | 2 weeks |
+| Management review | 1 week |
+| Stage 1 audit | 1–2 days |
+| Stage 1 finding remediation | 2–4 weeks |
+| Stage 2 audit | 2–3 days |
+| **Total end-to-end** | **4–6 months** |
+
+Organisations that have existing security controls (MFA, endpoint protection, logging) in place will reach the faster end. Greenfield implementations typically take 6–8 months.
+
+## How Crewtec Supports ISO 27001 Certification
+
+Crewtec's ISO 27001 consulting practice covers the full certification journey:
+
+- **Gap assessment**: Measure your current state against all 93 Annex A controls and the 10 mandatory clauses — identify what's missing
+- **ISMS build**: Develop all mandatory documentation, policies, and procedures — tailored to your organisation, not copy-paste templates
+- **Control implementation support**: Deploy technical controls (MFA, encryption, logging, patch management) using iValue technology where required
+- **Internal audit**: Conduct your internal audit with independence from the implementation team
+- **Audit preparation**: Pre-Stage 2 mock audit, evidence organisation, and staff briefing
+- **Certification body liaison**: Support throughout Stage 1 and Stage 2 audits, and ongoing surveillance support
+
+Our consultants are ISO 27001 Lead Auditors — they know exactly what certification body auditors look for because they perform audits themselves.
+
+[Book a free ISO 27001 readiness call →](/contact)

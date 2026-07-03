@@ -2,9 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { solutions } from '../data/solutions.js';
-import { digitalGrowthServices, digitalGrowthMeta } from '../data/digitalGrowth.js';
-import { appServices, appMeta } from '../data/appDevelopment.js';
+import { cyberServices, pillars } from '../data/cyberServices.js';
 import { industries } from '../data/industries.js';
 import { getCollection } from 'astro:content';
 
@@ -12,940 +10,424 @@ const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-const itSolutionsHighlight = solutions.slice(0, 6);
-const digitalHighlight = digitalGrowthServices;
-const appHighlight = appServices.slice(0, 4);
+const governanceServices = cyberServices.filter(s => s.pillar === 'Governance');
+const securityServices   = cyberServices.filter(s => s.pillar === 'Security');
+const complianceServices = cyberServices.filter(s => s.pillar === 'Compliance');
+
+const aiService = cyberServices.find(s => s.id === 'ai-governance');
 ---
 
 <BaseLayout
-  title="Enterprise IT Solutions, Website Development & App Development | Crewtec Bangalore"
-  description="Crewtec — enterprise IT, web development, SEO & app development from Bangalore. Cybersecurity, cloud, and custom software for Indian enterprises."
+  title="IT Security & GRC Consulting India | Governance Security Compliance | Crewtec Bangalore"
+  description="Crewtec is a Bangalore-based IT Security and GRC audit firm. ISO 27001, AI Governance (ISO 42001), VAPT, vCISO, DPDPA, and regulatory compliance for Indian enterprises."
   canonical="/"
 >
   <Header />
 
-  <!-- ============================================================
-       SECTION 1 — HERO
-  ============================================================ -->
-  <section
-    class="relative min-h-screen flex flex-col justify-center overflow-hidden"
-    style="background-color: #0A1628;"
-  >
-    <!-- Dot-grid overlay -->
-    <div
-      class="absolute inset-0 pointer-events-none"
-      style="background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 28px 28px;"
-    ></div>
+  <!-- ── HERO ─────────────────────────────────────────────────────────────────── -->
+  <section class="relative min-h-[92vh] flex flex-col justify-center overflow-hidden" style="background:#0A0A0A;">
+    <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px);background-size:28px 28px;"></div>
+    <div class="absolute top-0 right-0 w-2/3 h-full pointer-events-none opacity-20" style="background:radial-gradient(ellipse at 80% 30%,#D97706 0%,transparent 65%);"></div>
 
-    <!-- Blue radial glow -->
-    <div
-      class="absolute top-0 right-0 w-2/3 h-full pointer-events-none opacity-20"
-      style="background: radial-gradient(ellipse at 80% 30%, #0099EE 0%, transparent 65%);"
-    ></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 py-28 w-full">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border text-sm font-medium" style="border-color:rgba(99,102,241,0.4);color:#D97706;background:rgba(99,102,241,0.08);">
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background:#D97706;"></span>
+          Governance · Security · Compliance · Bangalore, India
+        </div>
 
-    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-32 w-full">
-      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-white mb-6" style="font-family:'Rajdhani',sans-serif;">
+          Does Your Business Have a Governance, Security & Compliance Strategy?
+        </h1>
 
-        <!-- Left column: copy -->
-        <div>
-          <!-- Badge -->
-          <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border text-sm font-medium"
-               style="border-color: rgba(0,153,238,0.4); color: #0099EE; background: rgba(0,153,238,0.08);">
-            <span class="w-2 h-2 rounded-full animate-pulse" style="background:#0099EE;"></span>
-            Trusted Enterprise Technology Partner · Bangalore, India
+        <p class="text-lg text-gray-300 leading-relaxed mb-8 max-w-2xl">
+          Crewtec is a Bangalore-based IT Security and GRC audit firm. We help Indian enterprises build governance frameworks, achieve ISO 27001 certification, govern AI, conduct VAPT, and meet regulatory compliance — ISO 27001 Lead Auditors, iValue Technology partner.
+        </p>
+
+        <div class="flex flex-wrap gap-4 mb-10">
+          <a href="/contact" class="inline-flex items-center gap-2 px-7 py-4 rounded-lg font-semibold text-white transition-all hover:opacity-90 hover:-translate-y-0.5 shadow-lg" style="background:#D97706;">
+            Book Free GRC Consultation →
+          </a>
+          <a href="/services" class="inline-flex items-center gap-2 px-7 py-4 rounded-lg font-semibold text-white border-2 border-white transition-all hover:bg-white hover:text-gray-900">
+            Explore Services
+          </a>
+        </div>
+
+        <!-- G · S · C pills -->
+        <div class="flex flex-wrap gap-3">
+          {pillars.map(p => (
+            <div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style={`background:${p.color}18;border:1px solid ${p.color}40;color:${p.color};`}>
+              <span class="font-bold">{p.label[0]}</span>
+              <span class="text-white/70">{p.label}</span>
+            </div>
+          ))}
+          <div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);">
+            ISO 27001 Lead Auditors
+          </div>
+          <div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);">
+            Est. 2021
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="relative z-10 pb-8 flex justify-center">
+      <div class="flex flex-col items-center gap-2 opacity-40">
+        <span class="text-xs text-white tracking-widest uppercase">Scroll</span>
+        <div class="w-px h-8 bg-white/40"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHAT IS GRC ────────────────────────────────────────────────────────────── -->
+  <section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="max-w-3xl mx-auto text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+          What is GRC — and why does every Indian enterprise need it?
+        </h2>
+        <p class="text-lg text-gray-600 leading-relaxed">
+          Governance, Security & Compliance (GRC) is the framework that ties together how your organisation makes security decisions, protects its systems, and meets regulatory obligations. Without GRC, security is reactive, compliance is a scramble, and audits are stressful.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6">
+        {pillars.map(p => (
+          <div class="p-8 rounded-2xl border-2 hover:shadow-xl transition-all duration-300 group" style={`border-color:${p.color}30;background:${p.color}06;`}>
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl mb-6" style={`background:${p.color};font-family:'Rajdhani',sans-serif;`}>
+              {p.label[0]}
+            </div>
+            <p class="text-xs font-bold uppercase tracking-widest mb-3" style={`color:${p.color};`}>{p.label}</p>
+            <h3 class="text-xl font-bold mb-3" style="font-family:'Rajdhani',sans-serif;color:#111111;">{p.question}</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES BY PILLAR ──────────────────────────────────────────────────────── -->
+  <section class="py-24" style="background:#F5F5F5;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+          What GRC services does Crewtec provide?
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Every service is built around answering a question your leadership, auditors, or clients are already asking.
+        </p>
+      </div>
+
+      {[
+        { pillar: 'Governance', services: governanceServices, color: '#D97706' },
+        { pillar: 'Security',   services: securityServices,   color: '#DC2626' },
+        { pillar: 'Compliance', services: complianceServices, color: '#16A34A' },
+      ].map(group => (
+        <div class="mb-14">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="h-px flex-1 bg-gray-200"></div>
+            <span class="px-5 py-1.5 rounded-full text-sm font-bold text-white" style={`background:${group.color};`}>
+              {group.pillar}
+            </span>
+            <div class="h-px flex-1 bg-gray-200"></div>
           </div>
 
-          <!-- H1 -->
-          <h1
-            class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-white mb-6"
-            style="font-family: 'Syne', sans-serif;"
-          >
-            Enterprise Technology Partner for India's Growing Businesses
-          </h1>
-
-          <!-- Sub -->
-          <p class="text-lg text-gray-300 leading-relaxed mb-8 max-w-xl">
-            We deliver cybersecurity, IT infrastructure, enterprise website development, SEO, and custom application development — all under one trusted partnership.
-          </p>
-
-          <!-- CTA buttons -->
-          <div class="flex flex-wrap gap-4 mb-10">
-            <a
-              href="/contact"
-              class="inline-flex items-center gap-2 px-7 py-4 rounded-lg font-semibold text-white transition-all duration-200 hover:opacity-90 hover:-translate-y-0.5 shadow-lg"
-              style="background: #0099EE;"
-            >
-              Get Free Consultation →
-            </a>
-            <a
-              href="/it-solutions"
-              class="inline-flex items-center gap-2 px-7 py-4 rounded-lg font-semibold text-white border-2 border-white transition-all duration-200 hover:bg-white hover:text-gray-900"
-            >
-              Explore Our Services
-            </a>
-          </div>
-
-          <!-- Trust pills -->
-          <div class="flex flex-wrap gap-3">
-            {[
-              '✓ 25+ Years Experience',
-              '✓ 500+ Enterprise Clients',
-              '✓ iValue Authorised Partner',
-            ].map((pill) => (
-              <span
-                class="px-4 py-1.5 rounded-full text-sm font-medium"
-                style="background: rgba(255,255,255,0.08); color: #d1fae5; border: 1px solid rgba(255,255,255,0.12);"
-              >
-                {pill}
-              </span>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {group.services.map(svc => (
+              <a href={`/services/${svc.id}`} class="group bg-white p-6 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                <div class="text-3xl mb-4">{svc.icon}</div>
+                <h3 class="text-base font-bold mb-2 group-hover:text-[#DC2626] transition-colors leading-snug" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+                  {svc.question}
+                </h3>
+                <p class="text-gray-500 text-sm leading-relaxed flex-1 mb-4">{svc.shortDesc}</p>
+                <span class="text-sm font-semibold" style={`color:${svc.color};`}>
+                  {svc.name} →
+                </span>
+              </a>
             ))}
           </div>
         </div>
-
-        <!-- Right column: pillar cards -->
-        <div class="flex flex-col gap-4">
-          <!-- IT Solutions -->
-          <div
-            class="relative p-6 rounded-2xl border flex items-center gap-5 transition-transform duration-300 hover:-translate-y-1"
-            style="background: rgba(0,153,238,0.1); border-color: rgba(0,153,238,0.3);"
-          >
-            <div
-              class="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
-              style="background: rgba(0,153,238,0.2);"
-            >
-              🛡️
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-widest mb-1" style="color: #0099EE;">IT Solutions</p>
-              <h3 class="text-xl font-bold text-white" style="font-family: 'Syne', sans-serif;">17 Solution Categories</h3>
-              <p class="text-gray-400 text-sm mt-1">Cybersecurity · Cloud · Infrastructure</p>
-            </div>
-            <a href="/it-solutions" class="ml-auto text-white opacity-60 hover:opacity-100 text-lg">→</a>
-          </div>
-
-          <!-- Digital Growth -->
-          <div
-            class="relative p-6 rounded-2xl border flex items-center gap-5 transition-transform duration-300 hover:-translate-y-1"
-            style="background: rgba(0,180,160,0.1); border-color: rgba(0,180,160,0.3);"
-          >
-            <div
-              class="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
-              style="background: rgba(0,180,160,0.2);"
-            >
-              📈
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-widest mb-1" style="color: #00B4A0;">Digital Growth</p>
-              <h3 class="text-xl font-bold text-white" style="font-family: 'Syne', sans-serif;">Web · SEO · Ads</h3>
-              <p class="text-gray-400 text-sm mt-1">Enterprise websites & paid marketing</p>
-            </div>
-            <a href="/digital-growth" class="ml-auto text-white opacity-60 hover:opacity-100 text-lg">→</a>
-          </div>
-
-          <!-- App Development -->
-          <div
-            class="relative p-6 rounded-2xl border flex items-center gap-5 transition-transform duration-300 hover:-translate-y-1"
-            style="background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3);"
-          >
-            <div
-              class="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
-              style="background: rgba(99,102,241,0.2);"
-            >
-              💻
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-widest mb-1" style="color: #6366F1;">App Development</p>
-              <h3 class="text-xl font-bold text-white" style="font-family: 'Syne', sans-serif;">Web · Mobile · Custom</h3>
-              <p class="text-gray-400 text-sm mt-1">End-to-end software engineering</p>
-            </div>
-            <a href="/app-development" class="ml-auto text-white opacity-60 hover:opacity-100 text-lg">→</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Trust bar -->
-    <div class="relative z-10 w-full border-t" style="border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-col sm:flex-row items-center gap-6">
-        <p class="text-gray-400 text-sm font-medium whitespace-nowrap">Trusted by 500+ enterprises</p>
-        <div class="flex flex-wrap gap-3 items-center">
-          {['BFSI Leader', 'Manufacturing Co.', 'Healthcare Group', 'Real Estate Developer', 'IT Services Firm', 'Logistics Company'].map((name) => (
-            <div
-              class="px-4 py-2 rounded-lg text-xs font-medium text-gray-400 border"
-              style="border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);"
-            >
-              {name}
-            </div>
-          ))}
-        </div>
-      </div>
+      ))}
     </div>
   </section>
 
-  <!-- ============================================================
-       SECTION 2 — THREE PILLARS
-  ============================================================ -->
+  <!-- ── AI GOVERNANCE SPOTLIGHT ────────────────────────────────────────────────── -->
+  {aiService && (
+    <section class="py-24" style="background:#0A0A0A;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full text-sm font-semibold" style="background:rgba(99,102,241,0.2);color:#D97706;">
+              🤖 New Service · ISO/IEC 42001:2023
+            </div>
+            <h2 class="text-4xl font-bold text-white mb-5" style="font-family:'Rajdhani',sans-serif;">
+              What is AI Governance — and why does your company need it now?
+            </h2>
+            <p class="text-gray-300 leading-relaxed mb-6">
+              Every Indian company deploying AI faces a question it cannot ignore much longer: <em>who is accountable when the AI gets it wrong?</em> DPDPA 2023 creates liability for automated decisions affecting personal data. RBI and SEBI are developing AI governance guidelines. Enterprise clients are adding AI risk to vendor questionnaires.
+            </p>
+            <p class="text-gray-300 leading-relaxed mb-8">
+              ISO/IEC 42001 is the international standard for AI Management Systems — published in December 2023. Crewtec helps you build an auditable AI governance framework before it becomes a regulatory requirement.
+            </p>
+
+            <div class="space-y-3 mb-8">
+              {(aiService.whyNow || []).slice(0, 4).map(w => (
+                <div class="flex items-start gap-3">
+                  <span class="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center mt-0.5 text-xs" style="background:#D97706;color:white;">✓</span>
+                  <span class="text-gray-300 text-sm">{w}</span>
+                </div>
+              ))}
+            </div>
+
+            <a href="/services/ai-governance" class="inline-flex items-center gap-2 px-7 py-4 rounded-lg font-semibold text-white hover:opacity-90 transition-all" style="background:#D97706;">
+              Explore AI Governance Service →
+            </a>
+          </div>
+
+          <div class="space-y-4">
+            {[
+              { q: 'Does DPDPA 2023 regulate AI decisions?', a: 'Yes — DPDPA covers automated processing of personal data. If your AI makes decisions about individuals (credit, hiring, health), you need documented governance and impact assessments.' },
+              { q: 'What is the difference between AI governance and cybersecurity?', a: 'Cybersecurity protects your systems from external threats. AI governance ensures your AI systems are used responsibly — with appropriate human oversight, bias controls, and transparency.' },
+              { q: 'Who in India is building AI governance frameworks?', a: 'RBI, SEBI, and MeitY are all developing AI guidance. ISO 42001 gives you a framework that satisfies all of them — and signals readiness to international clients.' },
+            ].map(faq => (
+              <div class="p-5 rounded-xl" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">
+                <p class="text-white text-sm font-semibold mb-2">{faq.q}</p>
+                <p class="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ── REGULATIONS ──────────────────────────────────────────────────────────────── -->
   <section class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-          Three Pillars. One Partner.
+      <div class="text-center mb-14">
+        <h2 class="text-4xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+          Which cybersecurity regulations apply to your business?
         </h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Crewtec delivers end-to-end technology and digital services so you never need another vendor.
+        <p class="text-gray-600 max-w-xl mx-auto">
+          Indian enterprises face multiple overlapping frameworks. Understanding which apply — and how they relate — is the first step to compliance.
         </p>
-      </div>
-
-      <div class="grid lg:grid-cols-3 gap-8">
-
-        <!-- Pillar 1: IT Solutions -->
-        <div class="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col">
-          <div class="p-8 flex-1 flex flex-col">
-            <div
-              class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-5"
-              style="background: rgba(0,153,238,0.1);"
-            >
-              🛡️
-            </div>
-            <h3 class="text-2xl font-bold mb-3" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-              Enterprise IT Solutions
-            </h3>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-              Comprehensive cybersecurity, cloud infrastructure, and system integration through our authorised iValue partnership.
-            </p>
-            <ul class="space-y-2 mb-8 flex-1">
-              {['Firewall & Network Security', 'Endpoint Protection', 'Cloud Infrastructure', 'Identity & Access Management', 'SOC & Threat Monitoring'].map((item) => (
-                <li class="flex items-center gap-2 text-sm text-gray-700">
-                  <span class="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-xs" style="background: rgba(0,153,238,0.15); color: #0099EE;">✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <a
-              href="/it-solutions"
-              class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-all duration-200 hover:opacity-90"
-              style="background: #0099EE;"
-            >
-              Explore IT Solutions →
-            </a>
-          </div>
-          <div class="h-1 w-full" style="background: #0099EE;"></div>
-        </div>
-
-        <!-- Pillar 2: Digital Growth -->
-        <div class="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col">
-          <div class="p-8 flex-1 flex flex-col">
-            <div
-              class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-5"
-              style="background: rgba(0,180,160,0.1);"
-            >
-              🌐
-            </div>
-            <h3 class="text-2xl font-bold mb-3" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-              Digital Growth Services
-            </h3>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-              High-performance enterprise websites, SEO strategies, and paid marketing campaigns that generate qualified leads.
-            </p>
-            <ul class="space-y-2 mb-8 flex-1">
-              {['Enterprise Website Development', 'SEO & Organic Growth', 'Paid Marketing & PPC'].map((item) => (
-                <li class="flex items-center gap-2 text-sm text-gray-700">
-                  <span class="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-xs" style="background: rgba(0,180,160,0.15); color: #00B4A0;">✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <a
-              href="/digital-growth"
-              class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-all duration-200 hover:opacity-90"
-              style="background: #00B4A0;"
-            >
-              Explore Digital Growth →
-            </a>
-          </div>
-          <div class="h-1 w-full" style="background: #00B4A0;"></div>
-        </div>
-
-        <!-- Pillar 3: App Development -->
-        <div class="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col">
-          <div class="p-8 flex-1 flex flex-col">
-            <div
-              class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-5"
-              style="background: rgba(99,102,241,0.1);"
-            >
-              ⚡
-            </div>
-            <h3 class="text-2xl font-bold mb-3" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-              Application Development
-            </h3>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-              Custom web apps, mobile applications, and enterprise software built for scale, security, and performance.
-            </p>
-            <ul class="space-y-2 mb-8 flex-1">
-              {['Web Application Development', 'Mobile App Development', 'Custom Software & ERP', 'API & Systems Integration'].map((item) => (
-                <li class="flex items-center gap-2 text-sm text-gray-700">
-                  <span class="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-xs" style="background: rgba(99,102,241,0.15); color: #6366F1;">✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <a
-              href="/app-development"
-              class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-all duration-200 hover:opacity-90"
-              style="background: #6366F1;"
-            >
-              Explore App Development →
-            </a>
-          </div>
-          <div class="h-1 w-full" style="background: #6366F1;"></div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 3 — WHY CHOOSE CREWTEC
-  ============================================================ -->
-  <section class="py-24" style="background: #F5F9FF;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-          Why Enterprises Choose Crewtec
-        </h2>
-        <p class="text-lg text-gray-600 max-w-xl mx-auto">
-          One partner. Complete capability. Enterprise-grade delivery across every technology domain.
-        </p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 gap-8">
-        {[
-          {
-            icon: '🤝',
-            title: 'End-to-End Digital Partner',
-            desc: 'From IT infrastructure to website to mobile app — we manage every technology touchpoint so you have one accountable partner instead of a patchwork of vendors.',
-          },
-          {
-            icon: '🏆',
-            title: 'Enterprise-Grade Standards',
-            desc: 'ISO-aligned processes, security-first approach, and enterprise SLAs across all our services. We operate the way large enterprises expect their vendors to operate.',
-          },
-          {
-            icon: '🎯',
-            title: 'SEO-First Development',
-            desc: 'Every website we build is architected for search visibility and organic lead generation from day one — not as an afterthought added during launch.',
-          },
-          {
-            icon: '🔒',
-            title: 'Reliable & Secure',
-            desc: '24/7 support, proactive monitoring, and a Bangalore-based team with pan-India delivery capability — so your systems stay up and your data stays protected.',
-          },
-        ].map((feat) => (
-          <div class="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-            <div class="text-4xl mb-4">{feat.icon}</div>
-            <h3 class="text-xl font-bold mb-3" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-              {feat.title}
-            </h3>
-            <p class="text-gray-600 leading-relaxed">{feat.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 4 — INDUSTRIES WE SERVE
-  ============================================================ -->
-  <section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-12">
-        <div>
-          <h2 class="text-4xl font-bold" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-            Industries We Serve
-          </h2>
-          <p class="text-gray-600 mt-2">Sector-specific expertise backed by enterprise technology depth.</p>
-        </div>
-        <span
-          class="sm:ml-auto px-4 py-2 rounded-full text-sm font-semibold"
-          style="background: rgba(0,153,238,0.1); color: #0099EE;"
-        >
-          10+ Sectors
-        </span>
-      </div>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {industries.map((ind) => (
-          <a
-            href={`/industries/${ind.id}`}
-            class="group p-5 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all duration-200 flex flex-col items-center text-center gap-3 bg-white hover:bg-blue-50"
-          >
-            <span class="text-3xl">{ind.icon}</span>
-            <span class="text-sm font-semibold text-gray-700 group-hover:text-blue-700 leading-snug">
-              {ind.name}
-            </span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 5 — IT SOLUTIONS SHOWCASE
-  ============================================================ -->
-  <section class="py-24" style="background: #0A1628;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-12">
-        <div>
-          <h2 class="text-4xl font-bold text-white" style="font-family: 'Syne', sans-serif;">
-            Enterprise IT Solutions
-          </h2>
-          <p class="text-gray-400 mt-2">17 solution categories across cybersecurity, cloud, and infrastructure.</p>
-        </div>
-        <a
-          href="/it-solutions"
-          class="sm:ml-auto px-5 py-2.5 rounded-lg text-sm font-semibold border border-gray-600 text-gray-300 hover:border-blue-400 hover:text-white transition-colors duration-200"
-        >
-          View All 17 Solutions →
-        </a>
       </div>
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {itSolutionsHighlight.map((s) => (
-          <a
-            href={`/it-solutions/${s.id}`}
-            class="group p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 flex flex-col"
-            style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);"
-          >
-            <div class="text-3xl mb-4">{s.icon}</div>
-            <h3 class="text-lg font-bold text-white mb-2" style="font-family: 'Syne', sans-serif;">
-              {s.name}
-            </h3>
-            <p class="text-gray-400 text-sm leading-relaxed flex-1 mb-4">{s.shortDesc}</p>
-            <span class="text-sm font-semibold" style="color: #0099EE;">
-              Learn More →
-            </span>
-          </a>
-        ))}
-      </div>
-
-      <div class="mt-10 text-center">
-        <a
-          href="/it-solutions"
-          class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-all duration-200 hover:opacity-90"
-          style="background: #0099EE;"
-        >
-          View All 17 Solutions →
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 6 — DIGITAL GROWTH SHOWCASE
-  ============================================================ -->
-  <section class="py-24" style="background: #F5F9FF;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-12">
-        <span class="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4" style="background: rgba(0,180,160,0.1); color: #00B4A0;">
-          Digital Growth Services
-        </span>
-        <h2 class="text-4xl font-bold" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-          Turn Your Digital Presence Into a
-          <span style="color: #00B4A0;"> Revenue Asset</span>
-        </h2>
-        <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
-          Enterprise website development, SEO, and paid marketing managed as one integrated growth programme.
-        </p>
-      </div>
-
-      <div class="grid lg:grid-cols-3 gap-8">
-        {digitalHighlight.map((s) => (
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col">
-            <div class="p-7 flex-1 flex flex-col">
-              <div class="text-3xl mb-4">{s.icon}</div>
-              <h3 class="text-xl font-bold mb-3" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-                {s.name}
-              </h3>
-              <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-1">{s.shortDesc}</p>
-
-              <!-- Results stats -->
-              <div class="grid grid-cols-3 gap-3 mb-6 p-4 rounded-xl" style="background: #F5F9FF;">
-                {s.results.map((r) => (
-                  <div class="text-center">
-                    <p class="text-lg font-bold" style="color: #00B4A0; font-family: 'Syne', sans-serif;">{r.value}</p>
-                    <p class="text-xs text-gray-500 leading-tight mt-0.5">{r.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              <a
-                href={`/digital-growth/${s.id}`}
-                class="inline-flex items-center gap-1 font-semibold text-sm transition-colors duration-200 hover:opacity-80"
-                style="color: #00B4A0;"
-              >
-                Explore {s.name} →
-              </a>
-            </div>
-            <div class="h-1 w-full" style="background: #00B4A0;"></div>
-          </div>
-        ))}
-      </div>
-
-      <div class="mt-10 text-center">
-        <a
-          href="/digital-growth"
-          class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-all duration-200 hover:opacity-90"
-          style="background: #00B4A0;"
-        >
-          View All Digital Growth Services →
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 7 — APP DEVELOPMENT SHOWCASE
-  ============================================================ -->
-  <section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-12">
-        <span class="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4" style="background: rgba(99,102,241,0.1); color: #6366F1;">
-          Application Development
-        </span>
-        <h2 class="text-4xl font-bold" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-          Software Built to
-          <span style="color: #6366F1;"> Scale With You</span>
-        </h2>
-        <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
-          From MVP to enterprise platform — custom web apps, mobile apps, and integrations engineered for growth.
-        </p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 gap-6">
-        {appHighlight.map((s) => (
-          <div class="rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col hover:-translate-y-1">
-            <div class="p-7 flex-1 flex flex-col">
-              <div class="flex items-start gap-4 mb-4">
-                <div
-                  class="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                  style="background: rgba(99,102,241,0.1);"
-                >
-                  {s.icon}
-                </div>
-                <div>
-                  <h3 class="text-lg font-bold" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-                    {s.name}
-                  </h3>
-                  <p class="text-gray-500 text-sm mt-0.5">{s.shortDesc}</p>
-                </div>
-              </div>
-
-              <!-- 2 key stats -->
-              <div class="flex gap-4 my-4">
-                {s.results.slice(0, 2).map((r) => (
-                  <div class="flex-1 p-3 rounded-lg text-center" style="background: rgba(99,102,241,0.05);">
-                    <p class="text-base font-bold" style="color: #6366F1; font-family: 'Syne', sans-serif;">{r.value}</p>
-                    <p class="text-xs text-gray-500 leading-tight mt-0.5">{r.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              <a
-                href={`/app-development/${s.id}`}
-                class="inline-flex items-center gap-1 font-semibold text-sm mt-auto transition-colors duration-200 hover:opacity-80"
-                style="color: #6366F1;"
-              >
-                Learn More →
-              </a>
-            </div>
-            <div class="h-1 w-full" style="background: #6366F1;"></div>
-          </div>
-        ))}
-      </div>
-
-      <div class="mt-10 text-center">
-        <a
-          href="/app-development"
-          class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-all duration-200 hover:opacity-90"
-          style="background: #6366F1;"
-        >
-          View All 8 Services →
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 8 — OUR PROCESS
-  ============================================================ -->
-  <section class="py-24" style="background: #F5F9FF;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-          How We Work
-        </h2>
-        <p class="text-gray-600 mt-3 max-w-xl mx-auto">
-          A structured, transparent process from initial discovery to live deployment and beyond.
-        </p>
-      </div>
-
-      <!-- Scrollable timeline on mobile, grid on desktop -->
-      <div class="overflow-x-auto pb-4">
-        <div class="flex lg:grid lg:grid-cols-6 gap-0 min-w-max lg:min-w-0">
-          {[
-            { step: '01', icon: '📋', title: 'Requirement Analysis', desc: 'Deep-dive discovery to understand your business goals and technical needs.' },
-            { step: '02', icon: '🎯', title: 'Strategy & Planning', desc: 'Tailored roadmap with clear milestones, budget, and technology choices.' },
-            { step: '03', icon: '🎨', title: 'Design & Architecture', desc: 'User-first designs and scalable system architecture before any code is written.' },
-            { step: '04', icon: '⚙️', title: 'Development', desc: 'Agile development with weekly sprints, demos, and continuous communication.' },
-            { step: '05', icon: '🧪', title: 'Testing & QA', desc: 'Rigorous testing: functional, performance, security, and cross-device validation.' },
-            { step: '06', icon: '🚀', title: 'Deployment & Support', desc: 'Smooth go-live with continuous monitoring, updates, and dedicated support.' },
-          ].map((s, i) => (
-            <div class="relative flex flex-col items-center text-center px-4 w-48 lg:w-auto">
-              {i < 5 && (
-                <div
-                  class="hidden lg:block absolute top-8 left-1/2 w-full h-0.5 z-0"
-                  style="background: linear-gradient(to right, #0099EE, rgba(0,153,238,0.15));"
-                ></div>
-              )}
-              <div
-                class="relative z-10 w-16 h-16 rounded-full flex items-center justify-center text-2xl mb-4 border-2"
-                style="background: white; border-color: #0099EE;"
-              >
-                {s.icon}
-              </div>
-              <span class="text-xs font-bold mb-1" style="color: #0099EE;">{s.step}</span>
-              <h4 class="text-sm font-bold mb-2" style="font-family: 'Syne', sans-serif; color: #0A1628;">{s.title}</h4>
-              <p class="text-xs text-gray-500 leading-relaxed">{s.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 9 — CASE STUDIES / RESULTS
-  ============================================================ -->
-  <section class="py-24" style="background: #0A1628;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-white" style="font-family: 'Syne', sans-serif;">
-          Real Results for Real Businesses
-        </h2>
-        <p class="text-gray-400 mt-3 max-w-xl mx-auto">
-          Measurable outcomes across IT security, digital growth, and application development.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8">
-
-        <!-- Case study 1 -->
-        <div
-          class="rounded-2xl p-8 border flex flex-col"
-          style="background: rgba(0,153,238,0.07); border-color: rgba(0,153,238,0.25);"
-        >
-          <span
-            class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-6 w-fit"
-            style="background: rgba(0,153,238,0.15); color: #0099EE;"
-          >
-            🏭 Manufacturing
-          </span>
-          <p class="text-5xl font-bold mb-3 text-white" style="font-family: 'Syne', sans-serif;">70%</p>
-          <h3 class="text-xl font-bold text-white mb-3" style="font-family: 'Syne', sans-serif;">
-            Reduction in Security Incidents
-          </h3>
-          <p class="text-gray-400 leading-relaxed flex-1">
-            Integrated cybersecurity and enterprise portal deployment for a mid-sized manufacturing group. We implemented next-gen firewall, endpoint protection, SOC monitoring, and a unified employee portal — cutting security incidents by 70% within the first six months.
-          </p>
-          <a
-            href="/contact"
-            class="mt-6 inline-flex items-center gap-2 font-semibold text-sm transition-colors duration-200"
-            style="color: #0099EE;"
-          >
-            Read Case Study →
-          </a>
-        </div>
-
-        <!-- Case study 2 -->
-        <div
-          class="rounded-2xl p-8 border flex flex-col"
-          style="background: rgba(0,180,160,0.07); border-color: rgba(0,180,160,0.25);"
-        >
-          <span
-            class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-6 w-fit"
-            style="background: rgba(0,180,160,0.15); color: #00B4A0;"
-          >
-            🏥 Healthcare
-          </span>
-          <p class="text-5xl font-bold mb-3 text-white" style="font-family: 'Syne', sans-serif;">3x</p>
-          <h3 class="text-xl font-bold text-white mb-3" style="font-family: 'Syne', sans-serif;">
-            Patient Enquiry Volume in 90 Days
-          </h3>
-          <p class="text-gray-400 leading-relaxed flex-1">
-            Full website rebuild and SEO strategy for a multi-branch healthcare network. A new SEO-first website architecture, local search optimisation across all branches, and a structured content programme tripled patient enquiry volume within 90 days of launch.
-          </p>
-          <a
-            href="/contact"
-            class="mt-6 inline-flex items-center gap-2 font-semibold text-sm transition-colors duration-200"
-            style="color: #00B4A0;"
-          >
-            Read Case Study →
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 10 — TESTIMONIALS
-  ============================================================ -->
-  <section class="py-24" style="background: #F5F9FF;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-          What Our Clients Say
-        </h2>
-        <p class="text-gray-600 mt-3 max-w-xl mx-auto">
-          Enterprises across India trust Crewtec to deliver technology that works.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-8">
         {[
-          {
-            quote: "Crewtec's cybersecurity implementation gave us complete confidence in our network infrastructure. Their team is responsive, knowledgeable, and highly professional throughout the engagement.",
-            name: 'Rajesh Nair',
-            role: 'CTO',
-            company: 'Manufacturing Company, Bangalore',
-          },
-          {
-            quote: 'Our website traffic grew 4x in six months after Crewtec rebuilt and optimised our site with a proper SEO architecture. It was the best technology investment we made that year.',
-            name: 'Priya Menon',
-            role: 'Director',
-            company: 'Healthcare Services, Hyderabad',
-          },
-          {
-            quote: 'From mobile app to cloud deployment, Crewtec handled everything seamlessly. We launched three weeks ahead of schedule with a product that users love.',
-            name: 'Arjun Mehta',
-            role: 'Founder',
-            company: 'EdTech Startup, Pune',
-          },
-        ].map((t) => (
-          <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 flex flex-col">
-            <!-- Stars -->
-            <div class="flex gap-1 mb-5" aria-label="5 out of 5 stars">
-              {[1,2,3,4,5].map(() => (
-                <svg class="w-5 h-5" fill="#f59e0b" viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                </svg>
-              ))}
+          { name: 'ISO 27001:2022', icon: '🏆', color: '#DC2626', who: 'All enterprises seeking certification', what: 'Information Security Management System — the global standard', href: '/services/iso-27001-consulting' },
+          { name: 'ISO/IEC 42001', icon: '🤖', color: '#D97706', who: 'All companies deploying AI', what: 'AI Management System — governance, risk, transparency', href: '/services/ai-governance' },
+          { name: 'DPDPA 2023', icon: '🛡️', color: '#D97706', who: 'All companies processing Indian personal data', what: "India's data protection law — consent, rights, breach notification", href: '/services/dpdpa-compliance' },
+          { name: 'RBI Cyber Security Framework', icon: '🏦', color: '#DC2626', who: 'Banks, NBFCs, payment companies', what: 'Cybersecurity governance, SOC, VAPT, incident response', href: '/services/compliance-consulting' },
+          { name: 'SEBI CSCRF', icon: '📈', color: '#DC2626', who: 'Brokers, exchanges, mutual funds, depositories', what: 'Annual cyber audit, incident reporting, technical controls', href: '/services/compliance-consulting' },
+          { name: 'CERT-In Directions 2022', icon: '🔒', color: '#DC2626', who: 'IT service providers, data centres, intermediaries', what: '6-hour incident reporting, log retention, NTP synchronisation', href: '/services/compliance-consulting' },
+        ].map(reg => (
+          <a href={reg.href} class="group p-6 rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-200 hover:-translate-y-1 bg-white">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-2xl">{reg.icon}</span>
+              <span class="text-sm font-bold" style={`color:${reg.color};`}>{reg.name}</span>
             </div>
-            <blockquote class="text-gray-700 leading-relaxed flex-1 mb-6 text-sm">
-              "{t.quote}"
-            </blockquote>
-            <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
-              <div
-                class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-                style="background: #0A1628;"
-              >
-                {t.name.split(' ').map((n) => n[0]).join('')}
-              </div>
-              <div>
-                <p class="text-sm font-bold text-gray-900">{t.name}</p>
-                <p class="text-xs text-gray-500">{t.role} · {t.company}</p>
-              </div>
-            </div>
-          </div>
+            <p class="text-xs text-gray-400 mb-2 font-medium">Who it applies to</p>
+            <p class="text-sm font-semibold text-gray-700 mb-3">{reg.who}</p>
+            <p class="text-xs text-gray-500 leading-relaxed">{reg.what}</p>
+          </a>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       SECTION 11 — KEY FEATURES
-  ============================================================ -->
-  <section class="py-24 bg-white">
+  <!-- ── INDUSTRIES ───────────────────────────────────────────────────────────────── -->
+  <section class="py-24" style="background:#F5F5F5;">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-          Enterprise-Grade Across Everything We Build
-        </h2>
-        <p class="text-gray-600 mt-3 max-w-2xl mx-auto">
-          Non-negotiable standards baked into every project — not optional add-ons.
-        </p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[
-          { icon: '📱', title: 'Mobile Responsive', desc: 'Every solution optimised for mobile-first India across all screen sizes and network conditions.' },
-          { icon: '🔍', title: 'SEO-Ready', desc: 'Architecture and content built for organic discovery — structured data, semantic HTML, and Core Web Vitals.' },
-          { icon: '⚡', title: 'Fast Performance', desc: '99.9% uptime SLA and sub-2s load times delivered through optimised infrastructure and CDN configuration.' },
-          { icon: '🔒', title: 'Secure Infrastructure', desc: 'Security-first approach on every project — from OWASP-compliant code to encrypted data pipelines.' },
-          { icon: '📈', title: 'Scalable Systems', desc: 'Built to grow from 100 to 1 million users without a costly rebuild — cloud-native and horizontally scalable.' },
-          { icon: '🛡️', title: 'Data Protection', desc: 'DPDPA-compliant and CERT-In aligned practices ensuring your customer and business data is always protected.' },
-        ].map((feat) => (
-          <div class="p-7 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all duration-200 group">
-            <div
-              class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform duration-200"
-              style="background: #F5F9FF;"
-            >
-              {feat.icon}
-            </div>
-            <h3 class="text-lg font-bold mb-2" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-              {feat.title}
-            </h3>
-            <p class="text-gray-600 text-sm leading-relaxed">{feat.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 12 — BLOG PREVIEW
-  ============================================================ -->
-  <section class="py-24" style="background: #F5F9FF;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-12">
+      <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4 mb-12">
         <div>
-          <h2 class="text-4xl font-bold" style="font-family: 'Syne', sans-serif; color: #0A1628;">
-            Enterprise Technology Insights
+          <h2 class="text-4xl font-bold" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+            Which industries does Crewtec serve?
           </h2>
-          <p class="text-gray-600 mt-2">Practical guides and analysis for technology decision-makers.</p>
+          <p class="text-gray-600 mt-2">Compliance requirements and risk profiles differ by sector — so does our approach.</p>
         </div>
-        <a
-          href="/blog"
-          class="sm:ml-auto px-5 py-2.5 rounded-lg text-sm font-semibold border border-gray-300 text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-colors duration-200 whitespace-nowrap"
-        >
-          View All Articles →
+        <a href="/industries" class="sm:ml-auto px-5 py-2.5 rounded-lg text-sm font-semibold border border-gray-300 text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-colors whitespace-nowrap">
+          All Industries →
         </a>
       </div>
 
-      {posts.length > 0 ? (
-        <div class="grid md:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <a
-              href={`/blog/${post.slug}`}
-              class="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col hover:-translate-y-1"
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        {industries.map(ind => (
+          <a href={`/industries/${ind.id}`} class="group p-5 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all duration-200 flex flex-col items-center text-center gap-3 bg-white hover:bg-blue-50">
+            <span class="text-3xl">{ind.icon}</span>
+            <div>
+              <span class="text-sm font-semibold text-gray-700 group-hover:text-blue-700 leading-snug block">{ind.name}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW WE WORK ──────────────────────────────────────────────────────────────── -->
+  <section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="text-center mb-14">
+        <h2 class="text-4xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+          How does Crewtec approach a GRC engagement?
+        </h2>
+        <p class="text-gray-600 max-w-xl mx-auto">Every engagement follows a structured process — so you always know what is happening and what comes next.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { n: '01', title: 'Understand', question: 'What are your obligations?', desc: 'We start by mapping your regulatory requirements, business context, and risk appetite — before recommending anything.' },
+          { n: '02', title: 'Assess', question: 'Where are the gaps?', desc: 'Structured assessment against your target framework — ISO 27001, DPDPA, RBI, or a custom baseline.' },
+          { n: '03', title: 'Build', question: 'What needs to be implemented?', desc: 'Design and implement the governance frameworks, policies, controls, and evidence needed to close the gaps.' },
+          { n: '04', title: 'Sustain', question: 'How do you maintain compliance?', desc: 'Ongoing advisory, audit support, and monitoring — so compliance is a continuous programme, not a one-time project.' },
+        ].map(step => (
+          <div class="p-7 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow bg-white relative">
+            <div class="text-4xl font-black mb-4" style="font-family:'Rajdhani',sans-serif;color:#F3F4F6;">{step.n}</div>
+            <p class="text-xs font-bold uppercase tracking-widest text-[#DC2626] mb-2">{step.title}</p>
+            <h3 class="text-base font-bold mb-2" style="font-family:'Rajdhani',sans-serif;color:#111111;">{step.question}</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQs ─────────────────────────────────────────────────────────────────────── -->
+  <section class="py-24" style="background:#0A0A0A;">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <h2 class="text-4xl font-bold text-white mb-4" style="font-family:'Rajdhani',sans-serif;">
+          Frequently asked questions about GRC and IT Security in India
+        </h2>
+      </div>
+
+      <div class="space-y-3" id="faqList">
+        {[
+          {
+            q: 'What does GRC stand for in cybersecurity?',
+            a: 'GRC stands for Governance, Risk, and Compliance. In cybersecurity, Governance covers who is accountable for security decisions; Risk covers how you identify and manage information security risks; and Compliance covers how you meet regulatory and contractual security obligations. Together, GRC provides a structured approach to managing cybersecurity across an organisation.',
+          },
+          {
+            q: 'What is the difference between ISO 27001 and ISO 42001?',
+            a: 'ISO 27001 is the standard for Information Security Management Systems — it governs how you protect information from unauthorised access, breach, and loss. ISO 42001 is the standard for AI Management Systems — it governs how you use artificial intelligence responsibly, with appropriate oversight, transparency, and risk controls. Companies deploying AI need both.',
+          },
+          {
+            q: 'Is ISO 27001 mandatory for Indian companies?',
+            a: "ISO 27001 is not legally mandatory for most Indian companies, but it is effectively required by the market. Government tenders, enterprise vendor onboarding, BFSI clients, and CERT-In empanelment all either require or strongly prefer it. For IT services companies selling to enterprise clients, ISO 27001 has become a commercial necessity.",
+          },
+          {
+            q: 'What is DPDPA 2023 and which companies does it affect?',
+            a: "The Digital Personal Data Protection Act 2023 is India's data protection law. It applies to every organisation that collects, processes, or stores personal data of Indian individuals — regardless of where the organisation is based. This includes Indian companies, multinationals with Indian customers, and companies that process data collected in India.",
+          },
+          {
+            q: 'How long does a cybersecurity gap assessment take?',
+            a: 'A comprehensive cybersecurity gap assessment typically takes 2–3 weeks from kickoff to final report. Smaller organisations or limited-scope assessments can be completed in 1–2 weeks. The output is a risk-scored gap report with a prioritised remediation roadmap.',
+          },
+          {
+            q: 'What is VAPT and is it mandatory in India?',
+            a: "VAPT (Vulnerability Assessment and Penetration Testing) is a structured security test that identifies and exploits vulnerabilities in your systems. CERT-In guidelines require annual VAPT for IT infrastructure operators. RBI mandates it for banks and NBFCs. ISO 27001 Annex A requires vulnerability management. Enterprise clients and cyber insurers ask for recent VAPT reports.",
+          },
+          {
+            q: 'What does a Virtual CISO do?',
+            a: "A Virtual CISO (vCISO) provides the same services as a full-time Chief Information Security Officer — security strategy, risk management, board reporting, compliance oversight, and incident response leadership — but on a part-time retainer rather than as a full-time employee. It is suited to organisations that need senior security leadership but cannot justify the cost of a full-time CISO.",
+          },
+          {
+            q: 'How does Crewtec handle client data confidentiality?',
+            a: "All client engagements are covered by a mutual NDA signed before any work begins. Assessment findings, reports, and client system details are never shared with third parties. Crewtec's own information security practices are aligned with ISO 27001 principles.",
+          },
+        ].map((faq, i) => (
+          <div class="rounded-2xl overflow-hidden" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);">
+            <button
+              class="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-white/5 transition-colors"
+              aria-expanded="false"
+              data-faq-btn={i}
             >
-              {post.data.category && (
-                <div class="px-6 pt-6">
-                  <span
-                    class="inline-block px-3 py-1 rounded-full text-xs font-semibold"
-                    style="background: rgba(0,153,238,0.1); color: #0099EE;"
-                  >
+              <span class="text-sm font-semibold text-white pr-4">{faq.q}</span>
+              <svg class="w-5 h-5 text-gray-400 flex-shrink-0 transition-transform duration-200" data-faq-icon={i} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="hidden px-6 pb-5" data-faq-panel={i}>
+              <p class="text-sm text-gray-400 leading-relaxed">{faq.a}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BLOG ──────────────────────────────────────────────────────────────────────── -->
+  {posts.length > 0 && (
+    <section class="py-24 bg-white">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10">
+        <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4 mb-12">
+          <div>
+            <h2 class="text-4xl font-bold" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+              Questions Indian enterprises are asking about GRC
+            </h2>
+            <p class="text-gray-600 mt-2">Practical guides for security, compliance, and governance decision-makers.</p>
+          </div>
+          <a href="/blog" class="sm:ml-auto px-5 py-2.5 rounded-lg text-sm font-semibold border border-gray-300 text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-colors whitespace-nowrap">
+            All Articles →
+          </a>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          {posts.map(post => (
+            <a href={`/blog/${post.slug}`} class="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col hover:-translate-y-1">
+              <div class="p-6 flex-1 flex flex-col">
+                {post.data.category && (
+                  <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 w-fit" style="background:rgba(99,102,241,0.1);color:#D97706;">
                     {post.data.category}
                   </span>
-                </div>
-              )}
-              <div class="p-6 flex-1 flex flex-col">
-                <h3 class="text-lg font-bold mb-2 group-hover:text-blue-600 transition-colors duration-200" style="font-family: 'Syne', sans-serif; color: #0A1628;">
+                )}
+                <h3 class="text-base font-bold mb-3 group-hover:text-blue-600 transition-colors flex-1 leading-snug" style="font-family:'Rajdhani',sans-serif;color:#111111;">
                   {post.data.title}
                 </h3>
-                {post.data.description && (
-                  <p class="text-gray-600 text-sm leading-relaxed flex-1 mb-4">
-                    {post.data.description}
-                  </p>
-                )}
+                <p class="text-gray-500 text-sm leading-relaxed mb-4">{post.data.description}</p>
                 <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                   <time class="text-xs text-gray-400" datetime={post.data.pubDate.toISOString()}>
-                    {post.data.pubDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    {post.data.pubDate.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}
                   </time>
-                  <span class="text-sm font-semibold" style="color: #0099EE;">Read Article →</span>
+                  <span class="text-sm font-semibold text-[#D97706]">Read →</span>
                 </div>
               </div>
             </a>
           ))}
         </div>
-      ) : (
-        <div class="text-center py-16 text-gray-500">
-          <p class="text-lg mb-2">Insights coming soon.</p>
-          <p class="text-sm">We're publishing enterprise technology guides and case studies — check back shortly.</p>
-        </div>
-      )}
-    </div>
-  </section>
+      </div>
+    </section>
+  )}
 
-  <!-- ============================================================
-       SECTION 13 — FINAL CTA BANNER
-  ============================================================ -->
-  <section
-    class="py-24 relative overflow-hidden"
-    style="background: #0A1628;"
-  >
-    <!-- Gradient overlay -->
-    <div
-      class="absolute inset-0 pointer-events-none"
-      style="background: linear-gradient(135deg, rgba(0,153,238,0.15) 0%, transparent 60%, rgba(99,102,241,0.1) 100%);"
-    ></div>
-    <!-- Dot grid -->
-    <div
-      class="absolute inset-0 pointer-events-none opacity-50"
-      style="background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 24px 24px;"
-    ></div>
+  <!-- ── CTA ───────────────────────────────────────────────────────────────────────── -->
+  <section class="py-24 relative overflow-hidden" style="background:#0A0A0A;">
+    <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(135deg,rgba(99,102,241,0.15) 0%,transparent 60%);"></div>
+    <div class="absolute inset-0 pointer-events-none opacity-30" style="background-image:radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px);background-size:24px 24px;"></div>
 
-    <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-10 text-center">
-      <h2 class="text-4xl sm:text-5xl font-bold text-white mb-5" style="font-family: 'Syne', sans-serif;">
-        Ready to Build Your Enterprise Technology Foundation?
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-4xl sm:text-5xl font-bold text-white mb-5" style="font-family:'Rajdhani',sans-serif;">
+        Where should your GRC programme start?
       </h2>
       <p class="text-lg text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-        IT infrastructure, enterprise website, or custom application — let's scope your project together and give you a clear roadmap and honest estimate.
+        Book a free 30-minute consultation. We will review your regulatory obligations, identify the most urgent gaps, and recommend where to start — with no obligation.
       </p>
 
-      <!-- CTA buttons -->
-      <div class="flex flex-wrap justify-center gap-4 mb-14">
-        <a
-          href="/contact"
-          class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-all duration-200 hover:opacity-90 hover:-translate-y-0.5 shadow-lg"
-          style="background: #0099EE;"
-        >
-          Request Proposal →
+      <div class="flex flex-wrap justify-center gap-4 mb-12">
+        <a href="/contact" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-all hover:opacity-90 hover:-translate-y-0.5 shadow-lg" style="background:#D97706;">
+          Book Free Consultation →
         </a>
-        <a
-          href="/contact"
-          class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white border-2 border-white transition-all duration-200 hover:bg-white hover:text-gray-900"
-        >
-          Speak to an Expert
+        <a href="/services" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white border-2 border-white transition-all hover:bg-white hover:text-gray-900">
+          View All Services
         </a>
       </div>
 
-      <!-- Contact strip -->
-      <div class="flex flex-wrap justify-center gap-6 items-center">
-        <a
-          href="tel:+919986437648"
-          class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-          </svg>
-          <span class="text-sm font-medium">+91 99864 37648</span>
+      <div class="flex flex-wrap justify-center gap-6">
+        <a href="tel:+919986437648" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm">
+          📞 +91 99864 37648
         </a>
-
-        <span class="w-px h-4 bg-gray-600 hidden sm:block" aria-hidden="true"></span>
-
-        <a
-          href="mailto:sales@crewtec.in"
-          class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-          </svg>
-          <span class="text-sm font-medium">sales@crewtec.in</span>
-        </a>
-
-        <span class="w-px h-4 bg-gray-600 hidden sm:block" aria-hidden="true"></span>
-
-        <a
-          href="https://wa.me/919986437648?text=Hi%20Crewtec%2C%20I%27d%20like%20to%20discuss%20a%20project"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200"
-        >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
-          <span class="text-sm font-medium">WhatsApp Us</span>
+        <a href="mailto:sales@crewtec.in" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm">
+          ✉ sales@crewtec.in
         </a>
       </div>
     </div>
@@ -953,3 +435,17 @@ const appHighlight = appServices.slice(0, 4);
 
   <Footer />
 </BaseLayout>
+
+<script>
+  document.querySelectorAll('[data-faq-btn]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = btn.getAttribute('data-faq-btn');
+      const panel = document.querySelector(`[data-faq-panel="${i}"]`);
+      const icon  = document.querySelector(`[data-faq-icon="${i}"]`);
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      panel?.classList.toggle('hidden', isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      icon?.classList.toggle('rotate-180', !isOpen);
+    });
+  });
+</script>

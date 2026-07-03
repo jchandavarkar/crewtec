@@ -862,6 +862,43 @@ export const solutions = [
   },
 ];
 
+// Which solution categories are relevant for GRC work, grouped by pillar
+export const grcSolutionMap = {
+  Security: [
+    { id: 'endpoint-security',   label: 'Endpoint Security (EDR/XDR)',   icon: '🛡️', redFinding: 'Endpoints lack behavioural detection — ransomware runs undetected' },
+    { id: 'firewall-solutions',  label: 'Firewall & Network Security',    icon: '🔥', redFinding: 'Flat network with no segmentation — attacker moves laterally at will' },
+    { id: 'email-security',      label: 'Email Security',                 icon: '📧', redFinding: 'Phishing bypassing native filters — BEC and credential theft active' },
+    { id: 'soc-solutions',       label: 'SOC & SIEM',                     icon: '📡', redFinding: 'No centralised logging — breaches go undetected for months' },
+    { id: 'network-security',    label: 'Vulnerability Management',       icon: '🔍', redFinding: 'Critical CVEs unpatched for 90+ days — exploitability confirmed' },
+  ],
+  Governance: [
+    { id: 'identity-solutions',  label: 'Identity & Access Management',   icon: '🪪', redFinding: 'Shared admin credentials, no MFA, no PAM — privileged access uncontrolled' },
+    { id: 'zero-trust-solutions',label: 'Zero Trust & SASE',              icon: '🔐', redFinding: 'VPN-only remote access — no continuous verification or least-privilege' },
+    { id: 'mobile-security-solutions', label: 'Mobile Security (MDM/MTD)', icon: '📱', redFinding: 'Unmanaged BYOD on corporate Wi-Fi — no compliance enforcement or MDM' },
+  ],
+  Compliance: [
+    { id: 'data-loss-prevention',label: 'Data Loss Prevention (DLP)',     icon: '🗄️', redFinding: 'Sensitive data leaving the org via email, USB, or cloud — no detection' },
+    { id: 'encryption-solutions',label: 'Encryption & Key Management',    icon: '🔑', redFinding: 'Data at rest and in transit unencrypted — fails ISO 27001 A.10, DPDPA' },
+    { id: 'hsm-solutions',       label: 'HSM & Hardware Authentication',  icon: '🛡️', redFinding: 'Cryptographic keys stored in software — no FIPS-grade protection' },
+    { id: 'application-infrastructure', label: 'Backup & Ransomware Recovery', icon: '💾', redFinding: 'No tested backup — fails ISO 22301 RTO/RPO and RBI mandates' },
+  ],
+};
+
+// GRC service → solution categories that fix the red findings
+export const serviceSolutionMap = {
+  'penetration-testing':         ['endpoint-security', 'firewall-solutions', 'network-security', 'email-security'],
+  'gap-assessment':              ['endpoint-security', 'firewall-solutions', 'soc-solutions', 'identity-solutions', 'zero-trust-solutions', 'network-security'],
+  'iso-27001-consulting':        ['endpoint-security', 'soc-solutions', 'identity-solutions', 'encryption-solutions', 'data-loss-prevention'],
+  'vciso':                       ['soc-solutions', 'identity-solutions', 'zero-trust-solutions', 'firewall-solutions'],
+  'dpdpa-compliance':            ['data-loss-prevention', 'encryption-solutions', 'hsm-solutions'],
+  'soc2-readiness':              ['data-loss-prevention', 'encryption-solutions', 'identity-solutions', 'soc-solutions'],
+  'iso-22301-bcm':               ['application-infrastructure'],
+  'security-awareness-training': ['email-security'],
+  'ai-governance':               ['identity-solutions', 'zero-trust-solutions'],
+  'compliance-consulting':       ['data-loss-prevention', 'encryption-solutions', 'application-infrastructure'],
+  'enterprise-risk':             ['soc-solutions', 'network-security'],
+};
+
 export const colorMap = {
   blue:   { bg: '#E8F4FF', text: '#0066BB', border: '#B5D4F4' },
   teal:   { bg: '#E1F5EE', text: '#0F6E56', border: '#9FE1CB' },

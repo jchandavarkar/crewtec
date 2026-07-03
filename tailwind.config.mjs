@@ -10,8 +10,8 @@ export default {
         indigo: { DEFAULT: '#6366F1', dark: '#4F46E5', light: '#818CF8', pale: '#EEF2FF' },
       },
       fontFamily: {
-        sans:    ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Syne', 'system-ui', 'sans-serif'],
+        sans:    ['"Exo 2"', 'system-ui', 'sans-serif'],
+        display: ['Rajdhani', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         xl:  '1rem',
