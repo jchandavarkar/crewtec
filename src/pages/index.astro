@@ -1,451 +1,111 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { cyberServices, pillars } from '../data/cyberServices.js';
-import { industries } from '../data/industries.js';
-import { getCollection } from 'astro:content';
-
-const posts = (await getCollection('blog'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
-
-const governanceServices = cyberServices.filter(s => s.pillar === 'Governance');
-const securityServices   = cyberServices.filter(s => s.pillar === 'Security');
-const complianceServices = cyberServices.filter(s => s.pillar === 'Compliance');
-
-const aiService = cyberServices.find(s => s.id === 'ai-governance');
+import { solutions, colorMap } from '../data/solutions.js';
 ---
 
 <BaseLayout
-  title="IT Security & GRC Consulting India | Governance Security Compliance | Crewtec Bangalore"
-  description="Crewtec is a Bangalore-based IT Security and GRC audit firm. ISO 27001, AI Governance (ISO 42001), VAPT, vCISO, DPDPA, and regulatory compliance for Indian enterprises."
+  title="iValue Technology Partner | Crewtec Bangalore"
+  description="Crewtec is an authorised iValue Technology Partner in Bangalore, supplying cybersecurity and IT infrastructure products from Check Point, CyberArk, SentinelOne, Thales, Splunk and 80+ other global vendors."
   canonical="/"
 >
-  <Header />
+  <!-- ── SIMPLE HEADER ────────────────────────────────────────────────────────── -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-2">
+          <img src="/logo-nav.svg" alt="Crewtec" class="h-10 w-auto" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <span class="hidden items-center font-bold text-lg text-[#111111]" style="font-family:'Rajdhani',sans-serif;">Crewtec</span>
+        </div>
+        <div class="flex items-center gap-4 text-sm font-medium">
+          <a href="tel:+919986437648" class="hidden sm:inline text-[#111111] hover:text-[#DC2626] transition-colors">+91 99864 37648</a>
+          <a href="mailto:sales@crewtec.in" class="hidden sm:inline text-[#111111] hover:text-[#DC2626] transition-colors">sales@crewtec.in</a>
+          <a href="https://wa.me/919986437648" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white hover:opacity-90 transition-all" style="background:#25D366;">
+            WhatsApp Us
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
 
   <!-- ── HERO ─────────────────────────────────────────────────────────────────── -->
-  <section class="relative min-h-[92vh] flex flex-col justify-center overflow-hidden" style="background:#0A0A0A;">
+  <section class="relative overflow-hidden" style="background:#0A0A0A;">
     <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px);background-size:28px 28px;"></div>
     <div class="absolute top-0 right-0 w-2/3 h-full pointer-events-none opacity-20" style="background:radial-gradient(ellipse at 80% 30%,#D97706 0%,transparent 65%);"></div>
 
-    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 py-28 w-full">
-      <div class="max-w-3xl">
-        <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border text-sm font-medium" style="border-color:rgba(99,102,241,0.4);color:#D97706;background:rgba(99,102,241,0.08);">
-          <span class="w-2 h-2 rounded-full animate-pulse" style="background:#D97706;"></span>
-          Governance · Security · Compliance · Bangalore, India
-        </div>
-
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-white mb-6" style="font-family:'Rajdhani',sans-serif;">
-          Does Your Business Have a Governance, Security & Compliance Strategy?
-        </h1>
-
-        <p class="text-lg text-gray-300 leading-relaxed mb-8 max-w-2xl">
-          Crewtec is a Bangalore-based IT Security and GRC audit firm. We help Indian enterprises build governance frameworks, achieve ISO 27001 certification, govern AI, conduct VAPT, and meet regulatory compliance — ISO 27001 Lead Auditors, iValue Technology partner.
-        </p>
-
-        <div class="flex flex-wrap gap-4 mb-10">
-          <a href="/contact" class="inline-flex items-center gap-2 px-7 py-4 rounded-lg font-semibold text-white transition-all hover:opacity-90 hover:-translate-y-0.5 shadow-lg" style="background:#D97706;">
-            Book Free GRC Consultation →
-          </a>
-          <a href="/services" class="inline-flex items-center gap-2 px-7 py-4 rounded-lg font-semibold text-white border-2 border-white transition-all hover:bg-white hover:text-gray-900">
-            Explore Services
-          </a>
-        </div>
-
-        <!-- G · S · C pills -->
-        <div class="flex flex-wrap gap-3">
-          {pillars.map(p => (
-            <div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style={`background:${p.color}18;border:1px solid ${p.color}40;color:${p.color};`}>
-              <span class="font-bold">{p.label[0]}</span>
-              <span class="text-white/70">{p.label}</span>
-            </div>
-          ))}
-          <div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);">
-            ISO 27001 Lead Auditors
-          </div>
-          <div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);">
-            Est. 2021
-          </div>
-        </div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-10 py-20 text-center">
+      <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border text-sm font-medium" style="border-color:rgba(217,119,6,0.4);color:#D97706;background:rgba(217,119,6,0.08);">
+        Authorised iValue Technology Partner
       </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="relative z-10 pb-8 flex justify-center">
-      <div class="flex flex-col items-center gap-2 opacity-40">
-        <span class="text-xs text-white tracking-widest uppercase">Scroll</span>
-        <div class="w-px h-8 bg-white/40"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── WHAT IS GRC ────────────────────────────────────────────────────────────── -->
-  <section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="max-w-3xl mx-auto text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
-          What is GRC — and why does every Indian enterprise need it?
-        </h2>
-        <p class="text-lg text-gray-600 leading-relaxed">
-          Governance, Security & Compliance (GRC) is the framework that ties together how your organisation makes security decisions, protects its systems, and meets regulatory obligations. Without GRC, security is reactive, compliance is a scramble, and audits are stressful.
-        </p>
-      </div>
-
-      <div class="grid lg:grid-cols-3 gap-6">
-        {pillars.map(p => (
-          <div class="p-8 rounded-2xl border-2 hover:shadow-xl transition-all duration-300 group" style={`border-color:${p.color}30;background:${p.color}06;`}>
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl mb-6" style={`background:${p.color};font-family:'Rajdhani',sans-serif;`}>
-              {p.label[0]}
-            </div>
-            <p class="text-xs font-bold uppercase tracking-widest mb-3" style={`color:${p.color};`}>{p.label}</p>
-            <h3 class="text-xl font-bold mb-3" style="font-family:'Rajdhani',sans-serif;color:#111111;">{p.question}</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">{p.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ── SERVICES BY PILLAR ──────────────────────────────────────────────────────── -->
-  <section class="py-24" style="background:#F5F5F5;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
-          What GRC services does Crewtec provide?
-        </h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Every service is built around answering a question your leadership, auditors, or clients are already asking.
-        </p>
-      </div>
-
-      {[
-        { pillar: 'Governance', services: governanceServices, color: '#D97706' },
-        { pillar: 'Security',   services: securityServices,   color: '#DC2626' },
-        { pillar: 'Compliance', services: complianceServices, color: '#16A34A' },
-      ].map(group => (
-        <div class="mb-14">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="h-px flex-1 bg-gray-200"></div>
-            <span class="px-5 py-1.5 rounded-full text-sm font-bold text-white" style={`background:${group.color};`}>
-              {group.pillar}
-            </span>
-            <div class="h-px flex-1 bg-gray-200"></div>
-          </div>
-
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {group.services.map(svc => (
-              <a href={`/services/${svc.id}`} class="group bg-white p-6 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
-                <div class="text-3xl mb-4">{svc.icon}</div>
-                <h3 class="text-base font-bold mb-2 group-hover:text-[#DC2626] transition-colors leading-snug" style="font-family:'Rajdhani',sans-serif;color:#111111;">
-                  {svc.question}
-                </h3>
-                <p class="text-gray-500 text-sm leading-relaxed flex-1 mb-4">{svc.shortDesc}</p>
-                <span class="text-sm font-semibold" style={`color:${svc.color};`}>
-                  {svc.name} →
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- ── AI GOVERNANCE SPOTLIGHT ────────────────────────────────────────────────── -->
-  {aiService && (
-    <section class="py-24" style="background:#0A0A0A;">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full text-sm font-semibold" style="background:rgba(99,102,241,0.2);color:#D97706;">
-              🤖 New Service · ISO/IEC 42001:2023
-            </div>
-            <h2 class="text-4xl font-bold text-white mb-5" style="font-family:'Rajdhani',sans-serif;">
-              What is AI Governance — and why does your company need it now?
-            </h2>
-            <p class="text-gray-300 leading-relaxed mb-6">
-              Every Indian company deploying AI faces a question it cannot ignore much longer: <em>who is accountable when the AI gets it wrong?</em> DPDPA 2023 creates liability for automated decisions affecting personal data. RBI and SEBI are developing AI governance guidelines. Enterprise clients are adding AI risk to vendor questionnaires.
-            </p>
-            <p class="text-gray-300 leading-relaxed mb-8">
-              ISO/IEC 42001 is the international standard for AI Management Systems — published in December 2023. Crewtec helps you build an auditable AI governance framework before it becomes a regulatory requirement.
-            </p>
-
-            <div class="space-y-3 mb-8">
-              {(aiService.whyNow || []).slice(0, 4).map(w => (
-                <div class="flex items-start gap-3">
-                  <span class="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center mt-0.5 text-xs" style="background:#D97706;color:white;">✓</span>
-                  <span class="text-gray-300 text-sm">{w}</span>
-                </div>
-              ))}
-            </div>
-
-            <a href="/services/ai-governance" class="inline-flex items-center gap-2 px-7 py-4 rounded-lg font-semibold text-white hover:opacity-90 transition-all" style="background:#D97706;">
-              Explore AI Governance Service →
-            </a>
-          </div>
-
-          <div class="space-y-4">
-            {[
-              { q: 'Does DPDPA 2023 regulate AI decisions?', a: 'Yes — DPDPA covers automated processing of personal data. If your AI makes decisions about individuals (credit, hiring, health), you need documented governance and impact assessments.' },
-              { q: 'What is the difference between AI governance and cybersecurity?', a: 'Cybersecurity protects your systems from external threats. AI governance ensures your AI systems are used responsibly — with appropriate human oversight, bias controls, and transparency.' },
-              { q: 'Who in India is building AI governance frameworks?', a: 'RBI, SEBI, and MeitY are all developing AI guidance. ISO 42001 gives you a framework that satisfies all of them — and signals readiness to international clients.' },
-            ].map(faq => (
-              <div class="p-5 rounded-xl" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">
-                <p class="text-white text-sm font-semibold mb-2">{faq.q}</p>
-                <p class="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- ── REGULATIONS ──────────────────────────────────────────────────────────────── -->
-  <section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-14">
-        <h2 class="text-4xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
-          Which cybersecurity regulations apply to your business?
-        </h2>
-        <p class="text-gray-600 max-w-xl mx-auto">
-          Indian enterprises face multiple overlapping frameworks. Understanding which apply — and how they relate — is the first step to compliance.
-        </p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {[
-          { name: 'ISO 27001:2022', icon: '🏆', color: '#DC2626', who: 'All enterprises seeking certification', what: 'Information Security Management System — the global standard', href: '/services/iso-27001-consulting' },
-          { name: 'ISO/IEC 42001', icon: '🤖', color: '#D97706', who: 'All companies deploying AI', what: 'AI Management System — governance, risk, transparency', href: '/services/ai-governance' },
-          { name: 'DPDPA 2023', icon: '🛡️', color: '#D97706', who: 'All companies processing Indian personal data', what: "India's data protection law — consent, rights, breach notification", href: '/services/dpdpa-compliance' },
-          { name: 'RBI Cyber Security Framework', icon: '🏦', color: '#DC2626', who: 'Banks, NBFCs, payment companies', what: 'Cybersecurity governance, SOC, VAPT, incident response', href: '/services/compliance-consulting' },
-          { name: 'SEBI CSCRF', icon: '📈', color: '#DC2626', who: 'Brokers, exchanges, mutual funds, depositories', what: 'Annual cyber audit, incident reporting, technical controls', href: '/services/compliance-consulting' },
-          { name: 'CERT-In Directions 2022', icon: '🔒', color: '#DC2626', who: 'IT service providers, data centres, intermediaries', what: '6-hour incident reporting, log retention, NTP synchronisation', href: '/services/compliance-consulting' },
-        ].map(reg => (
-          <a href={reg.href} class="group p-6 rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-200 hover:-translate-y-1 bg-white">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="text-2xl">{reg.icon}</span>
-              <span class="text-sm font-bold" style={`color:${reg.color};`}>{reg.name}</span>
-            </div>
-            <p class="text-xs text-gray-400 mb-2 font-medium">Who it applies to</p>
-            <p class="text-sm font-semibold text-gray-700 mb-3">{reg.who}</p>
-            <p class="text-xs text-gray-500 leading-relaxed">{reg.what}</p>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ── INDUSTRIES ───────────────────────────────────────────────────────────────── -->
-  <section class="py-24" style="background:#F5F5F5;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4 mb-12">
-        <div>
-          <h2 class="text-4xl font-bold" style="font-family:'Rajdhani',sans-serif;color:#111111;">
-            Which industries does Crewtec serve?
-          </h2>
-          <p class="text-gray-600 mt-2">Compliance requirements and risk profiles differ by sector — so does our approach.</p>
-        </div>
-        <a href="/industries" class="sm:ml-auto px-5 py-2.5 rounded-lg text-sm font-semibold border border-gray-300 text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-colors whitespace-nowrap">
-          All Industries →
-        </a>
-      </div>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {industries.map(ind => (
-          <a href={`/industries/${ind.id}`} class="group p-5 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all duration-200 flex flex-col items-center text-center gap-3 bg-white hover:bg-blue-50">
-            <span class="text-3xl">{ind.icon}</span>
-            <div>
-              <span class="text-sm font-semibold text-gray-700 group-hover:text-blue-700 leading-snug block">{ind.name}</span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ── HOW WE WORK ──────────────────────────────────────────────────────────────── -->
-  <section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-14">
-        <h2 class="text-4xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
-          How does Crewtec approach a GRC engagement?
-        </h2>
-        <p class="text-gray-600 max-w-xl mx-auto">Every engagement follows a structured process — so you always know what is happening and what comes next.</p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { n: '01', title: 'Understand', question: 'What are your obligations?', desc: 'We start by mapping your regulatory requirements, business context, and risk appetite — before recommending anything.' },
-          { n: '02', title: 'Assess', question: 'Where are the gaps?', desc: 'Structured assessment against your target framework — ISO 27001, DPDPA, RBI, or a custom baseline.' },
-          { n: '03', title: 'Build', question: 'What needs to be implemented?', desc: 'Design and implement the governance frameworks, policies, controls, and evidence needed to close the gaps.' },
-          { n: '04', title: 'Sustain', question: 'How do you maintain compliance?', desc: 'Ongoing advisory, audit support, and monitoring — so compliance is a continuous programme, not a one-time project.' },
-        ].map(step => (
-          <div class="p-7 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow bg-white relative">
-            <div class="text-4xl font-black mb-4" style="font-family:'Rajdhani',sans-serif;color:#F3F4F6;">{step.n}</div>
-            <p class="text-xs font-bold uppercase tracking-widest text-[#DC2626] mb-2">{step.title}</p>
-            <h3 class="text-base font-bold mb-2" style="font-family:'Rajdhani',sans-serif;color:#111111;">{step.question}</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FAQs ─────────────────────────────────────────────────────────────────────── -->
-  <section class="py-24" style="background:#0A0A0A;">
-    <div class="max-w-3xl mx-auto px-6">
-      <div class="text-center mb-14">
-        <h2 class="text-4xl font-bold text-white mb-4" style="font-family:'Rajdhani',sans-serif;">
-          Frequently asked questions about GRC and IT Security in India
-        </h2>
-      </div>
-
-      <div class="space-y-3" id="faqList">
-        {[
-          {
-            q: 'What does GRC stand for in cybersecurity?',
-            a: 'GRC stands for Governance, Risk, and Compliance. In cybersecurity, Governance covers who is accountable for security decisions; Risk covers how you identify and manage information security risks; and Compliance covers how you meet regulatory and contractual security obligations. Together, GRC provides a structured approach to managing cybersecurity across an organisation.',
-          },
-          {
-            q: 'What is the difference between ISO 27001 and ISO 42001?',
-            a: 'ISO 27001 is the standard for Information Security Management Systems — it governs how you protect information from unauthorised access, breach, and loss. ISO 42001 is the standard for AI Management Systems — it governs how you use artificial intelligence responsibly, with appropriate oversight, transparency, and risk controls. Companies deploying AI need both.',
-          },
-          {
-            q: 'Is ISO 27001 mandatory for Indian companies?',
-            a: "ISO 27001 is not legally mandatory for most Indian companies, but it is effectively required by the market. Government tenders, enterprise vendor onboarding, BFSI clients, and CERT-In empanelment all either require or strongly prefer it. For IT services companies selling to enterprise clients, ISO 27001 has become a commercial necessity.",
-          },
-          {
-            q: 'What is DPDPA 2023 and which companies does it affect?',
-            a: "The Digital Personal Data Protection Act 2023 is India's data protection law. It applies to every organisation that collects, processes, or stores personal data of Indian individuals — regardless of where the organisation is based. This includes Indian companies, multinationals with Indian customers, and companies that process data collected in India.",
-          },
-          {
-            q: 'How long does a cybersecurity gap assessment take?',
-            a: 'A comprehensive cybersecurity gap assessment typically takes 2–3 weeks from kickoff to final report. Smaller organisations or limited-scope assessments can be completed in 1–2 weeks. The output is a risk-scored gap report with a prioritised remediation roadmap.',
-          },
-          {
-            q: 'What is VAPT and is it mandatory in India?',
-            a: "VAPT (Vulnerability Assessment and Penetration Testing) is a structured security test that identifies and exploits vulnerabilities in your systems. CERT-In guidelines require annual VAPT for IT infrastructure operators. RBI mandates it for banks and NBFCs. ISO 27001 Annex A requires vulnerability management. Enterprise clients and cyber insurers ask for recent VAPT reports.",
-          },
-          {
-            q: 'What does a Virtual CISO do?',
-            a: "A Virtual CISO (vCISO) provides the same services as a full-time Chief Information Security Officer — security strategy, risk management, board reporting, compliance oversight, and incident response leadership — but on a part-time retainer rather than as a full-time employee. It is suited to organisations that need senior security leadership but cannot justify the cost of a full-time CISO.",
-          },
-          {
-            q: 'How does Crewtec handle client data confidentiality?',
-            a: "All client engagements are covered by a mutual NDA signed before any work begins. Assessment findings, reports, and client system details are never shared with third parties. Crewtec's own information security practices are aligned with ISO 27001 principles.",
-          },
-        ].map((faq, i) => (
-          <div class="rounded-2xl overflow-hidden" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);">
-            <button
-              class="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-white/5 transition-colors"
-              aria-expanded="false"
-              data-faq-btn={i}
-            >
-              <span class="text-sm font-semibold text-white pr-4">{faq.q}</span>
-              <svg class="w-5 h-5 text-gray-400 flex-shrink-0 transition-transform duration-200" data-faq-icon={i} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div class="hidden px-6 pb-5" data-faq-panel={i}>
-              <p class="text-sm text-gray-400 leading-relaxed">{faq.a}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ── BLOG ──────────────────────────────────────────────────────────────────────── -->
-  {posts.length > 0 && (
-    <section class="py-24 bg-white">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10">
-        <div class="flex flex-col sm:flex-row items-start sm:items-end gap-4 mb-12">
-          <div>
-            <h2 class="text-4xl font-bold" style="font-family:'Rajdhani',sans-serif;color:#111111;">
-              Questions Indian enterprises are asking about GRC
-            </h2>
-            <p class="text-gray-600 mt-2">Practical guides for security, compliance, and governance decision-makers.</p>
-          </div>
-          <a href="/blog" class="sm:ml-auto px-5 py-2.5 rounded-lg text-sm font-semibold border border-gray-300 text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-colors whitespace-nowrap">
-            All Articles →
-          </a>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-          {posts.map(post => (
-            <a href={`/blog/${post.slug}`} class="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col hover:-translate-y-1">
-              <div class="p-6 flex-1 flex flex-col">
-                {post.data.category && (
-                  <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 w-fit" style="background:rgba(99,102,241,0.1);color:#D97706;">
-                    {post.data.category}
-                  </span>
-                )}
-                <h3 class="text-base font-bold mb-3 group-hover:text-blue-600 transition-colors flex-1 leading-snug" style="font-family:'Rajdhani',sans-serif;color:#111111;">
-                  {post.data.title}
-                </h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-4">{post.data.description}</p>
-                <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <time class="text-xs text-gray-400" datetime={post.data.pubDate.toISOString()}>
-                    {post.data.pubDate.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}
-                  </time>
-                  <span class="text-sm font-semibold text-[#D97706]">Read →</span>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- ── CTA ───────────────────────────────────────────────────────────────────────── -->
-  <section class="py-24 relative overflow-hidden" style="background:#0A0A0A;">
-    <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(135deg,rgba(99,102,241,0.15) 0%,transparent 60%);"></div>
-    <div class="absolute inset-0 pointer-events-none opacity-30" style="background-image:radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px);background-size:24px 24px;"></div>
-
-    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
-      <h2 class="text-4xl sm:text-5xl font-bold text-white mb-5" style="font-family:'Rajdhani',sans-serif;">
-        Where should your GRC programme start?
-      </h2>
-      <p class="text-lg text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-        Book a free 30-minute consultation. We will review your regulatory obligations, identify the most urgent gaps, and recommend where to start — with no obligation.
+      <h1 class="text-4xl sm:text-5xl font-bold leading-tight text-white mb-6" style="font-family:'Rajdhani',sans-serif;">
+        Cybersecurity &amp; IT Infrastructure Products
+      </h1>
+      <p class="text-lg text-gray-300 leading-relaxed max-w-2xl mx-auto mb-10">
+        Crewtec supplies, deploys and supports technology from iValue's vendor ecosystem — 80+ global brands across cybersecurity, infrastructure and data platforms. Browse our product portfolio below, or get in touch to discuss your requirement.
       </p>
-
-      <div class="flex flex-wrap justify-center gap-4 mb-12">
-        <a href="/contact" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-all hover:opacity-90 hover:-translate-y-0.5 shadow-lg" style="background:#D97706;">
-          Book Free Consultation →
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="tel:+919986437648" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-white transition-all hover:opacity-90 shadow-lg" style="background:#D97706;">
+          Call Us →
         </a>
-        <a href="/services" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white border-2 border-white transition-all hover:bg-white hover:text-gray-900">
-          View All Services
+        <a href="mailto:sales@crewtec.in" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-white border-2 border-white transition-all hover:bg-white hover:text-gray-900">
+          Email Us
         </a>
       </div>
+    </div>
+  </section>
 
-      <div class="flex flex-wrap justify-center gap-6">
-        <a href="tel:+919986437648" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm">
+  <!-- ── PRODUCT CATEGORIES ───────────────────────────────────────────────────── -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {solutions.map(sol => {
+          const c = colorMap[sol.color] || colorMap.blue;
+          return (
+            <div class="p-6 rounded-2xl border-2" style={`border-color:${c.border};background:${c.bg}20;`}>
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">{sol.icon}</span>
+                <h2 class="text-lg font-bold" style={`font-family:'Rajdhani',sans-serif;color:${c.text};`}>{sol.name}</h2>
+              </div>
+              <p class="text-sm text-gray-600 leading-relaxed mb-4">{sol.shortDesc}</p>
+              <div class="flex flex-wrap gap-2">
+                {sol.brands.map(b => (
+                  <span class="px-3 py-1 rounded-full text-xs font-medium bg-white border border-gray-200 text-gray-700">{b.name}</span>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ──────────────────────────────────────────────────────────────────── -->
+  <section class="py-20" style="background:#F5F5F5;">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-4" style="font-family:'Rajdhani',sans-serif;color:#111111;">
+        Need one of these products deployed?
+      </h2>
+      <p class="text-gray-600 mb-8">
+        Get in touch and we'll help you find and deploy the right technology from our iValue portfolio.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="tel:+919986437648" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-white transition-all hover:opacity-90 shadow-lg" style="background:#DC2626;">
           📞 +91 99864 37648
         </a>
-        <a href="mailto:sales@crewtec.in" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm">
+        <a href="mailto:sales@crewtec.in" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold border-2 transition-all hover:bg-[#DC2626] hover:text-white hover:border-[#DC2626]" style="border-color:#DC2626;color:#DC2626;">
           ✉ sales@crewtec.in
         </a>
       </div>
     </div>
   </section>
 
-  <Footer />
+  <!-- ── SIMPLE FOOTER ────────────────────────────────────────────────────────── -->
+  <footer class="bg-[#0A0A0A] text-white">
+    <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="/logo.svg" alt="Crewtec" class="h-8 w-auto" />
+        <span class="text-sm text-white/50">No. 10/11, Maragondanahalli Tavarekere, Bangalore – 562130</span>
+      </div>
+      <p class="text-sm text-white/40">&copy; {new Date().getFullYear()} Crewtec. All rights reserved.</p>
+    </div>
+  </footer>
 </BaseLayout>
-
-<script>
-  document.querySelectorAll('[data-faq-btn]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const i = btn.getAttribute('data-faq-btn');
-      const panel = document.querySelector(`[data-faq-panel="${i}"]`);
-      const icon  = document.querySelector(`[data-faq-icon="${i}"]`);
-      const isOpen = btn.getAttribute('aria-expanded') === 'true';
-      panel?.classList.toggle('hidden', isOpen);
-      btn.setAttribute('aria-expanded', String(!isOpen));
-      icon?.classList.toggle('rotate-180', !isOpen);
-    });
-  });
-</script>
