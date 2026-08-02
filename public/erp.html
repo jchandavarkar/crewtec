@@ -364,6 +364,15 @@ th {
     <div class="field"><label>Ship To Address <span class="required-star">*</span></label><textarea id="shipAddress" placeholder="STREET, CITY, STATE, PINCODE" style="min-height:60px;text-transform:uppercase"></textarea><div class="field-error-msg" id="err-shipAddress">Ship To address is required</div></div>
   </div>
 
+  <div style="font-size:10px;margin-bottom:8px;padding:6px 10px;border-radius:5px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412">
+    📦 E-way bill required for shipments above ₹50,000 (Karnataka: intra- and inter-state) — generate separately on the GST e-way bill portal; fields below are for reference on the printed invoice only.
+  </div>
+  <div class="grid2">
+    <div class="field"><label>Transporter Name</label><input id="transporterName" placeholder="OPTIONAL"></div>
+    <div class="field"><label>Vehicle No.</label><input id="vehicleNo" placeholder="OPTIONAL" style="text-transform:uppercase"></div>
+  </div>
+  <div class="field"><label>E-Way Bill No.</label><input id="ewayBillNo" placeholder="OPTIONAL — fill in after generating on the GST portal"></div>
+
   <div class="section-title">Solution Details</div>
   <div class="field"><label>Subject / Title</label><input id="subject" placeholder="ENTERPRISE ENDPOINT SECURITY SOLUTION" style="text-transform:uppercase"></div>
 
@@ -889,6 +898,10 @@ function updatePreview() {
   const shipName       = document.getElementById('shipName').value.toUpperCase();
   const shipGSTVal     = document.getElementById('shipGST').value.toUpperCase();
   const shipAddressVal = document.getElementById('shipAddress').value.toUpperCase().replace(/\n/g,'<br>');
+  const transporterName = document.getElementById('transporterName').value.toUpperCase();
+  const vehicleNo        = document.getElementById('vehicleNo').value.toUpperCase();
+  const ewayBillNo       = document.getElementById('ewayBillNo').value.toUpperCase();
+  const hasTransportInfo = !!(transporterName || vehicleNo || ewayBillNo);
   const subject   = document.getElementById('subject').value;
   const gstinCode = clientGST.substring(0, 2);
   const placeOfSupply = (STATE_CODES[gstinCode || '29'] || 'Unknown State') + ' (' + (gstinCode || '29') + ')';
@@ -998,6 +1011,16 @@ function updatePreview() {
         </td>
       </tr>
     </table>
+
+    ${hasTransportInfo ? `
+    <div style="margin-top:8px;padding:6px 10px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:4px;font-size:10.5px;color:#374151">
+      <b style="color:#0A1628">Transport Details:</b>
+      ${[
+        transporterName ? 'Transporter: ' + transporterName : '',
+        vehicleNo ? 'Vehicle No: ' + vehicleNo : '',
+        ewayBillNo ? 'E-Way Bill No: ' + ewayBillNo : ''
+      ].filter(Boolean).join(' &nbsp;·&nbsp; ')}
+    </div>` : ''}
 
     <!-- LINE ITEMS -->
     <table style="margin-top:12px">
