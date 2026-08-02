@@ -148,19 +148,31 @@ label {
 
 .field { margin-bottom: 8px; }
 
+/* Document type toggle */
+.doctype-toggle { display: flex; border: 1px solid #0099EE; border-radius: 6px; overflow: hidden; margin-bottom: 14px; }
+.doctype-toggle button { flex: 1; border: none; background: white; color: #0A1628; padding: 8px 4px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 0.03em; border-right: 1px solid #0099EE; }
+.doctype-toggle button:last-child { border-right: none; }
+.doctype-toggle button.active { background: #0099EE; color: white; }
+
 /* Items table in form */
-.items-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 12px; }
-.items-table th { background: #f3f4f6; padding: 5px 6px; text-align: left; font-size: 11px; border: 1px solid #e5e7eb; }
-.items-table td { padding: 4px; border: 1px solid #e5e7eb; }
-.items-table td input { margin: 0; padding: 4px 6px; font-size: 12px; }
+.items-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 11px; }
+.items-table th { background: #f3f4f6; padding: 4px 5px; text-align: left; font-size: 10px; border: 1px solid #e5e7eb; }
+.items-table td { padding: 3px; border: 1px solid #e5e7eb; }
+.items-table td input, .items-table td select { margin: 0; padding: 3px 4px; font-size: 11px; }
 .items-table td input[type=number] { text-align: right; }
 .items-table td input.item-desc { text-transform: uppercase; }
+.items-table td input.item-gst-custom { margin-top: 3px; }
 .btn-add-row { background: #0099EE; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
 .btn-del-row { background: #fee2e2; color: #dc2626; border: none; width: 22px; height: 22px; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; }
 .required-star { color: #dc2626; margin-left: 2px; }
 input.field-error, textarea.field-error { border-color: #dc2626 !important; background: #fff5f5 !important; }
 .field-error-msg { font-size: 10px; color: #dc2626; margin-top: -6px; margin-bottom: 6px; display: none; }
 .field-error-msg.visible { display: block; }
+.checkbox-field { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 12px; color: #374151; }
+.checkbox-field input { width: auto; margin: 0; }
+
+/* PAGE NUMBER FOOTER (stamped per printed page, see stampPageNumbers()) */
+.page-number-stamp { position: absolute; left: 0; width: 100%; text-align: center; font-size: 9px; color: #9ca3af; z-index: 2; }
 
 /* ── DOCUMENT STYLES ── */
 table {
@@ -253,7 +265,9 @@ th {
   .document { box-shadow: none; width: 100%; min-height: auto; padding: 4mm 6mm; }
   .grid-2x2 { gap: 6px; }
   th, td { padding: 5px 7px; }
-  .watermark { opacity: 0.03; }
+  /* position:fixed repeats the watermark on every printed page instead of
+     once at the midpoint of the whole (multi-page-tall) .document flow */
+  .watermark { position: fixed; top: 50%; left: 50%; opacity: 0.03; }
   .page-break { page-break-before: always; }
   .no-print-break { page-break-inside: avoid; }
 }
@@ -293,9 +307,15 @@ th {
 <!-- ── LEFT PANEL ── -->
 <div class="left">
 
+  <div class="doctype-toggle" id="doctypeToggle">
+    <button type="button" data-type="quotation" class="active">Quotation</button>
+    <button type="button" data-type="proforma">Proforma Invoice</button>
+    <button type="button" data-type="invoice">Tax Invoice</button>
+  </div>
+
   <div class="section-title">Quote Details</div>
   <div class="grid2">
-    <div class="field"><label>Quote No.</label><input id="qtNo"></div>
+    <div class="field"><label>Doc No.</label><input id="qtNo"></div>
     <div class="field"><label>Date</label><input id="date" type="date"></div>
   </div>
 
@@ -316,12 +336,15 @@ th {
   <table class="items-table">
     <thead>
       <tr>
-        <th style="width:20%">Type</th>
-        <th style="width:32%">Description</th>
-        <th style="width:12%">Qty</th>
-        <th style="width:18%">Unit Price (₹)</th>
-        <th style="width:10%">Disc%</th>
-        <th style="width:8%"></th>
+        <th style="width:12%">Type</th>
+        <th style="width:20%">Description</th>
+        <th style="width:9%">HSN/SAC</th>
+        <th style="width:13%">GST</th>
+        <th style="width:7%">Qty</th>
+        <th style="width:9%">Unit</th>
+        <th style="width:13%">Price (₹)</th>
+        <th style="width:8%">Disc%</th>
+        <th style="width:6%"></th>
       </tr>
     </thead>
     <tbody id="itemsBody">
@@ -337,31 +360,47 @@ th {
           </select>
         </td>
         <td><input type="text" class="item-desc" placeholder="Product / Service"></td>
+        <td><input type="text" class="item-hsn" placeholder="HSN/SAC"></td>
+        <td>
+          <select class="item-gst-mode">
+            <option value="0">0%</option>
+            <option value="5">5%</option>
+            <option value="12">12%</option>
+            <option value="18" selected>18%</option>
+            <option value="28">28%</option>
+            <option value="custom">Custom %</option>
+          </select>
+          <input type="number" class="item-gst-custom" placeholder="Custom %" min="0" max="100" step="0.01" style="display:none">
+        </td>
         <td><input type="number" class="item-qty" value="1" min="0" step="0.01"></td>
+        <td>
+          <select class="item-unit">
+            <option value="Nos">Nos</option>
+            <option value="Set">Set</option>
+            <option value="License">License</option>
+            <option value="User">User</option>
+            <option value="Box">Box</option>
+            <option value="Lot">Lot</option>
+            <option value="Others">Others</option>
+          </select>
+        </td>
         <td><input type="number" class="item-price" value="0" min="0" step="0.01"></td>
         <td><input type="number" class="item-disc" value="0" min="0" max="100" step="0.01"></td>
         <td style="text-align:center"><button class="btn-del-row" onclick="delRow(this)">×</button></td>
       </tr>
     </tbody>
   </table>
+  <div style="font-size:10px;color:#9ca3af;margin:-4px 0 8px;">HSN/SAC is auto-suggested from the description/type — please verify before invoicing.</div>
   <button class="btn-add-row" onclick="addRow()">+ Add Item</button>
+  <div class="field-error-msg" id="err-items">At least one line item with a description and price is required</div>
 
   <div class="section-title" style="margin-top:14px">GST</div>
   <div style="font-size:11px;margin-bottom:8px;padding:6px 10px;border-radius:5px;background:#f0f7ff;border:1px solid #bfdbfe;color:#1e40af" id="gstTypeIndicator">
     🏠 <b>Intra-State (Karnataka)</b> — CGST + SGST will apply
   </div>
-  <div class="field"><label>GST Rate</label>
-    <select id="gstMode">
-      <option value="18">18% — IT Products &amp; Services (Standard)</option>
-      <option value="12">12% — Specific Hardware</option>
-      <option value="5">5% — Specific Software / SaaS</option>
-      <option value="0">0% — Zero Rated / Exempt</option>
-      <option value="custom">Custom %</option>
-    </select>
-  </div>
-  <div class="field" id="customGSTField" style="display:none">
-    <label>Custom GST %</label>
-    <input id="customGST" type="number" placeholder="Enter GST %" min="0" max="100">
+  <div class="checkbox-field" id="reverseChargeField" style="display:none">
+    <input type="checkbox" id="reverseCharge">
+    <label style="text-transform:none;font-size:12px;font-weight:normal;color:#374151">Tax payable under Reverse Charge (Section 9(3)/9(4))</label>
   </div>
 
   <div class="section-title">Scope & Terms</div>
@@ -488,6 +527,106 @@ function getToday() {
   return { numeric: y+m+day, date: d };
 }
 
+/* ── DOCUMENT TYPE ── */
+const DOC_TYPES = {
+  quotation: { label: 'QUOTATION', prefix: 'CTC', filePrefix: 'Quote', footerNoun: 'quotation' },
+  proforma:  { label: 'PROFORMA INVOICE', prefix: 'PI', filePrefix: 'Proforma', footerNoun: 'proforma invoice' },
+  invoice:   { label: 'TAX INVOICE', prefix: 'INV', filePrefix: 'Invoice', footerNoun: 'tax invoice' }
+};
+
+function getDocType() {
+  const activeBtn = document.querySelector('#doctypeToggle button.active');
+  return (activeBtn && activeBtn.dataset.type) || 'quotation';
+}
+
+function setDocType(type) {
+  document.querySelectorAll('#doctypeToggle button').forEach(b => b.classList.toggle('active', b.dataset.type === type));
+  const qtNoEl = document.getElementById('qtNo');
+  const prefix = DOC_TYPES[type].prefix;
+  qtNoEl.value = /^[A-Z]+-/.test(qtNoEl.value) ? qtNoEl.value.replace(/^[A-Z]+-/, prefix + '-') : qtNoEl.value;
+  document.getElementById('reverseChargeField').style.display = type === 'invoice' ? 'flex' : 'none';
+  updatePreview();
+}
+
+document.querySelectorAll('#doctypeToggle button').forEach(b => {
+  b.addEventListener('click', () => setDocType(b.dataset.type));
+});
+
+/* ── HSN/SAC AUTO-SUGGESTION (IT/security hardware & services) ── */
+const HSN_MAP = [
+  { kw: /laptop|desktop|computer|\bpc\b|server|workstation/i, code: '8471' },
+  { kw: /firewall|router|switch|access\s*point|network/i, code: '8517' },
+  { kw: /printer|scanner|\bmfp\b/i, code: '8443' },
+  { kw: /\bups\b|batter/i, code: '8507' },
+  { kw: /cctv|camera|surveillance|nvr|dvr/i, code: '8525' },
+  { kw: /license|licence|software|subscription|\bsaas\b|antivirus/i, code: '997331' },
+  { kw: /install|commission|configur|\bamc\b|maintenance|support|\bservice\b/i, code: '998313' },
+  { kw: /deliver|transport|freight|logistic/i, code: '9965' }
+];
+
+function suggestHSN(desc, itemType) {
+  if (itemType === 'Installation' || itemType === 'Service') return '998313';
+  if (itemType === 'Delivery') return '9965';
+  if (itemType === 'License') return '997331';
+  for (let i = 0; i < HSN_MAP.length; i++) {
+    if (HSN_MAP[i].kw.test(desc)) return HSN_MAP[i].code;
+  }
+  return '';
+}
+
+function autoFillHSN(row) {
+  const hsnInput = row.querySelector('.item-hsn');
+  if (!hsnInput || hsnInput.value.trim()) return;
+  const desc = row.querySelector('.item-desc')?.value || '';
+  const itemType = row.querySelector('.item-type')?.value || 'Product';
+  const suggestion = suggestHSN(desc, itemType);
+  if (suggestion) hsnInput.value = suggestion;
+}
+
+/* ── PER-ROW GST SUGGESTION (18% is standard for nearly all IT hardware/software/services) ── */
+function suggestGSTMode(itemType) {
+  return '18';
+}
+
+function autoFillGST(row) {
+  const modeSelect = row.querySelector('.item-gst-mode');
+  if (!modeSelect || modeSelect.dataset.userSet === 'true') return;
+  const itemType = row.querySelector('.item-type')?.value || 'Product';
+  modeSelect.value = suggestGSTMode(itemType);
+}
+
+function toggleCustomGST(row) {
+  const modeSelect = row.querySelector('.item-gst-mode');
+  const customInput = row.querySelector('.item-gst-custom');
+  if (!modeSelect || !customInput) return;
+  customInput.style.display = modeSelect.value === 'custom' ? 'block' : 'none';
+}
+
+/* ── PER-ROW UNIT SUGGESTION ── */
+function suggestUnit(itemType) {
+  if (itemType === 'License') return 'License';
+  if (itemType === 'Service' || itemType === 'Installation') return 'Lot';
+  return 'Nos';
+}
+
+function autoFillUnit(row) {
+  const unitSelect = row.querySelector('.item-unit');
+  if (!unitSelect || unitSelect.dataset.userSet === 'true') return;
+  const itemType = row.querySelector('.item-type')?.value || 'Product';
+  unitSelect.value = suggestUnit(itemType);
+}
+
+function wireRow(tr) {
+  tr.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', updatePreview);
+    el.addEventListener('change', updatePreview);
+  });
+  tr.querySelector('.item-desc')?.addEventListener('input', () => autoFillHSN(tr));
+  tr.querySelector('.item-type')?.addEventListener('change', () => { autoFillHSN(tr); autoFillGST(tr); autoFillUnit(tr); });
+  tr.querySelector('.item-gst-mode')?.addEventListener('change', () => { tr.querySelector('.item-gst-mode').dataset.userSet = 'true'; toggleCustomGST(tr); });
+  tr.querySelector('.item-unit')?.addEventListener('change', () => { tr.querySelector('.item-unit').dataset.userSet = 'true'; });
+}
+
 /* ── ITEM ROWS ── */
 function addRow() {
   const tbody = document.getElementById('itemsBody');
@@ -495,13 +634,18 @@ function addRow() {
   tr.innerHTML =
     '<td><select class="item-type"><option value="Product">Product</option><option value="Service">Service</option><option value="License">License</option><option value="Installation">Installation</option><option value="Delivery">Delivery</option><option value="Others">Others</option></select></td>' +
     '<td><input type="text" class="item-desc" placeholder="Product / Service"></td>' +
+    '<td><input type="text" class="item-hsn" placeholder="HSN/SAC"></td>' +
+    '<td><select class="item-gst-mode"><option value="0">0%</option><option value="5">5%</option><option value="12">12%</option><option value="18">18%</option><option value="28">28%</option><option value="custom">Custom %</option></select><input type="number" class="item-gst-custom" placeholder="Custom %" min="0" max="100" step="0.01" style="display:none"></td>' +
     '<td><input type="number" class="item-qty" value="1" min="0" step="0.01"></td>' +
+    '<td><select class="item-unit"><option value="Nos">Nos</option><option value="Set">Set</option><option value="License">License</option><option value="User">User</option><option value="Box">Box</option><option value="Lot">Lot</option><option value="Others">Others</option></select></td>' +
     '<td><input type="number" class="item-price" value="0" min="0" step="0.01"></td>' +
     '<td><input type="number" class="item-disc" value="0" min="0" max="100" step="0.01"></td>' +
-    '<td style="text-align:center"><button class="btn-del-row" onclick="delRow(this)">x</button></td>';
+    '<td style="text-align:center"><button class="btn-del-row" onclick="delRow(this)">×</button></td>';
   tbody.appendChild(tr);
-  tr.querySelectorAll('input, select').forEach(el => el.addEventListener('input', updatePreview));
-  tr.querySelectorAll('select').forEach(el => el.addEventListener('change', updatePreview));
+  wireRow(tr);
+  autoFillGST(tr);
+  autoFillUnit(tr);
+  updatePreview();
 }
 
 function delRow(btn) {
@@ -511,41 +655,51 @@ function delRow(btn) {
   updatePreview();
 }
 
-/* ── GST CALC ── */
-function calcGST(subtotal) {
-  const mode = document.getElementById('gstMode').value;
-  let rate = mode === 'custom' ? Number(document.getElementById('customGST').value || 0) : Number(mode);
+/* ── GST CALC (per-item, grouped by rate) ── */
+function isIntraStateSupply() {
   const clientGST = (document.getElementById('clientGST').value || '').trim();
   // State code 29 = Karnataka (intra-state); blank defaults to intra-state
-  const isIntraState = clientGST === '' || clientGST.substring(0,2) === '29';
-  const half = subtotal * (rate / 2) / 100;
-  const gstAmt = subtotal * rate / 100;
-  if (rate === 0) {
-    return { rate, gstAmt: 0, isIntraState, rows: [{ label: 'GST (Exempt / Zero Rated)', amt: 0 }] };
+  return clientGST === '' || clientGST.substring(0, 2) === '29';
+}
+
+function gstSplitRows(rate, amount) {
+  if (isIntraStateSupply()) {
+    const half = amount / 2;
+    return [
+      { label: 'CGST @ ' + (rate/2) + '%', amt: half },
+      { label: 'SGST @ ' + (rate/2) + '%', amt: half }
+    ];
   }
-  if (isIntraState) {
-    return {
-      rate, gstAmt, isIntraState,
-      rows: [
-        { label: 'CGST @ ' + (rate/2) + '%', amt: half },
-        { label: 'SGST @ ' + (rate/2) + '%', amt: half }
-      ]
-    };
-  } else {
-    return {
-      rate, gstAmt, isIntraState,
-      rows: [{ label: 'IGST @ ' + rate + '%', amt: gstAmt }]
-    };
-  }
+  return [{ label: 'IGST @ ' + rate + '%', amt: amount }];
+}
+
+function calcGST(items) {
+  const byRate = {};
+  items.forEach(it => { byRate[it.gstRate] = (byRate[it.gstRate] || 0) + it.lineTotal; });
+  let gstAmt = 0;
+  let rows = [];
+  Object.keys(byRate).map(Number).sort((a, b) => a - b).forEach(rate => {
+    const base = byRate[rate];
+    if (rate <= 0) return;
+    const amt = base * rate / 100;
+    gstAmt += amt;
+    rows = rows.concat(gstSplitRows(rate, amt));
+  });
+  if (rows.length === 0) rows = [{ label: 'GST (Exempt / Zero Rated)', amt: 0 }];
+  return { gstAmt, isIntraState: isIntraStateSupply(), rows };
 }
 
 /* ── MAIN PREVIEW ── */
 function updatePreview() {
+  const docType = getDocType();
+  const dt = DOC_TYPES[docType];
+
   // Collect line items
   const rows = document.querySelectorAll('#itemsBody tr');
   let subtotal = 0;
   let itemRows = '';
   let sNo = 1;
+  const gstItems = [];
 
   // Collect all items with type
   const typeOrder = ['Product', 'License', 'Service', 'Installation', 'Delivery', 'Others'];
@@ -556,13 +710,18 @@ function updatePreview() {
   rows.forEach(row => {
     const type  = row.querySelector('.item-type')?.value || 'Product';
     const desc  = (row.querySelector('.item-desc')?.value.trim() || '').toUpperCase();
+    const hsn   = (row.querySelector('.item-hsn')?.value.trim() || '');
+    const gstMode = row.querySelector('.item-gst-mode')?.value || '18';
+    const unit  = row.querySelector('.item-unit')?.value || 'Nos';
     const qty   = Number(row.querySelector('.item-qty')?.value || 0);
     const price = Number(row.querySelector('.item-price')?.value || 0);
     const disc  = Number(row.querySelector('.item-disc')?.value || 0);
     if (!desc && price === 0) return;
     const lineTotal = qty * price * (1 - disc/100);
+    const gstRate = gstMode === 'custom' ? Number(row.querySelector('.item-gst-custom')?.value || 0) : Number(gstMode);
     subtotal += lineTotal;
-    grouped[type].push({ desc, qty, price, disc, lineTotal });
+    gstItems.push({ lineTotal, gstRate });
+    grouped[type].push({ desc, hsn, gstDisplay: gstRate + '%', unit, qty, price, disc, lineTotal });
   });
 
   typeOrder.forEach(type => {
@@ -570,7 +729,7 @@ function updatePreview() {
     // Group header row
     itemRows +=
       '<tr>' +
-        '<td colspan="6" style="background:' + typeBg[type] + ';padding:5px 8px;font-size:10px;font-weight:bold;' +
+        '<td colspan="9" style="background:' + typeBg[type] + ';padding:5px 8px;font-size:10px;font-weight:bold;' +
         'text-transform:uppercase;letter-spacing:0.07em;color:' + typeColors[type] + ';border-bottom:1px solid #d1d5db">' +
         type + 's' +
         '</td>' +
@@ -580,7 +739,10 @@ function updatePreview() {
         '<tr>' +
           '<td style="text-align:center;color:#6b7280">' + sNo++ + '</td>' +
           '<td>' + (item.desc || '—') + '</td>' +
+          '<td style="text-align:center">' + (item.hsn || '—') + '</td>' +
+          '<td style="text-align:center">' + item.gstDisplay + '</td>' +
           '<td style="text-align:center">' + item.qty + '</td>' +
+          '<td style="text-align:center">' + (item.unit || '—') + '</td>' +
           '<td class="amount">' + fmtINR(item.price) + '</td>' +
           '<td style="text-align:center">' + (item.disc > 0 ? item.disc + '%' : '—') + '</td>' +
           '<td class="amount">' + fmtINR(item.lineTotal) + '</td>' +
@@ -588,7 +750,7 @@ function updatePreview() {
     });
   });
 
-  const gst = calcGST(subtotal);
+  const gst = calcGST(gstItems);
   const total = subtotal + gst.gstAmt;
 
   // Values
@@ -600,8 +762,10 @@ function updatePreview() {
   const email     = document.getElementById('contactEmail').value;
   const clientGST = document.getElementById('clientGST').value.toUpperCase();
   const address   = document.getElementById('clientAddress').value.toUpperCase().replace(/\n/g,'<br>');
-  const cat       = '';
   const subject   = document.getElementById('subject').value;
+  const gstinCode = clientGST.substring(0, 2);
+  const placeOfSupply = (STATE_CODES[gstinCode || '29'] || 'Unknown State') + ' (' + (gstinCode || '29') + ')';
+  const reverseCharge = document.getElementById('reverseCharge')?.checked || false;
   function fmtLines(text) {
     return text.split('\n').filter(function(l){ return l.trim(); }).map(function(line) {
       const match = line.match(/^(\d+\.?\s*)(.+)/);
@@ -620,7 +784,7 @@ function updatePreview() {
   // Heading
   let heading = '';
   if (subject) {
-    heading += '<span style="font-size:10px;font-weight:normal;color:#0099EE;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:4px">Quotation for</span>';
+    heading += '<span style="font-size:10px;font-weight:normal;color:#0099EE;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:4px">' + dt.label + ' for</span>';
     heading += subject.toUpperCase();
     if (client) heading += '<br><span style="font-size:12px;font-weight:normal;color:#5a738a">For ' + client + '</span>';
   }
@@ -655,17 +819,24 @@ function updatePreview() {
         </div>
       </div>
       <div style="text-align:right">
-        <div style="font-size:20px;font-weight:bold;color:#0A1628;margin-bottom:6px">QUOTATION</div>
+        <div style="font-size:20px;font-weight:bold;color:#0A1628;margin-bottom:6px">${dt.label}</div>
         <div style="font-size:11px;color:#5a738a;line-height:2">
           <b>No:</b> ${qtNo || '—'}<br>
           <b>Date:</b> ${fmtDate(dateVal) || '—'}<br>
-          <b>Valid Until:</b> ${addDays(dateVal, 30) || '—'}
+          ${docType === 'invoice'
+            ? '<b>Due Date:</b> ' + (addDays(dateVal, 15) || '—') + '<br><b>Place of Supply:</b> ' + placeOfSupply + '<br><b>Reverse Charge:</b> ' + (reverseCharge ? 'Yes' : 'No')
+            : '<b>Valid Until:</b> ' + (addDays(dateVal, 30) || '—')}
         </div>
       </div>
     </div>
 
     <!-- SUBJECT -->
     <div class="proposal-heading">${heading}</div>
+
+    ${docType === 'proforma' ? `
+    <div style="margin:0 0 10px;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:4px;font-size:10px;color:#92400e;line-height:1.5">
+      <b>Note:</b> This is a Proforma Invoice issued for indicative/advance-payment purposes only. It is not a Tax Invoice under Section 31 of the CGST Act, 2017 and cannot be used for claiming Input Tax Credit. A Tax Invoice will be issued on actual supply of goods/services.
+    </div>` : ''}
 
     <!-- BILL TO / FROM -->
     <table style="margin-top:0">
@@ -696,27 +867,30 @@ function updatePreview() {
       <thead>
         <tr>
           <th style="width:4%;text-align:center">#</th>
-          <th style="width:44%">Description</th>
-          <th style="width:10%;text-align:center">Qty</th>
-          <th style="width:18%;text-align:right">Unit Price</th>
-          <th style="width:9%;text-align:center">Disc</th>
-          <th style="width:15%;text-align:right">Total</th>
+          <th style="width:28%">Description</th>
+          <th style="width:8%;text-align:center">HSN/SAC</th>
+          <th style="width:7%;text-align:center">GST</th>
+          <th style="width:6%;text-align:center">Qty</th>
+          <th style="width:7%;text-align:center">Unit</th>
+          <th style="width:15%;text-align:right">Unit Price</th>
+          <th style="width:7%;text-align:center">Disc</th>
+          <th style="width:18%;text-align:right">Total</th>
         </tr>
       </thead>
       <tbody>
-        ${itemRows || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;padding:16px">No items added yet</td></tr>'}
+        ${itemRows || '<tr><td colspan="9" style="text-align:center;color:#9ca3af;padding:16px">No items added yet</td></tr>'}
       </tbody>
     </table>
 
     <!-- TOTALS -->
     <table style="margin-top:0;border-top:none">
       <tr>
-        <td colspan="5" class="amount" style="border-top:none">Subtotal</td>
+        <td colspan="8" class="amount" style="border-top:none">Subtotal</td>
         <td class="amount" style="width:18%;border-top:none">${fmtINR(subtotal)}</td>
       </tr>
-      ${gst.rows.map(function(r){ return '<tr><td colspan="5" class="amount">' + r.label + '</td><td class="amount">' + fmtINR(r.amt) + '</td></tr>'; }).join('')}
+      ${gst.rows.map(function(r){ return '<tr><td colspan="8" class="amount">' + r.label + '</td><td class="amount">' + fmtINR(r.amt) + '</td></tr>'; }).join('')}
       <tr class="grand-total-row">
-        <td colspan="5" class="amount" style="letter-spacing:0.05em">TOTAL AMOUNT</td>
+        <td colspan="8" class="amount" style="letter-spacing:0.05em">TOTAL AMOUNT</td>
         <td class="amount" style="font-size:14px">${fmtINR(total)}</td>
       </tr>
     </table>
@@ -729,7 +903,7 @@ function updatePreview() {
 
     <!-- PAGE 1 FOOTER -->
     <div style="margin-top:30px;text-align:right;font-size:10px;color:#9ca3af;border-top:1px solid #e5e7eb;padding-top:8px">
-      Page 1 of 2 &nbsp;·&nbsp; ${qtNo || 'Quotation'} &nbsp;·&nbsp; crewtec.in
+      ${qtNo || dt.label} &nbsp;·&nbsp; crewtec.in
     </div>
 
     <!-- ══════════════════════════════ PAGE 2 OF 2 ══════════════════════════════ -->
@@ -766,7 +940,7 @@ function updatePreview() {
     <!-- T&C BOX -->
     <div style="border:1.5px solid #0A1628;border-radius:6px;overflow:hidden;margin-bottom:10px">
       <div style="background:#0A1628;padding:7px 14px">
-        <span style="color:white;font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:0.08em">Terms &amp; Conditions — CrewTec InfoSol Pvt. Ltd</span>
+        <span style="color:white;font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:0.08em">Terms &amp; Conditions for this ${dt.label} — CrewTec InfoSol Pvt. Ltd</span>
       </div>
       <div style="padding:8px 12px;font-size:10px;line-height:1.65;color:#374151;background:#f8fafc">
 
@@ -817,56 +991,86 @@ function updatePreview() {
 
     <!-- PAGE 2 FOOTER -->
     <div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:6px;text-align:center;font-size:10px;color:#9ca3af">
-      Page 2 of 2 &nbsp;·&nbsp; ${qtNo || 'Quotation'} &nbsp;·&nbsp; crewtec.in &nbsp;·&nbsp; sales@crewtec.in &nbsp;·&nbsp; +91 99864 37648
+      ${qtNo || dt.label} &nbsp;·&nbsp; crewtec.in &nbsp;·&nbsp; sales@crewtec.in &nbsp;·&nbsp; +91 99864 37648
     </div>
     <div style="text-align:center;font-size:10px;color:#9ca3af;margin-top:3px;font-style:italic">
-      This is a system generated quotation. Signature is not required.
+      This is a system generated ${dt.footerNoun}. Signature is not required.
     </div>
   `;
 }
 
 /* ── VALIDATION ── */
+const PHONE_REGEX = /^(\+91[\-\s]?|0)?[6-9]\d{9}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const GSTIN_REGEX = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+
 const REQUIRED_FIELDS = [
-  { id: 'clientName',    err: 'err-clientName' },
-  { id: 'contactPerson', err: 'err-contactPerson' },
-  { id: 'contactPhone',  err: 'err-contactPhone' },
-  { id: 'contactEmail',  err: 'err-contactEmail' },
-  { id: 'clientGST',     err: 'err-clientGST' },
-  { id: 'clientAddress', err: 'err-clientAddress' }
+  { id: 'clientName',    err: 'err-clientName', requiredMsg: 'Company name is required' },
+  { id: 'contactPerson', err: 'err-contactPerson', requiredMsg: 'Contact person is required' },
+  { id: 'contactPhone',  err: 'err-contactPhone', requiredMsg: 'Phone is required', pattern: PHONE_REGEX, patternMsg: 'Enter a valid 10-digit mobile number' },
+  { id: 'contactEmail',  err: 'err-contactEmail', requiredMsg: 'Email is required', pattern: EMAIL_REGEX, patternMsg: 'Enter a valid email address' },
+  { id: 'clientGST',     err: 'err-clientGST', requiredMsg: 'GSTIN is required', pattern: GSTIN_REGEX, patternMsg: 'Invalid GSTIN format (expected 15 characters, e.g. 29AAHCT2953M1ZP)' },
+  { id: 'clientAddress', err: 'err-clientAddress', requiredMsg: 'Address is required' }
 ];
+
+function checkRequiredField(f) {
+  const el  = document.getElementById(f.id);
+  const msg = document.getElementById(f.err);
+  const val = el.value.trim();
+  if (!val) {
+    msg.textContent = f.requiredMsg;
+    el.classList.add('field-error');
+    msg.classList.add('visible');
+    return false;
+  } else if (f.pattern && !f.pattern.test(val.toUpperCase())) {
+    msg.textContent = f.patternMsg;
+    el.classList.add('field-error');
+    msg.classList.add('visible');
+    return false;
+  } else {
+    el.classList.remove('field-error');
+    msg.classList.remove('visible');
+    return true;
+  }
+}
+
+function hasValidLineItems() {
+  return Array.from(document.querySelectorAll('#itemsBody tr')).some(row => {
+    const desc  = row.querySelector('.item-desc')?.value.trim();
+    const price = Number(row.querySelector('.item-price')?.value || 0);
+    return desc || price > 0;
+  });
+}
 
 function validateFields() {
   let valid = true;
+  let firstInvalidEl = null;
   REQUIRED_FIELDS.forEach(function(f) {
-    const el  = document.getElementById(f.id);
-    const msg = document.getElementById(f.err);
-    if (!el.value.trim()) {
-      el.classList.add('field-error');
-      msg.classList.add('visible');
+    if (!checkRequiredField(f)) {
       valid = false;
-    } else {
-      el.classList.remove('field-error');
-      msg.classList.remove('visible');
+      if (!firstInvalidEl) firstInvalidEl = document.getElementById(f.id);
     }
   });
-  if (!valid) {
-    // Scroll to first error
-    const first = document.querySelector('.field-error');
-    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  const itemsMsg = document.getElementById('err-items');
+  if (!hasValidLineItems()) {
+    itemsMsg.classList.add('visible');
+    valid = false;
+    if (!firstInvalidEl) firstInvalidEl = itemsMsg;
+  } else {
+    itemsMsg.classList.remove('visible');
+  }
+
+  if (!valid && firstInvalidEl) {
+    firstInvalidEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
   return valid;
 }
 
-// Clear error on input
+// Clear/re-check error on input
 REQUIRED_FIELDS.forEach(function(f) {
-  const el  = document.getElementById(f.id);
-  const msg = document.getElementById(f.err);
-  el.addEventListener('input', function() {
-    if (el.value.trim()) {
-      el.classList.remove('field-error');
-      msg.classList.remove('visible');
-    }
-  });
+  const el = document.getElementById(f.id);
+  el.addEventListener('input', function() { checkRequiredField(f); });
 });
 
 /* ── PDF DOWNLOAD ── */
@@ -878,9 +1082,43 @@ function downloadPDF() {
   const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   const d = today.date;
   const display = String(d.getDate()).padStart(2,'0') + months[d.getMonth()] + d.getFullYear();
-  document.title = 'CrewTEC_Quote_' + client + '_' + qt + '_' + display;
+  document.title = 'CrewTEC_' + DOC_TYPES[getDocType()].filePrefix + '_' + client + '_' + qt + '_' + display;
   window.print();
 }
+
+/* PAGE NUMBERS: browsers paginate print output purely by content overflow,
+   with no CSS access to the resulting page count, so we estimate it by
+   comparing the rendered document height against one A4 page's printable
+   height (@page size:A4 margin:8mm) and stamp a footer at each page slice. */
+function mmToPx(mm) {
+  const ref = document.createElement('div');
+  ref.style.cssText = 'position:absolute;visibility:hidden;height:' + mm + 'mm;width:0;';
+  document.body.appendChild(ref);
+  const px = ref.offsetHeight;
+  document.body.removeChild(ref);
+  return px;
+}
+
+function clearPageNumbers() {
+  document.querySelectorAll('.page-number-stamp').forEach(el => el.remove());
+}
+
+function stampPageNumbers() {
+  clearPageNumbers();
+  const docEl = document.querySelector('.document');
+  const pageHeight = mmToPx(297 - 16); // A4 height minus top+bottom @page margin
+  const totalPages = Math.max(1, Math.ceil(docEl.scrollHeight / pageHeight));
+  for (let i = 0; i < totalPages; i++) {
+    const stamp = document.createElement('div');
+    stamp.className = 'page-number-stamp';
+    stamp.textContent = 'Page ' + (i + 1) + ' of ' + totalPages;
+    stamp.style.top = ((i + 1) * pageHeight - 14) + 'px';
+    docEl.appendChild(stamp);
+  }
+}
+
+window.addEventListener('beforeprint', stampPageNumbers);
+window.addEventListener('afterprint', clearPageNumbers);
 
 /* ── STATE CODE MAP ── */
 const STATE_CODES = {
@@ -921,11 +1159,6 @@ function updateGSTIndicator() {
 }
 
 /* ── EVENT LISTENERS ── */
-document.getElementById('gstMode').addEventListener('change', function() {
-  document.getElementById('customGSTField').style.display = this.value === 'custom' ? 'block' : 'none';
-  updatePreview();
-});
-
 document.getElementById('clientGST').addEventListener('input', function() {
   updateGSTIndicator();
   updatePreview();
@@ -936,10 +1169,7 @@ document.querySelectorAll('input, textarea, select').forEach(el => {
   el.addEventListener('change', updatePreview);
 });
 
-document.querySelectorAll('#itemsBody input, #itemsBody select').forEach(el => {
-  el.addEventListener('input', updatePreview);
-  el.addEventListener('change', updatePreview);
-});
+document.querySelectorAll('#itemsBody tr').forEach(tr => wireRow(tr));
 
 /* ── INIT ── */
 const today = getToday();
@@ -948,19 +1178,6 @@ const m = String(today.date.getMonth()+1).padStart(2,'0');
 const day = String(today.date.getDate()).padStart(2,'0');
 document.getElementById('qtNo').value = 'CTC-' + y + m + day + '-001';
 document.getElementById('date').valueAsDate = new Date();
-
-// Patch: add row event listeners after DOM ready
-function patchRowListeners() {
-  document.querySelectorAll('#itemsBody input, #itemsBody select').forEach(el => {
-    el.removeEventListener('input', updatePreview);
-    el.removeEventListener('change', updatePreview);
-    el.addEventListener('input', updatePreview);
-    el.addEventListener('change', updatePreview);
-  });
-}
-
-const origAddRow = addRow;
-window.addRow = function() { origAddRow(); patchRowListeners(); updatePreview(); };
 
 updatePreview();
 
