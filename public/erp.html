@@ -779,11 +779,14 @@ function isIntraStateSupply() {
 }
 
 function gstSplitRows(rate, amount) {
+  // amount is already rounded to a whole rupee by calcGST — split it as whole rupees
+  // too (any odd rupee goes to CGST) so CGST + SGST always sums back to `amount` exactly.
   if (isIntraStateSupply()) {
-    const half = amount / 2;
+    const cgst = Math.ceil(amount / 2);
+    const sgst = amount - cgst;
     return [
-      { label: 'CGST @ ' + (rate/2) + '%', amt: half },
-      { label: 'SGST @ ' + (rate/2) + '%', amt: half }
+      { label: 'CGST @ ' + (rate/2) + '%', amt: cgst },
+      { label: 'SGST @ ' + (rate/2) + '%', amt: sgst }
     ];
   }
   return [{ label: 'IGST @ ' + rate + '%', amt: amount }];
@@ -797,7 +800,9 @@ function calcGST(items) {
   Object.keys(byRate).map(Number).sort((a, b) => a - b).forEach(rate => {
     const base = byRate[rate];
     if (rate <= 0) return;
-    const amt = base * rate / 100;
+    // Round once per rate group (not at display time) so the printed rows and the
+    // printed grand total always reconcile to the rupee — see gstSplitRows above.
+    const amt = Math.round(base * rate / 100);
     gstAmt += amt;
     rows = rows.concat(gstSplitRows(rate, amt));
   });
@@ -867,7 +872,9 @@ function updatePreview() {
   });
 
   const gst = calcGST(gstItems);
-  const total = subtotal + gst.gstAmt;
+  // Sum already-rounded whole-rupee figures (not raw floats) so the printed Subtotal +
+  // tax rows always add up to exactly the printed Total.
+  const total = Math.round(subtotal) + gst.gstAmt;
 
   // Values
   const qtNo      = document.getElementById('qtNo').value;
