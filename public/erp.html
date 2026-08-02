@@ -329,6 +329,17 @@ th {
   <div class="field"><label>GSTIN <span class="required-star">*</span></label><input id="clientGST" placeholder="29XXXXX1234X1ZX" style="text-transform:uppercase"><div class="field-error-msg" id="err-clientGST">GSTIN is required</div></div>
   <div class="field"><label>Address <span class="required-star">*</span></label><textarea id="clientAddress" placeholder="STREET, CITY, STATE, PINCODE" style="min-height:60px;text-transform:uppercase"></textarea><div class="field-error-msg" id="err-clientAddress">Address is required</div></div>
 
+  <div class="section-title">Shipping Details</div>
+  <div class="checkbox-field">
+    <input type="checkbox" id="shipSameAsBill" checked>
+    <label style="text-transform:none;font-size:12px;font-weight:normal;color:#374151">Ship To same as Bill To</label>
+  </div>
+  <div id="shipToFields" style="display:none">
+    <div class="field"><label>Ship To Name / Company <span class="required-star">*</span></label><input id="shipName" placeholder="SITE / BRANCH NAME" style="text-transform:uppercase"><div class="field-error-msg" id="err-shipName">Ship To name is required</div></div>
+    <div class="field"><label>Ship To GSTIN <span style="text-transform:none;font-weight:normal;color:#9ca3af">(optional — e-way bill reference only, does not affect tax calculation)</span></label><input id="shipGST" placeholder="29XXXXX1234X1ZX" style="text-transform:uppercase"><div class="field-error-msg" id="err-shipGST">Invalid GSTIN format (expected 15 characters)</div></div>
+    <div class="field"><label>Ship To Address <span class="required-star">*</span></label><textarea id="shipAddress" placeholder="STREET, CITY, STATE, PINCODE" style="min-height:60px;text-transform:uppercase"></textarea><div class="field-error-msg" id="err-shipAddress">Ship To address is required</div></div>
+  </div>
+
   <div class="section-title">Solution Details</div>
   <div class="field"><label>Subject / Title</label><input id="subject" placeholder="ENTERPRISE ENDPOINT SECURITY SOLUTION" style="text-transform:uppercase"></div>
 
@@ -762,6 +773,10 @@ function updatePreview() {
   const email     = document.getElementById('contactEmail').value;
   const clientGST = document.getElementById('clientGST').value.toUpperCase();
   const address   = document.getElementById('clientAddress').value.toUpperCase().replace(/\n/g,'<br>');
+  const shipSame       = document.getElementById('shipSameAsBill').checked;
+  const shipName       = document.getElementById('shipName').value.toUpperCase();
+  const shipGSTVal     = document.getElementById('shipGST').value.toUpperCase();
+  const shipAddressVal = document.getElementById('shipAddress').value.toUpperCase().replace(/\n/g,'<br>');
   const subject   = document.getElementById('subject').value;
   const gstinCode = clientGST.substring(0, 2);
   const placeOfSupply = (STATE_CODES[gstinCode || '29'] || 'Unknown State') + ' (' + (gstinCode || '29') + ')';
@@ -838,10 +853,10 @@ function updatePreview() {
       <b>Note:</b> This is a Proforma Invoice issued for indicative/advance-payment purposes only. It is not a Tax Invoice under Section 31 of the CGST Act, 2017 and cannot be used for claiming Input Tax Credit. A Tax Invoice will be issued on actual supply of goods/services.
     </div>` : ''}
 
-    <!-- BILL TO / FROM -->
+    <!-- BILL TO / SHIP TO / FROM -->
     <table style="margin-top:0">
       <tr>
-        <td style="width:50%;vertical-align:top;background:#f8fafc">
+        <td style="width:34%;vertical-align:top;background:#f8fafc">
           <div style="font-size:10px;font-weight:bold;color:#0099EE;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">Bill To</div>
           <b style="font-size:13px">${client || '—'}</b><br>
           ${contact ? '<span style="font-size:11px">Attn: ' + contact + '</span><br>' : ''}
@@ -850,7 +865,17 @@ function updatePreview() {
           ${clientGST ? '<span style="font-size:11px">GSTIN: ' + clientGST + '</span><br>' : ''}
           ${address ? '<span style="font-size:11px">' + address + '</span>' : ''}
         </td>
-        <td style="width:50%;vertical-align:top;background:#f0f7ff">
+        <td style="width:33%;vertical-align:top;background:#eefdf3">
+          <div style="font-size:10px;font-weight:bold;color:#0099EE;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">Ship To</div>
+          ${shipSame
+            ? '<span style="font-size:11px;font-style:italic;color:#5a738a">Same as Bill To Address</span>'
+            : (
+                '<b style="font-size:13px">' + (shipName || '—') + '</b><br>' +
+                (shipGSTVal ? '<span style="font-size:11px">GSTIN: ' + shipGSTVal + '</span><br>' : '') +
+                (shipAddressVal ? '<span style="font-size:11px">' + shipAddressVal + '</span>' : '')
+              )}
+        </td>
+        <td style="width:33%;vertical-align:top;background:#f0f7ff">
           <div style="font-size:10px;font-weight:bold;color:#0099EE;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">From</div>
           <b style="font-size:13px">CrewTec InfoSol Pvt. Ltd</b><br>
           <span style="font-size:11px">
@@ -993,9 +1018,6 @@ function updatePreview() {
     <div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:6px;text-align:center;font-size:10px;color:#9ca3af">
       ${qtNo || dt.label} &nbsp;·&nbsp; crewtec.in &nbsp;·&nbsp; sales@crewtec.in &nbsp;·&nbsp; +91 99864 37648
     </div>
-    <div style="text-align:center;font-size:10px;color:#9ca3af;margin-top:3px;font-style:italic">
-      This is a system generated ${dt.footerNoun}. Signature is not required.
-    </div>
   `;
 }
 
@@ -1051,6 +1073,20 @@ function validateFields() {
       if (!firstInvalidEl) firstInvalidEl = document.getElementById(f.id);
     }
   });
+
+  if (shipToApplicable()) {
+    SHIP_TO_REQUIRED_FIELDS.forEach(function(f) {
+      if (!checkRequiredField(f)) {
+        valid = false;
+        if (!firstInvalidEl) firstInvalidEl = document.getElementById(f.id);
+      }
+    });
+  } else {
+    SHIP_TO_REQUIRED_FIELDS.forEach(function(f) {
+      document.getElementById(f.id).classList.remove('field-error');
+      document.getElementById(f.err).classList.remove('visible');
+    });
+  }
 
   const itemsMsg = document.getElementById('err-items');
   if (!hasValidLineItems()) {
@@ -1158,10 +1194,51 @@ function updateGSTIndicator() {
   }
 }
 
+/* ── SHIP TO (display/logistics only — must never feed GST calc above) ── */
+function toggleShipToFields() {
+  const same = document.getElementById('shipSameAsBill').checked;
+  document.getElementById('shipToFields').style.display = same ? 'none' : 'block';
+  if (same) {
+    ['shipName', 'shipAddress'].forEach(function(id) {
+      document.getElementById(id).classList.remove('field-error');
+      document.getElementById('err-' + id).classList.remove('visible');
+    });
+  }
+}
+
+function validateShipGSTFormat() {
+  const el = document.getElementById('shipGST');
+  const msg = document.getElementById('err-shipGST');
+  const val = (el.value || '').trim().toUpperCase();
+  if (val !== '' && !GSTIN_REGEX.test(val)) {
+    el.classList.add('field-error');
+    msg.classList.add('visible');
+  } else {
+    el.classList.remove('field-error');
+    msg.classList.remove('visible');
+  }
+}
+
+const SHIP_TO_REQUIRED_FIELDS = [
+  { id: 'shipName',    err: 'err-shipName',    requiredMsg: 'Ship To name is required' },
+  { id: 'shipAddress', err: 'err-shipAddress', requiredMsg: 'Ship To address is required' }
+];
+
+function shipToApplicable() {
+  return !document.getElementById('shipSameAsBill').checked;
+}
+
 /* ── EVENT LISTENERS ── */
 document.getElementById('clientGST').addEventListener('input', function() {
   updateGSTIndicator();
   updatePreview();
+});
+
+document.getElementById('shipSameAsBill').addEventListener('change', toggleShipToFields);
+document.getElementById('shipGST').addEventListener('input', validateShipGSTFormat);
+SHIP_TO_REQUIRED_FIELDS.forEach(function(f) {
+  const el = document.getElementById(f.id);
+  el.addEventListener('input', function() { if (shipToApplicable()) checkRequiredField(f); });
 });
 
 document.querySelectorAll('input, textarea, select').forEach(el => {
