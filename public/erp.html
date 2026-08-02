@@ -313,9 +313,33 @@ th {
     <button type="button" data-type="invoice">Tax Invoice</button>
   </div>
 
+  <details style="margin:0 0 14px;border:1px solid #d1d5db;border-radius:6px;padding:8px 12px;background:#f9fafb">
+    <summary style="cursor:pointer;font-size:12px;font-weight:bold;color:#0099EE">⚙ Invoice Sequence Admin</summary>
+    <div style="margin-top:10px;font-size:12px">
+      <select id="seqAdminPrefix">
+        <option value="CTC">Quotation (CTC)</option>
+        <option value="PI">Proforma (PI)</option>
+        <option value="INV">Tax Invoice (INV)</option>
+      </select>
+      <input id="seqAdminFY" placeholder="FY e.g. 2026-27">
+      <button type="button" class="btn-add-row" onclick="checkSeqAdmin()">Check Current</button>
+      <div id="seqAdminCurrent" style="font-size:11px;color:#5a738a;margin:2px 0 8px;"></div>
+      <input id="seqAdminSetValue" type="number" min="0" placeholder="Set next number to...">
+      <button type="button" class="btn-add-row" onclick="setSeqAdmin()">Save</button>
+      <div id="seqAdminStatus" style="font-size:11px;color:#9ca3af;margin-top:6px"></div>
+    </div>
+  </details>
+
   <div class="section-title">Quote Details</div>
   <div class="grid2">
-    <div class="field"><label>Doc No.</label><input id="qtNo"></div>
+    <div class="field">
+      <label>Doc No.</label>
+      <div style="display:flex;gap:6px">
+        <input id="qtNo" style="flex:1">
+        <button type="button" class="btn-add-row" style="white-space:nowrap;margin-bottom:8px" onclick="getNextInvoiceNumber()">Get Next No.</button>
+      </div>
+      <div id="seqStatus" style="font-size:10px;color:#9ca3af;margin:-4px 0 8px;"></div>
+    </div>
     <div class="field"><label>Date</label><input id="date" type="date"></div>
   </div>
 
@@ -562,6 +586,87 @@ function setDocType(type) {
 document.querySelectorAll('#doctypeToggle button').forEach(b => {
   b.addEventListener('click', () => setDocType(b.dataset.type));
 });
+
+/* ── INVOICE SEQUENCE (persistent, cross-device, backed by Netlify Blobs via /api/invoice-seq) ── */
+function getFYLabel(d) {
+  const y = d.getFullYear();
+  const m = d.getMonth(); // 0 = Jan
+  const startYear = m >= 3 ? y : y - 1; // Indian FY: 1 Apr - 31 Mar
+  const endYY = String((startYear + 1) % 100).padStart(2, '0');
+  return startYear + '-' + endYY;
+}
+
+async function getNextInvoiceNumber() {
+  const statusEl = document.getElementById('seqStatus');
+  const prefix = DOC_TYPES[getDocType()].prefix;
+  const dateVal = document.getElementById('date').value;
+  const fy = getFYLabel(dateVal ? new Date(dateVal) : new Date());
+  statusEl.style.color = '#9ca3af';
+  statusEl.textContent = 'Fetching next number…';
+  try {
+    const res = await fetch('/api/invoice-seq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prefix, fy })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const qtNoEl = document.getElementById('qtNo');
+    qtNoEl.value = prefix + '-' + fy + '-' + String(data.number).padStart(4, '0');
+    statusEl.style.color = '#0099EE';
+    statusEl.textContent = 'Assigned ' + qtNoEl.value + ' — reserved, will not repeat.';
+    updatePreview();
+  } catch (err) {
+    statusEl.style.color = '#dc2626';
+    statusEl.textContent = 'Could not reach the sequence service — enter the number manually, or try again.';
+  }
+}
+
+async function checkSeqAdmin() {
+  const prefix = document.getElementById('seqAdminPrefix').value;
+  const fyField = document.getElementById('seqAdminFY');
+  const fy = fyField.value.trim() || getFYLabel(new Date());
+  fyField.value = fy;
+  const out = document.getElementById('seqAdminCurrent');
+  out.textContent = 'Checking…';
+  try {
+    const res = await fetch('/api/invoice-seq?prefix=' + encodeURIComponent(prefix) + '&fy=' + encodeURIComponent(fy));
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    out.textContent = 'Last number issued for ' + prefix + ' ' + fy + ': ' + data.number + ' (next auto-assign will be ' + (data.number + 1) + ')';
+  } catch (err) {
+    out.textContent = 'Could not check the sequence service — see console for details.';
+  }
+}
+
+async function setSeqAdmin() {
+  const prefix = document.getElementById('seqAdminPrefix').value;
+  const fyField = document.getElementById('seqAdminFY');
+  const fy = fyField.value.trim() || getFYLabel(new Date());
+  fyField.value = fy;
+  const value = Number(document.getElementById('seqAdminSetValue').value);
+  const status = document.getElementById('seqAdminStatus');
+  if (!Number.isFinite(value) || value < 0) {
+    status.style.color = '#dc2626';
+    status.textContent = 'Enter a valid non-negative number first.';
+    return;
+  }
+  status.style.color = '#9ca3af';
+  status.textContent = 'Saving…';
+  try {
+    const res = await fetch('/api/invoice-seq', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prefix, fy, value })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    status.style.color = '#0099EE';
+    status.textContent = 'Saved. Next auto-assigned number for ' + prefix + ' ' + fy + ' will be ' + (value + 1) + '.';
+  } catch (err) {
+    status.style.color = '#dc2626';
+    status.textContent = 'Could not save — see console for details.';
+  }
+}
 
 /* ── HSN/SAC AUTO-SUGGESTION (IT/security hardware & services) ── */
 const HSN_MAP = [
@@ -1255,6 +1360,7 @@ const m = String(today.date.getMonth()+1).padStart(2,'0');
 const day = String(today.date.getDate()).padStart(2,'0');
 document.getElementById('qtNo').value = 'CTC-' + y + m + day + '-001';
 document.getElementById('date').valueAsDate = new Date();
+document.getElementById('seqAdminFY').value = getFYLabel(new Date());
 
 updatePreview();
 
