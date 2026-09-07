@@ -486,7 +486,7 @@ th {
 8. Entire Agreement — This quotation supersedes all prior verbal or written communications, representations or understandings on this subject matter</textarea>
   </div>
   <div class="field"><label>Notes (optional)</label>
-    <textarea id="notes" style="min-height:50px">This quotation is prepared in accordance with the client's requirements. Please review all line items, specifications, and terms carefully before issuing a Purchase Order. Any amendments or clarifications must be requested in writing before the PO is confirmed. Once a Purchase Order is issued and accepted by CrewTec InfoSol Pvt. Ltd, the scope, product selection, and services shall be deemed finalised, and no modifications, substitutions, or cancellations will be entertained. Acceptance of this quotation constitutes agreement to the terms and conditions set forth herein.</textarea>
+    <textarea id="notes" style="min-height:50px" placeholder="Optional — add any notes for this document"></textarea>
   </div>
 
 </div>
@@ -921,6 +921,60 @@ function updatePreview() {
   const genFmt     = fmtLines(document.getElementById('generalTerms').value);
   const notes      = document.getElementById('notes').value;
 
+  // Doc-type-aware page-2 terms: invoices get fixed invoice terms (quotation
+  // clauses such as validity/PO language do not apply); quotation & proforma
+  // keep the editable textareas.
+  const invGeneral = [
+    '1. This Tax Invoice has been issued in compliance with Section 31 of the CGST Act, 2017 and the IGST Act, 2017, as applicable. The recipient may avail Input Tax Credit as per applicable law.',
+    '2. Payment is due within 15 days of the invoice date (per the Due Date shown on page 1). Overdue amounts will attract interest at 1.5% per month.',
+    '3. Any discrepancy or objection to this invoice must be raised in writing within 7 days of receipt.',
+    '4. Force Majeure — CrewTec InfoSol Pvt. Ltd shall not be liable for delays due to circumstances beyond reasonable control including but not limited to acts of God, natural disasters, government restrictions, port/customs delays or supply chain disruptions.',
+    '5. Confidentiality — Both parties agree to keep the terms of this invoice confidential and not to disclose to any third party without prior written consent.',
+    '6. Intellectual Property — All intellectual property rights in products supplied remain with the respective OEM / licensor. CrewTec InfoSol Pvt. Ltd makes no claim over OEM IP.',
+    "7. Limitation of Liability — CrewTec InfoSol Pvt. Ltd's liability shall in no event exceed the value of the goods supplied under this invoice.",
+    '8. Governing Law — This invoice and any contract arising therefrom shall be governed by the laws of India.',
+    '9. Jurisdiction — All disputes subject to the exclusive jurisdiction of courts in Bengaluru, Karnataka.',
+    '10. Entire Agreement — This invoice represents the final commercial terms for the supply described above.'
+  ].join('\n');
+  const invPayment = [
+    '1. Payment is due within 15 days of the invoice date, as per the Due Date stated on page 1.',
+    '2. All payments by NEFT / RTGS to CrewTec InfoSol Pvt. Ltd.',
+    '3. Goods remain property of CrewTec until receipt of full payment.',
+    '4. Overdue amounts will attract interest at 1.5% per month.'
+  ].join('\n');
+
+  const termsBody = docType === 'invoice' ? `
+    <div style="font-weight:bold;color:#0A1628;font-size:9.5px;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #e5e7eb;padding-bottom:2px;margin-bottom:6px">A. General Terms &amp; Conditions</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 18px">
+      <div>
+        <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">General Conditions</div>
+        ${fmtLines(invGeneral)}
+      </div>
+      <div>
+        <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">Payment Terms</div>
+        ${fmtLines(invPayment)}
+      </div>
+    </div>
+  ` : `
+    <div style="font-weight:bold;color:#0A1628;font-size:9.5px;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #e5e7eb;padding-bottom:2px;margin-bottom:6px">A. General Terms &amp; Conditions</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 18px">
+      <div>
+        <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">General Conditions</div>
+        ${genFmt}
+      </div>
+      <div>
+        <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">Scope of Supply</div>
+        ${inclFmt}
+        <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;margin-bottom:3px">Exclusions</div>
+        ${exclFmt}
+        <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;margin-bottom:3px">Delivery &amp; Implementation</div>
+        ${delivFmt}
+        <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;margin-bottom:3px">Payment Terms</div>
+        ${paymentFmt}
+      </div>
+    </div>
+  `;
+
   // Heading
   let heading = '';
   if (subject) {
@@ -1105,24 +1159,7 @@ function updatePreview() {
       <div style="padding:8px 12px;font-size:10px;line-height:1.65;color:#374151;background:#f8fafc">
 
         <!-- A. GENERAL TERMS & CONDITIONS -->
-        <div style="font-weight:bold;color:#0A1628;font-size:9.5px;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #e5e7eb;padding-bottom:2px;margin-bottom:6px">A. General Terms &amp; Conditions</div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 18px">
-          <div>
-            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">General Conditions</div>
-            ` + genFmt + `
-          </div>
-          <div>
-            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">Scope of Supply</div>
-            ` + inclFmt + `
-            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;margin-bottom:3px">Exclusions</div>
-            ` + exclFmt + `
-            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;margin-bottom:3px">Delivery &amp; Implementation</div>
-            ` + delivFmt + `
-            <div style="font-weight:700;color:#0A1628;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;margin-bottom:3px">Payment Terms</div>
-            ` + paymentFmt + `
-          </div>
-        </div>
+        ${termsBody}
 
         <!-- B. BANK DETAILS -->
         <div style="margin-top:8px;background:#0A1628;border-radius:4px;padding:7px 12px;color:white">
